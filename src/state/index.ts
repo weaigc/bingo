@@ -4,6 +4,7 @@ import { nanoid } from '@/lib/utils'
 import { atomWithImmer } from 'jotai-immer'
 import { atomWithStorage } from 'jotai/utils'
 import { atomFamily } from 'jotai/utils'
+import { atomWithHash, atomWithLocation } from 'jotai-location'
 
 const initialMessages: ChatMessageModel[] = [
   { author: 'system', text: 'conversation between user and robot', id: '1' },
@@ -109,3 +110,6 @@ export const chatFamily = atomFamily(
   (a, b) => a.botId === b.botId && a.page === b.page,
 )
 
+export const hashAtom = atomWithHash('dialog', '')
+
+export const locationAtom = atomWithLocation()

@@ -7,4 +7,5 @@ class WebSocketAlias extends WebSocket {
     super(address)
   }
 }
+
 export default { fetch, WebSocket: WebSocketAlias, debug }

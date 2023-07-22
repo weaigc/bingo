@@ -124,7 +124,7 @@ export class BingWebBot {
 
     let resp: ConversationResponse | undefined
     try {
-      const response = await fetch(this.endpoint + '/api/create', { method: 'GET', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
+      const response = await fetch(this.endpoint + '/api/create', { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
       if (response.status === 404) {
         throw new ChatError('Not Found', ErrorCode.NOTFOUND_ERROR)
       }
@@ -147,6 +147,9 @@ export class BingWebBot {
       }
       if (value === 'Forbidden') {
         throw new ChatError(errorMsg, ErrorCode.BING_FORBIDDEN)
+      }
+      if (value === 'Cookie') {
+        throw new ChatError(errorMsg, ErrorCode.COOKIE_ERROR)
       }
       throw new ChatError(errorMsg, ErrorCode.UNKOWN_ERROR)
     }

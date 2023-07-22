@@ -1,3 +1,4 @@
+'use client'
 
 import * as React from 'react'
 import Image from 'next/image'
@@ -79,7 +80,7 @@ export function ChatPanel({
       ref={formRef}
     >
       <div className="action-bar pb-4">
-        <div className="action-root" speech-state="hidden" visual-search="" drop-target="">
+        <div className={cn('action-root', { focus: active || pin })} speech-state="hidden" visual-search="" drop-target="">
           <div className="fade bottom">
             <div className="background"></div>
           </div>
@@ -119,7 +120,10 @@ export function ChatPanel({
             </div>
             <div className="body-1 bottom-bar">
               <div className="letter-counter"><span>{input.length}</span>/4000</div>
-              <button onClick={() => setPin(!pin)} className="pr-2">
+              <button onClick={() => {
+                console.log('onclick')
+                setPin(!pin)
+              }} className="pr-2">
                <Image alt="pin" src={pin ? PinFillIcon : PinIcon} width={20} />
               </button>
             </div>

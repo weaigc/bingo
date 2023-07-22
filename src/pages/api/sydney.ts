@@ -2,24 +2,27 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { WebSocket } from '@/lib/isomorphic';
 import { BingWebBot } from '@/lib/bots/bing';
 import { websocketUtils } from '@/lib/bots/bing/utils';
-import { RND_IP, parseCookie } from '@/lib/utils';
+import { DEFAULT_UA, RND_IP, parseCookie } from '@/lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const {
     BING_COOKIE = process.env.BING_COOKIE!,
-    UA = process.env.BING_UA
+    BING_UA = process.env.BING_UA
   } = req.cookies
 
-  const ua = decodeURIComponent(UA || '') || req.headers['user-agent']
-
-  if (!BING_COOKIE) {
-    return res.end('{"erro": "no cookie"}')
+  let ua = decodeURIComponent(BING_UA || '') || req.headers['user-agent']
+  if (!/ EDGE?/.test(ua!)) {
+    ua = DEFAULT_UA
   }
 
-  const parsedCookie = parseCookie(BING_COOKIE)
+  if (!BING_COOKIE) {
+    return res.end('{"error": "no cookie"}')
+  }
+
+  const parsedCookie = parseCookie(BING_COOKIE, '_U')
   if (!parsedCookie) {
-    return res.end('{"erro": "invalid cookie"}')
+    return res.end('{"error": "invalid cookie"}')
   }
 
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')

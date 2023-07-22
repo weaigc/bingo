@@ -1,4 +1,4 @@
-import { ChatResponseMessage } from './types'
+import { ChatResponseMessage, BingChatResponse } from './types'
 
 export function convertMessageToMarkdown(message: ChatResponseMessage): string {
   if (message.messageType === 'InternalSearchQuery') {
@@ -52,3 +52,4 @@ export async function* streamAsyncIterable(stream: ReadableStream) {
 }
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+

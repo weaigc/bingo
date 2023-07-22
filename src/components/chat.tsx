@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
@@ -10,23 +11,31 @@ import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import { ToneSelector } from './tone-selector'
 import { ChatHeader } from './chat-header'
 import { ChatSuggestions } from './chat-suggestions'
-import { bingConversationStyleAtom, useProxyAtom } from '@/state'
+import { bingConversationStyleAtom } from '@/state'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import StopIcon from '@/assets/images/stop.svg'
 import { useBing } from '@/lib/hooks/use-bing'
 import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { ChatNotification } from './chat-notification'
+import { Settings } from './settings'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
-export function Chat({ className }: ChatProps) {
+export default function Chat({ className }: ChatProps) {
   const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
 
-  const chat = useBing()
-  const { messages, sendMessage, resetConversation, stopGenerating, setInput, input, generating } = chat
+  const { messages, sendMessage, resetConversation, stopGenerating, setInput, input, generating } = useBing()
+
+  useEffect(() => {
+    window.scrollTo({
+      top: document.body.offsetHeight,
+      behavior: 'smooth'
+    })
+  }, [])
 
   return (
     <div className="flex flex-1 flex-col">
+      <Settings />
       <div className={cn('flex-1 pb-16', className)}>
         <ChatHeader />
         <WelcomeScreen setInput={setInput} />

@@ -2,10 +2,16 @@
 
 import Default from './browser'
 
-const exportsModel = typeof window !== 'undefined' ? require('./browser').default : require('./node').default
+let exportsModel: any = {}
 
-export default exportsModel as typeof Default
+if (process.browser) {
+  Object.assign(exportsModel, require('./browser').default)
+} else {
+  Object.assign(exportsModel, require('./node').default)
+}
 
-export const fetch: typeof Default.fetch = exportsModel.fetch
-export const WebSocket: typeof Default.WebSocket = exportsModel.WebSocket
-export const debug: typeof Default.debug = exportsModel.debug
+export default exportsModel! as typeof Default
+
+export const fetch: typeof Default.fetch = exportsModel!.fetch
+export const WebSocket: typeof Default.WebSocket = exportsModel!.WebSocket
+export const debug: typeof Default.debug = exportsModel!.debug

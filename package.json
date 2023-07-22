@@ -1,9 +1,9 @@
 {
-  "name": "gradio-chatbot-ui",
+  "name": "bingo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set DEBUG=bingo && next dev --hostname 0.0.0.0",
+    "dev": "cross-env DEBUG=bingo next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -17,13 +17,8 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.6",
-    "@sentry/integrations": "^7.54.0",
-    "@sentry/react": "^7.54.0",
-    "@tanstack/react-router": "^0.0.1-beta.83",
     "autoprefixer": "10.4.14",
-    "browser-fs-access": "^0.34.1",
     "class-variance-authority": "^0.7.0",
-    "classnames": "^2.3.2",
     "clsx": "^2.0.0",
     "debug": "^4.3.4",
     "dotenv": "^16.3.1",
@@ -38,6 +33,7 @@
     "inter-ui": "^3.19.3",
     "jotai": "^2.2.1",
     "jotai-immer": "^0.2.0",
+    "jotai-location": "^0.5.1",
     "js-base64": "^3.7.5",
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.2",
@@ -84,6 +80,7 @@
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
+    "cross-env": "^7.0.3",
     "sass": "^1.62.1"
   }
 }

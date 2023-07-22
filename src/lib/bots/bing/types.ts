@@ -12,6 +12,7 @@ export enum ErrorCode {
   CONVERSATION_LIMIT = 'CONVERSATION_LIMIT',
   BING_UNAUTHORIZED = 'BING_UNAUTHORIZED',
   BING_FORBIDDEN = 'BING_FORBIDDEN',
+  COOKIE_ERROR = 'COOKIE_ERROR',
   BING_CAPTCHA = 'BING_CAPTCHA',
   NOTFOUND_ERROR = 'NOT_FOUND_ERROR',
   UNKOWN_ERROR = 'UNKOWN_ERROR',
@@ -71,7 +72,7 @@ export interface ConversationResponse {
   conversationSignature: string
   result: {
     value: string
-    message: null
+    message?: string
   }
 }
 
@@ -208,14 +209,4 @@ export interface SuggestedResponse {
   feedback?: Feedback
   contentOrigin?: string
   privacy?: null
-}
-
-export async function generateMarkdown(response: BingChatResponse) {
-  // change `[^Number^]` to markdown link
-  const regex = /\[\^(\d+)\^\]/g
-  const markdown = response.details.text.replace(regex, (match, p1) => {
-    const sourceAttribution = response.details.sourceAttributions[Number(p1) - 1]
-    return `[${sourceAttribution.providerDisplayName}](${sourceAttribution.seeMoreUrl})`
-  })
-  return markdown
 }

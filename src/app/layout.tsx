@@ -12,15 +12,15 @@ export const metadata: Metadata = {
     default: 'Bing AI Chatbot',
     template: `%s - Bing AI Chatbot`
   },
-  description: 'An AI-powered chatbot template built with Next.js and Vercel.',
+  description: 'Bing AI Chatbot Web App.',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
+    { media: '(prefers-color-scheme: dark)', color: 'dark' }
   ],
   icons: {
     icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png'
+    shortcut: '../assets/images/logo.svg',
+    apple: '../assets/images/logo.svg'
   }
 }
 
@@ -30,8 +30,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
+    <html lang="zh-CN" suppressHydrationWarning>
       <body>
         <Toaster />
         <Providers attribute="class" defaultTheme="system" enableSystem>

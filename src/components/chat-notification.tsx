@@ -32,6 +32,11 @@ function getAction(error: ChatError) {
       </ExternalLink>
     )
   }
+  if (error.code === ErrorCode.COOKIE_ERROR) {
+    return (
+      <Link href={`#dialog="settings"`}>没有 Cookie 或 Cookie 无效，点此重新设置 Cookie</Link>
+    )
+  }
   return error.message
 }
 
@@ -49,7 +54,7 @@ export function ChatNotification({ message }: ChatNotificationProps) {
       <div className="bottom-notifications">
       <div className="inline-type with-decorative-line">
         <div className="text-container">
-          <div className="title inline-flex items-start">
+          <div className="title inline-flex items-center">
             <Image alt="error" src={IconWarning} width={20} className="mt-1 mr-1" />
             {getAction(message.error)}
           </div>

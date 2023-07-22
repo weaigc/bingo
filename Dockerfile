@@ -3,6 +3,9 @@ FROM node:18
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+ENV BING_UA Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0
+ENV BING_COOKIE ""
+
 # Set up a new user named "user" with user ID 1000
 RUN useradd -o -u 1000 user
 
@@ -28,6 +31,7 @@ COPY --chown=user . $HOME/app
 
 RUN npm run build
 
+ENV PORT 7860
 EXPOSE 7860
 
-CMD [ "npm", "run", "start" ]
+CMD npm start -- --port $PORT

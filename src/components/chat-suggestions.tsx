@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import Image from 'next/image'
 import HelpIcon from '@/assets/images/help.svg'
 import { SuggestedResponse } from '@/lib/bots/bing/types'

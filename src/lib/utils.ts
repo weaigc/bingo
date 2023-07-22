@@ -38,7 +38,9 @@ export function formatDate(input: string | number | Date): string {
   })
 }
 
-export function parseCookie(cookie: string) {
-  const targetCookie = /\s*_U=([^;]+)/.test(cookie) ? RegExp.$1 : cookie
-  return targetCookie ? decodeURIComponent(targetCookie) : targetCookie
+export function parseCookie(cookie: string, cookieName: string) {
+  const targetCookie = new RegExp(`(?:[; ]|^)${cookieName}=([^;]*)`).test(cookie) ? RegExp.$1 : cookie
+  return targetCookie ? decodeURIComponent(targetCookie).trim() : cookie.indexOf('=') === -1 ? cookie.trim() : ''
 }
+
+export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0'

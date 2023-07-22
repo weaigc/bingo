@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch } from '@/lib/isomorphic'
-import { RND_IP, parseCookie } from '@/lib/utils'
+import { RND_IP, parseCookie, DEFAULT_UA } from '@/lib/utils'
 
 // const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 // const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
@@ -11,18 +11,31 @@ const API_ENDPOINT = 'https://bing.vcanbb.top/turing/conversation/create'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     BING_COOKIE = process.env.BING_COOKIE,
-    UA = process.env.BING_UA
+    BING_UA = process.env.BING_UA
   } = req.cookies
 
-  const ua = decodeURIComponent(UA || '') || req.headers['user-agent']
-
-  if (!BING_COOKIE) {
-    return res.end('{"erro": "no cookie"}')
+  let ua = decodeURIComponent(BING_UA || '') || req.headers['user-agent']
+  if (!/ EDGE?/.test(ua!)) {
+    ua = DEFAULT_UA
   }
 
-  const parsedCookie = parseCookie(BING_COOKIE)
+  if (!BING_COOKIE) {
+    return res.json({
+      result: {
+        value: 'Cookie',
+        message: 'No Cookie'
+      }
+    })
+  }
+
+  const parsedCookie = parseCookie(BING_COOKIE, '_U')
   if (!parsedCookie) {
-    return res.end('{"erro": "invalid cookie"}')
+    return res.json({
+      result: {
+        value: 'Cookie',
+        message: 'Invalid Cookie'
+      }
+    })
   }
 
   const headers = {
@@ -40,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'Content-Type': 'application/json',
       'Set-Cookie': [
         `BING_COOKIE=${encodeURIComponent(parsedCookie)}; Max-Age=${maxAge}; Path=/`,
-        `UA=${encodeURIComponent(ua!)}; Max-Age=${maxAge}; Path=/`,
+        `BING_UA=${encodeURIComponent(ua!)}; Max-Age=${maxAge}; Path=/`,
       ]
     })
 

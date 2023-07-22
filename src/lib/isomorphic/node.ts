@@ -1,15 +1,15 @@
 import Debug from 'debug'
 
-const safeRequire = (path: string) => {
-  try {
-    return eval(`require("${path}")`) || {}
-  } catch (e) {}
-  return {}
-}
+// const safeRequire = (path: string) => {
+//   try {
+//     return eval(`require("${path}")`) || {}
+//   } catch (e) {}
+//   return {}
+// }
 
-const { fetch, setGlobalDispatcher, ProxyAgent } = safeRequire('undici')
-const { HttpsProxyAgent } = safeRequire('https-proxy-agent')
-const ws = safeRequire('ws')
+const { fetch, setGlobalDispatcher, ProxyAgent } = require('undici')
+const { HttpsProxyAgent } = require('https-proxy-agent')
+const ws = require('ws')
 
 const debug = Debug('bingo')
 

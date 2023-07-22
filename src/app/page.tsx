@@ -1,9 +1,15 @@
-import { Chat } from '@/components/chat'
+import dynamic from 'next/dynamic'
 
-export const runtime = 'edge'
+const DynamicComponentWithNoSSR = dynamic(
+  () => import('../components/chat'),
+  { ssr: false }
+)
 
 export default function IndexPage() {
   return (
-    <Chat />
+    <>
+      <div className="loading-spinner" />
+      <DynamicComponentWithNoSSR />
+    </>
   )
 }

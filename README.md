@@ -1,3 +1,13 @@
+---
+title: bingo
+emoji: 📉
+colorFrom: red
+colorTo: red
+sdk: docker
+pinned: true
+license: mit
+---
+
 <div align="center">
 
 # Bingo 
@@ -8,8 +18,14 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 [![MIT License](https://img.shields.io/badge/license-MIT-97c50f)](https://github.com/weaigc/bingo/blob/main/license)
 
+
 </div>
 
+## 演示站点
+
+https://bing.github1s.tk
+
+[![img](./docs/images/demo.png)](https://bing.github1s.tk)
 
 ## 功能和特点
 
@@ -19,27 +35,27 @@ Bingo，一个让你呼吸顺畅 New Bing。
 ## RoadMap
 
  - [x] 支持 wss 转发
+ - [x] 支持一键部署
  - [ ] 优化移动端展示
+ - [ ] 适配深色模式
  - [ ] 支持画图
- - [ ] 支持一键部署
  - [ ] 支持内置提示词
  - [ ] 支持语音输入
- - [ ] 增加桌面客户端
+ - [ ] 支持离线访问
 
 ## 一键部署
-你也可以一键部署自己的 New Bing AI 到 Vercel 上 
+你也可以一键部署自己的 New Bing AI 到 🤗 HuggingFace 上
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=New+Bing+AI&project-name=bingo&repository-name=bingo&repository-url=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo&from=templates&skippable-integrations=1&env=BING_COOKIE%2CBING_UA&teamCreateStatus=hidden)
-
+[![Deploy to HuggingFace](https://img.shields.io/badge/%E7%82%B9%E5%87%BB%E9%83%A8%E7%BD%B2-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fbingo%3Fduplicate%3Dtrue%26visibility%3Dpublic)
 
 ## 环境和依赖
 
 - Node.js >= 18
-- Bing AI 的 Cookie (可在 https://chatgpt.com/ 注册获取)
+- Bing AI 的 Cookie (前往 https://www.bing.com/ ，登录，然后[找到 bing.com 域名下的一个名叫 _U 的 Cookie 的值](#如何获取-cookie))
 
 ## 安装和使用
 
-1. 克隆本项目到本地：
+* 使用 Node 启动
 
 ```bash
 git clone https://github.com/weaigc/bingo.git
@@ -48,12 +64,22 @@ npm run build
 npm run start
 ```
 
+* 使用 Docker 启动
+```bash
+git clone https://github.com/weaigc/bingo.git
+docker build . -t bingo
+docker run --rm -it -e BING_COOKIE=xxxx -p 7860:7860 bingo # BING_COOKIE 为 bing.com 域名下的一个名叫 _U 的 Cookie 的值
+```
+
+## 如何获取 Cookie
+![Coookie](./docs/images/bing-cookie.png)
+
 ## 鸣谢
  - 感谢 [EdgeGPT](https://github.com/acheong08/EdgeGPT) 提供的代理 API 的方法。
- - 感谢 [Vercel AI](https://github.com/vercel-labs/ai-chatbot) 提供的基础脚手架。
+ - 感谢 [Vercel AI](https://github.com/vercel-labs/ai-chatbot) 提供的基础脚手架和 [ChatHub](https://github.com/chathub-dev/chathub) [go-proxy-bingai](https://github.com/adams549659584/go-proxy-bingai) 提供的部分代码。
 
 ## License
 
-Apache 2.0 © [LICENSE](https://github.com/weaigc/bingo/blob/main/LICENSE).
+MIT © [LICENSE](https://github.com/weaigc/bingo/blob/main/LICENSE).
 
 

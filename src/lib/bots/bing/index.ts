@@ -241,7 +241,7 @@ export class BingWebBot {
     const wsp = await this.sendWs()
 
     wsp.onUnpackedMessage.addListener((events) => {
-      if (Math.ceil(Date.now() / 1000) % 6 === 0) {
+      if (Math.ceil(Date.now() / 1000) % 3 === 0) {
         wsp.sendPacked({ type: 6 })
       }
       this.parseEvents(params, events)

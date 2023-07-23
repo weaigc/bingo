@@ -859,7 +859,7 @@ p {
   min-height: 90px;
   bottom: 0;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 100;
   width: 100%;
   left: 0;
   transition-property: transform, max-width, min-width;

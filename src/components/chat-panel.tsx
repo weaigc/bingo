@@ -75,6 +75,7 @@ export function ChatPanel({
           return
         }
         setInput('')
+        setPin(false)
         await sendMessage(input)
       }}
       ref={formRef}
@@ -109,7 +110,7 @@ export function ChatPanel({
                 rows={1}
                 value={input}
                 onChange={e => setInput(e.target.value.slice(0, 4000))}
-                placeholder="Hello World，Shift + Enter = 换行"
+                placeholder="Shift + Enter 换行"
                 spellCheck={false}
                 className="message-input min-h-[24px] -mx-1 w-full text-base resize-none bg-transparent focus-within:outline-none"
               />

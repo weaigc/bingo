@@ -4,7 +4,7 @@ export function convertMessageToMarkdown(message: ChatResponseMessage): string {
   if (message.messageType === 'InternalSearchQuery') {
     return message.text
   }
-  for (const card of message.adaptiveCards) {
+  for (const card of message.adaptiveCards??[]) {
     for (const block of card.body) {
       if (block.type === 'TextBlock') {
         return block.text
@@ -35,6 +35,38 @@ export const websocketUtils = {
       })
   },
 }
+
+export async function createImage(prompt: string, id: string, headers: HeadersInit): Promise<string | undefined> {
+  const { headers: responseHeaders } = await fetch(`https://www.bing.com/images/create?partner=sydney&re=1&showselective=1&sude=1&kseed=7000&SFX=&q=${encodeURIComponent(prompt)}&iframeid=${id}`,
+    {
+      method: 'HEAD',
+      headers,
+      redirect: 'manual'
+    },
+  );
+
+  if (!/&id=([^&]+)$/.test(responseHeaders.get('location') || '')) {
+    throw new Error('请求异常，请检查 cookie 是否有效')
+  }
+
+  const resultId = RegExp.$1;
+  let count = 0
+  const imageThumbUrl = `https://www.bing.com/images/create/async/results/${resultId}?q=${encodeURIComponent(prompt)}&partner=sydney&showselective=1&IID=images.as`;
+
+  do {
+    await sleep(3000);
+    const content = await fetch(imageThumbUrl, { headers, method: 'GET' })
+
+    // @ts-ignore
+    if (content.headers.get('content-length') > 1) {
+      const text = await content.text()
+        return (text?.match(/<img class="mimg"((?!src).)+src="[^"]+/mg)??[])
+          .map(target => target?.split('src="').pop()?.replace(/&amp;/g, '&'))
+          .map(img => `![${prompt}](${img})`).join(' ')
+    }
+  } while(count ++ < 10);
+}
+
 
 export async function* streamAsyncIterable(stream: ReadableStream) {
   const reader = stream.getReader()

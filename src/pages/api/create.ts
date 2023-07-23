@@ -4,9 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch } from '@/lib/isomorphic'
 import { RND_IP, parseCookie, DEFAULT_UA } from '@/lib/utils'
 
-// const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
+const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 // const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
-const API_ENDPOINT = 'https://bing.vcanbb.top/turing/conversation/create'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {

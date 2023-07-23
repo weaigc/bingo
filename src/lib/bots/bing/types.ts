@@ -162,13 +162,14 @@ export interface ChatResponseMessage {
   createdAt: Date
   timestamp: Date
   messageId: string
-  messageType?: string
   requestId: string
   offense: string
   adaptiveCards: AdaptiveCard[]
   sourceAttributions: SourceAttribution[]
   feedback: Feedback
   contentOrigin: string
+  messageType?: string
+  contentType?: string
   privacy: null
   suggestedResponses: SuggestedResponse[]
 }

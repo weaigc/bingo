@@ -12,7 +12,7 @@ import {
   ChatUpdateCompleteResponse
 } from './types'
 
-import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
+import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable, createImage } from './utils'
 import { createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, useProxy: boolean }>
@@ -41,6 +41,8 @@ export class BingWebBot {
   protected cookie: string
   protected ua: string
   protected endpoint = ''
+  private lastText = ''
+  private asyncTasks: Array<Promise<any>> = []
 
   constructor(opts: {
     cookie: string
@@ -258,18 +260,49 @@ export class BingWebBot {
     })
   }
 
+  private async createImage(prompt: string, id: string) {
+    try {
+      const headers = {
+        'Accept-Encoding': 'gzip, deflate, br, zsdch',
+        'User-Agent': this.ua,
+        'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+        cookie: this.cookie,
+      }
+      const query = new URLSearchParams({
+        prompt,
+        id
+      })
+      const response = await fetch(this.endpoint + '/api/image?' + query.toString(), { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
+        .then(res => res.text())
+        if (response) {
+          this.lastText += '\n' + response
+        }
+    } catch (err) {
+      console.error('Create Image Error', err)
+    }
+  }
+
+  private async generateContent(message: ChatResponseMessage) {
+    if (message.contentType === 'IMAGE') {
+      this.asyncTasks.push(this.createImage(message.text, message.messageId))
+    }
+  }
+
   private async parseEvents(params: Params, events: any) {
     const conversation = this.conversationContext!
 
     for (const event of events as ChatUpdateCompleteResponse[]) {
       debug('bing ws event', event)
       if (event.type === 3) {
+        await Promise.all(this.asyncTasks)
+        params.onEvent({ type: 'UPDATE_ANSWER', data: { text: this.lastText } })
         params.onEvent({ type: 'DONE' })
         conversation.invocationId = parseInt(event.invocationId, 10) + 1
       } else if (event.type === 1) {
         const messages = event.arguments[0].messages
         if (messages) {
           const text = convertMessageToMarkdown(messages[0])
+          this.lastText = text
           params.onEvent({ type: 'UPDATE_ANSWER', data: { text, throttling: event.arguments[0].throttling } })
         }
       } else if (event.type === 2) {
@@ -299,15 +332,17 @@ export class BingWebBot {
           return
         }
 
-        const validMessages = event.item.messages?.filter(
-          (m) => !m.messageType && m.author === 'bot'
-        );
-        const message = validMessages?.at(-1) || event.item.messages[event.item.firstNewMessageIndex] as ChatResponseMessage
-        if (message) {
-          const text = convertMessageToMarkdown(message)
+        const lastMessage = event.item.messages.at(-1) as ChatResponseMessage
+        if (lastMessage?.messageType) {
+          return this.generateContent(lastMessage)
+        }
+
+        if (lastMessage) {
+          const text = convertMessageToMarkdown(lastMessage)
+          this.lastText = text
           params.onEvent({
             type: 'UPDATE_ANSWER',
-            data: { text, throttling: event.item.throttling, suggestedResponses: message.suggestedResponses, sourceAttributions: message.sourceAttributions },
+            data: { text, throttling: event.item.throttling, suggestedResponses: lastMessage.suggestedResponses, sourceAttributions: lastMessage.sourceAttributions },
           })
         }
       }

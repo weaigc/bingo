@@ -32,6 +32,21 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
           remarkPlugins={[remarkGfm, remarkMath, supersub, remarkBreaks]}
           components={{
+            img(obj) {
+              console.log(obj)
+              try {
+                const uri = new URL(obj.src!)
+                const w = uri.searchParams.get('w')
+                const h = uri.searchParams.get('h')
+                if (w && h) {
+                  uri.searchParams.delete('w')
+                  uri.searchParams.delete('h')
+                  return <a style={{ float: 'left', maxWidth: '50%' }} href={uri.toString()} target="_blank" rel="noopener noreferrer"><img src={obj.src} alt={obj.alt} width={w!} height={h!}/></a>
+                }
+              } catch (e) {
+              }
+              return <img src={obj.src} alt={obj.alt} title={obj.title} />
+            },
             p({ children }) {
               return <p className="mb-2">{children}</p>
             },

@@ -12,7 +12,7 @@ import {
   ChatUpdateCompleteResponse
 } from './types'
 
-import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable, createImage } from './utils'
+import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
 import { createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, useProxy: boolean }>
@@ -132,9 +132,7 @@ export class BingWebBot {
       }
       resp = await response.json() as ConversationResponse
     } catch (err) {
-      console.error('retry bing create', err)
-      // await sleep(60000)
-      // return this.createConversation()
+      console.error('create conversation error', err)
     }
 
     if (!resp?.result) {
@@ -215,7 +213,7 @@ export class BingWebBot {
   }
 
   async sendWs() {
-    const wsConfig: ConstructorParameters<typeof WebSocketAsPromised>[1] =  {
+    const wsConfig: ConstructorParameters<typeof WebSocketAsPromised>[1] = {
       packMessage: websocketUtils.packMessage,
       unpackMessage: websocketUtils.unpackMessage,
       createWebSocket: (url) => new WebSocket(url, {
@@ -239,7 +237,7 @@ export class BingWebBot {
     return wsp
   }
 
-  private async useWs (params: Params) {
+  private async useWs(params: Params) {
     const wsp = await this.sendWs()
 
     wsp.onUnpackedMessage.addListener((events) => {
@@ -272,11 +270,17 @@ export class BingWebBot {
         prompt,
         id
       })
-      const response = await fetch(this.endpoint + '/api/image?' + query.toString(), { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
+      const response = await fetch(this.endpoint + '/api/image?' + query.toString(),
+        {
+          method: 'POST',
+          headers,
+          mode: 'cors',
+          credentials: 'include'
+        })
         .then(res => res.text())
-        if (response) {
-          this.lastText += '\n' + response
-        }
+      if (response) {
+        this.lastText += '\n' + response
+      }
     } catch (err) {
       console.error('Create Image Error', err)
     }
@@ -291,10 +295,11 @@ export class BingWebBot {
   private async parseEvents(params: Params, events: any) {
     const conversation = this.conversationContext!
 
-    for (const event of events as ChatUpdateCompleteResponse[]) {
-      debug('bing ws event', event)
+    events?.forEach(async (event: ChatUpdateCompleteResponse) => {
+      debug('bing event', event)
       if (event.type === 3) {
         await Promise.all(this.asyncTasks)
+        this.asyncTasks = []
         params.onEvent({ type: 'UPDATE_ANSWER', data: { text: this.lastText } })
         params.onEvent({ type: 'DONE' })
         conversation.invocationId = parseInt(event.invocationId, 10) + 1
@@ -346,7 +351,7 @@ export class BingWebBot {
           })
         }
       }
-    }
+    })
   }
 
   resetConversation() {

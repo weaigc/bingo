@@ -1,6 +1,6 @@
 'use client'
 
-const debug = console.debug.bind(console)
+const debug = console.info.bind(console)
 
 class WebSocketAlias extends WebSocket {
   constructor(address: string | URL, ...args: any) {

@@ -25,6 +25,15 @@ function getAction(error: ChatError) {
       </ExternalLink>
     )
   }
+  if (error.code === ErrorCode.CONVERSATION_LIMIT) {
+    return (
+      <div>
+        当前话题已中止，请点
+        <Link href={`#dialog="settings"`}>重新开始</Link>
+        开启新的对话
+      </div>
+    )
+  }
   if (error.code === ErrorCode.BING_CAPTCHA) {
     return (
       <ExternalLink href="https://www.bing.com/turing/captcha/challenge">
@@ -54,7 +63,7 @@ export function ChatNotification({ message }: ChatNotificationProps) {
       <div className="bottom-notifications">
       <div className="inline-type with-decorative-line">
         <div className="text-container">
-          <div className="title inline-flex items-center">
+          <div className="title inline-flex items-start">
             <Image alt="error" src={IconWarning} width={20} className="mt-1 mr-1" />
             {getAction(message.error)}
           </div>

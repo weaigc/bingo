@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
-import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages } from '@/state'
+import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom } from '@/state'
 import { setConversationMessages } from './chat-history'
 import { ChatMessageModel, BotId } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
@@ -10,6 +10,7 @@ import { nanoid } from '../utils'
 
 export function useBing(botId: BotId = 'bing') {
   const chatAtom = useMemo(() => chatFamily({ botId, page: 'singleton' }), [botId])
+  const [hash, setHash] = useAtom(hashAtom)
   const useProxy = useAtomValue(useProxyAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
   const [chatState, setChatState] = useAtom(chatAtom)
@@ -106,6 +107,13 @@ export function useBing(botId: BotId = 'bing') {
       setConversationMessages(botId, chatState.conversationId, chatState.messages)
     }
   }, [botId, chatState.conversationId, chatState.messages])
+
+  useEffect(() => {
+    if (hash === 'reset') {
+      resetConversation()
+      setHash('')
+    }
+  }, [hash, setHash])
 
   const chat = useMemo(
     () => ({

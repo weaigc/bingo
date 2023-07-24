@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
@@ -22,8 +22,8 @@ import { Settings } from './settings'
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
 export default function Chat({ className }: ChatProps) {
-  const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
 
+  const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
   const { messages, sendMessage, resetConversation, stopGenerating, setInput, bot,input, generating } = useBing()
 
   useEffect(() => {

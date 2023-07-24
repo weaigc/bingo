@@ -1,4 +1,4 @@
-$duration-list: 474 433 407 458 400 427;
+$duration-list: 474 433 407 458 400 427 421 455;
 
 .voice-button {
   display: flex;
@@ -6,6 +6,7 @@ $duration-list: 474 433 407 458 400 427;
   align-items: center;
   cursor: pointer;
   > div {
+    pointer-events: none;
     background: #52467b;
     bottom: 1px;
     height: 3px;

@@ -305,7 +305,7 @@ export class BingWebBot {
         if (messages) {
           const text = convertMessageToMarkdown(messages[0])
           this.lastText = text
-          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, throttling: event.arguments[0].throttling } })
+          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, spokenText: messages[0].text, throttling: event.arguments[0].throttling } })
         }
       } else if (event.type === 2) {
         const messages = event.item.messages as ChatResponseMessage[] | undefined

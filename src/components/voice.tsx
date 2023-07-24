@@ -13,13 +13,13 @@ const Voice = ({ setInput, sendMessage }: Pick<ReturnType<typeof useBing>, 'setI
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition
+    browserSupportsSpeechRecognition,
   } = useSpeechRecognition()
 
   const setListen = useSetAtom(voiceListenAtom)
 
   useEffect(() => {
-    if (/[ 。](发送|撤回|退出)。?$/.test(transcript)) {
+    if (/[ 。](发送|清空|退出)。?$/.test(transcript)) {
       const command = RegExp.$1
       if (command === '退出') {
         SpeechRecognition.stopListening()

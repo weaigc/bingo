@@ -45,6 +45,7 @@ export type Event =
       type: 'UPDATE_ANSWER'
       data: {
         text: string
+        spokenText?: string
         sourceAttributions?: SourceAttribution[]
         suggestedResponses?: SuggestedResponse[]
         throttling?: Throttling
@@ -157,6 +158,7 @@ export interface Throttling {
 
 export interface ChatResponseMessage {
   text: string
+  spokenText?: string
   author: string
   createdAt: Date
   timestamp: Date

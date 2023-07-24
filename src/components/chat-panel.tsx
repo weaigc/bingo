@@ -51,7 +51,7 @@ export function ChatPanel({
     clearTimeout(tid)
     setActive(false)
     const _tid = setTimeout(() => setFocused(false), 2000);
-    setTid(_tid);
+    setTid(_tid)
   }, [tid])
 
   const setFocus = React.useCallback(() => {

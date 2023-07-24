@@ -6,10 +6,12 @@ import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, has
 import { setConversationMessages } from './chat-history'
 import { ChatMessageModel, BotId } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
+import { Speaker } from '../bots/bing/speak'
 
 
 export function useBing(botId: BotId = 'bing') {
   const chatAtom = useMemo(() => chatFamily({ botId, page: 'singleton' }), [botId])
+  const speaker = useMemo(() => new Speaker(),[])
   const [hash, setHash] = useAtom(hashAtom)
   const useProxy = useAtomValue(useProxyAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
@@ -40,6 +42,7 @@ export function useBing(botId: BotId = 'bing') {
         draft.generatingMessageId = botMessageId
         draft.abortController = abortController
       })
+      speaker.reset()
       await chatState.bot.sendMessage({
         prompt: input,
         options: {
@@ -54,6 +57,10 @@ export function useBing(botId: BotId = 'bing') {
               if (event.data.text.length > message.text.length) {
                 message.text = event.data.text
               }
+              if (event.data.spokenText) {
+                speaker.speak(event.data.spokenText)
+              }
+
               message.throttling = event.data.throttling || message.throttling
               message.sourceAttributions = event.data.sourceAttributions || message.sourceAttributions
               message.suggestedResponses = event.data.suggestedResponses || message.suggestedResponses
@@ -80,6 +87,7 @@ export function useBing(botId: BotId = 'bing') {
 
   const resetConversation = useCallback(() => {
     chatState.bot.resetConversation()
+    speaker.abort()
     setChatState((draft) => {
       draft.abortController = undefined
       draft.generatingMessageId = ''

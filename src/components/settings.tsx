@@ -11,15 +11,14 @@ import {
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
-import { parseCookie } from '@/lib/utils'
+import { parseCookie, parseUA } from '@/lib/utils'
 import { ExternalLink } from './external-link'
 import { useState } from 'react'
-
-interface SettingsProps { }
 
 export function Settings() {
   const [loc, setLoc] = useAtom(hashAtom)
   const [cookieValue, setCookieValue] = useState(parseCookie(document.cookie, 'BING_COOKIE'))
+  const [ua, setUA] = useState(parseUA(parseCookie(document.cookie, 'BING_UA'), ''))
 
   if (loc === 'settings') {
     return (
@@ -28,9 +27,9 @@ export function Settings() {
           <DialogHeader>
             <DialogTitle>设置你的用户信息</DialogTitle>
             <DialogDescription>
-              请
+              请使用 Edge 浏览器
               <ExternalLink
-                href="https://www.bing.com"
+                href="https://www.bing.com/turing/captcha/challenge"
               >
                 打开并登录 Bing
               </ExternalLink>
@@ -45,13 +44,22 @@ export function Settings() {
             placeholder="在此填写用户信息，仅需要 _U 值"
             onChange={e => setCookieValue(e.target.value)}
           />
+          <div className="flex gap-2">
+            <Input
+              value={ua}
+              placeholder="浏览器 User Agent，需要使用 Edge 浏览器打开"
+              onChange={e => setUA(e.target.value)}
+            />
+            <Button className="w-40" onClick={() => setUA(parseUA(navigator.userAgent))}>一键获取</Button>
+          </div>
+
           <DialogFooter className="items-center">
             <Button
               variant="secondary"
               onClick={() => {
                 if (cookieValue) {
-                  document.cookie = `BING_COOKIE=${cookieValue};path=/`
-                  document.cookie = `BING_UA=${navigator.userAgent};path=/`
+                  document.cookie = `BING_COOKIE=${encodeURIComponent(cookieValue)};path=/`
+                  document.cookie = `BING_UA=${encodeURIComponent(ua)};path=/`
                 } else {
                   document.cookie = `BING_COOKIE=;path=/`
                   document.cookie = `BING_UA=;path=/`

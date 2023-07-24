@@ -148,9 +148,6 @@ export class BingWebBot {
       if (value === 'Forbidden') {
         throw new ChatError(errorMsg, ErrorCode.BING_FORBIDDEN)
       }
-      if (value === 'Cookie') {
-        throw new ChatError(errorMsg, ErrorCode.COOKIE_ERROR)
-      }
       throw new ChatError(errorMsg, ErrorCode.UNKOWN_ERROR)
     }
     return resp
@@ -317,7 +314,9 @@ export class BingWebBot {
             type: 'ERROR',
             error: new ChatError(
               event.item.result.error || 'Unknown error',
-              event.item.result.value === 'CaptchaChallenge' ? ErrorCode.BING_CAPTCHA : ErrorCode.UNKOWN_ERROR,
+              event.item.result.value !== 'CaptchaChallenge' ? ErrorCode.UNKOWN_ERROR
+                : this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED
+                : ErrorCode.BING_CAPTCHA ,
             ),
           })
           return

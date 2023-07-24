@@ -1,23 +1,16 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import IconWarning from '@/assets/images/warning.svg'
 import { ChatError, ErrorCode, ChatMessageModel } from '@/lib/bots/bing/types'
 import { ExternalLink } from './external-link'
+import { useBing } from '@/lib/hooks/use-bing'
 
-export interface ChatNotificationProps {
+export interface ChatNotificationProps extends Pick<ReturnType<typeof useBing>, 'bot'> {
   message?: ChatMessageModel
 }
 
-function getAction(error: ChatError) {
-  if (error.code === ErrorCode.BING_UNAUTHORIZED) {
-    return (
-      <ExternalLink href="https://bing.com">
-        登录
-      </ExternalLink>
-    )
-  }
+function getAction(error: ChatError, reset: () => void) {
   if (error.code === ErrorCode.BING_FORBIDDEN) {
     return (
       <ExternalLink href="https://bing.com/new">
@@ -29,7 +22,7 @@ function getAction(error: ChatError) {
     return (
       <div>
         当前话题已中止，请点
-        <Link href={`#dialog="settings"`}>重新开始</Link>
+        <a href={`#dialog="reset"`}>重新开始</a>
         开启新的对话
       </div>
     )
@@ -41,15 +34,16 @@ function getAction(error: ChatError) {
       </ExternalLink>
     )
   }
-  if (error.code === ErrorCode.COOKIE_ERROR) {
+  if (error.code === ErrorCode.BING_UNAUTHORIZED) {
+    reset()
     return (
-      <Link href={`#dialog="settings"`}>没有 Cookie 或 Cookie 无效，点此重新设置 Cookie</Link>
+      <a href={`#dialog="settings"`}>没有获取到身份信息或身份信息失效，点此重新设置</a>
     )
   }
   return error.message
 }
 
-export function ChatNotification({ message }: ChatNotificationProps) {
+export function ChatNotification({ message, bot }: ChatNotificationProps) {
   useEffect(() => {
     window.scrollBy(0, 2000)
   }, [message])
@@ -62,10 +56,10 @@ export function ChatNotification({ message }: ChatNotificationProps) {
     >
       <div className="bottom-notifications">
       <div className="inline-type with-decorative-line">
-        <div className="text-container">
+        <div className="text-container mt-1">
           <div className="title inline-flex items-start">
-            <Image alt="error" src={IconWarning} width={20} className="mt-1 mr-1" />
-            {getAction(message.error)}
+            <Image alt="error" src={IconWarning} width={20} className="mr-1 mt-1" />
+            {getAction(message.error, () => bot.resetConversation())}
           </div>
         </div>
       </div>

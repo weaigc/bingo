@@ -1,7 +1,7 @@
 'use server'
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RND_IP, parseCookie, DEFAULT_UA } from '@/lib/utils'
+import { RND_IP, parseCookie, parseUA } from '@/lib/utils'
 import { createImage } from '@/lib/bots/bing/utils'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -19,15 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     BING_UA = process.env.BING_UA
   } = req.cookies
 
-  let ua = decodeURIComponent(BING_UA || '') || req.headers['user-agent']
-  if (!/ EDGE?/.test(ua!)) {
-    ua = DEFAULT_UA
-  }
+  const ua = parseUA(decodeURIComponent(BING_UA || '') || req.headers['user-agent'])
 
   if (!BING_COOKIE) {
     return res.json({
       result: {
-        value: 'Cookie',
+        value: 'UnauthorizedRequest',
         message: 'No Cookie'
       }
     })

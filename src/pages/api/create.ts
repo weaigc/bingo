@@ -1,8 +1,8 @@
 'use server'
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import { fetch } from '@/lib/isomorphic'
-import { RND_IP, parseCookie, DEFAULT_UA } from '@/lib/utils'
+import { fetch, debug } from '@/lib/isomorphic'
+import { RND_IP, parseCookie, parseUA } from '@/lib/utils'
 
 const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 // const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
@@ -13,15 +13,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     BING_UA = process.env.BING_UA
   } = req.cookies
 
-  let ua = decodeURIComponent(BING_UA || '') || req.headers['user-agent']
-  if (!/ EDGE?/.test(ua!)) {
-    ua = DEFAULT_UA
-  }
+  const ua = parseUA(decodeURIComponent(BING_UA || '') || req.headers['user-agent'])
 
   if (!BING_COOKIE) {
     return res.json({
       result: {
-        value: 'Cookie',
+        value: 'UnauthorizedRequest',
         message: 'No Cookie'
       }
     })
@@ -31,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!parsedCookie) {
     return res.json({
       result: {
-        value: 'Cookie',
+        value: 'UnauthorizedRequest',
         message: 'Invalid Cookie'
       }
     })
@@ -44,6 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
     cookie: `_U=${parsedCookie}` || '',
   }
+  debug('headers', headers)
 
   const response = await fetch(API_ENDPOINT, { method: 'GET', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
     .then((res) => res.text())

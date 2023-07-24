@@ -31,6 +31,7 @@ https://bing.github1s.tk
 
 - 完全基于 Next.js 重写，高度还原 New Bing Web 版 UI，使用体验和 Bing AI 基本一致。
 - 支持 Docker 构建，方便快捷地部署和访问。
+- Cookie 可全局配置，全局共享。
 
 ## RoadMap
 

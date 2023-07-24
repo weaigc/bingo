@@ -44,3 +44,7 @@ export function parseCookie(cookie: string, cookieName: string) {
 }
 
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0'
+
+export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
+  return / EDGE?/i.test(ua!) ? ua?.trim() : default_ua
+}

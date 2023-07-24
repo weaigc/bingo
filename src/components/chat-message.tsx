@@ -33,7 +33,6 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           remarkPlugins={[remarkGfm, remarkMath, supersub, remarkBreaks]}
           components={{
             img(obj) {
-              console.log(obj)
               try {
                 const uri = new URL(obj.src!)
                 const w = uri.searchParams.get('w')

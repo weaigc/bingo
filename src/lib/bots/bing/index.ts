@@ -314,9 +314,9 @@ export class BingWebBot {
             type: 'ERROR',
             error: new ChatError(
               event.item.result.error || 'Unknown error',
-              event.item.result.value !== 'CaptchaChallenge' ? ErrorCode.UNKOWN_ERROR
-                : this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED
-                : ErrorCode.BING_CAPTCHA ,
+              event.item.result.value === 'Throttled' ? ErrorCode.THROTTLE_LIMIT
+                : event.item.result.value === 'CaptchaChallenge' ? (this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED : ErrorCode.BING_CAPTCHA)
+                : ErrorCode.UNKOWN_ERROR
             ),
           })
           return

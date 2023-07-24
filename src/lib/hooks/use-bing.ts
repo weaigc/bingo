@@ -57,9 +57,9 @@ export function useBing(botId: BotId = 'bing') {
               if (event.data.text.length > message.text.length) {
                 message.text = event.data.text
               }
-              if (event.data.spokenText) {
-                speaker.speak(event.data.spokenText)
-              }
+              // if (event.data.spokenText) {
+              //   speaker.speak(event.data.spokenText)
+              // }
 
               message.throttling = event.data.throttling || message.throttling
               message.sourceAttributions = event.data.sourceAttributions || message.sourceAttributions

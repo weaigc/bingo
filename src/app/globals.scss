@@ -789,7 +789,6 @@ p {
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  max-width: 1120px;
   transition-property: transform, max-width, min-width;
   transition-duration: var(--cib-motion-duration-slowest);
   transition-timing-function: var(--cib-motion-easing-transition);

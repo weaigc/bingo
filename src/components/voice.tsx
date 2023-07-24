@@ -16,10 +16,6 @@ const Voice = ({ setInput, sendMessage }: Pick<ReturnType<typeof useBing>, 'setI
     browserSupportsSpeechRecognition
   } = useSpeechRecognition()
 
-  if (!browserSupportsSpeechRecognition) {
-    return null
-  }
-
   const setListen = useSetAtom(voiceListenAtom)
 
   useEffect(() => {
@@ -42,6 +38,10 @@ const Voice = ({ setInput, sendMessage }: Pick<ReturnType<typeof useBing>, 'setI
   useEffect(() => {
     setListen(listening)
   }, [listening])
+
+  if (!browserSupportsSpeechRecognition) {
+    return null
+  }
 
   return listening ? (
     <VoiceButton onClick={SpeechRecognition.stopListening} />

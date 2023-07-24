@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { WebSocket } from '@/lib/isomorphic';
 import { BingWebBot } from '@/lib/bots/bing';
 import { websocketUtils } from '@/lib/bots/bing/utils';
-import { RND_IP, parseCookie, parseUA } from '@/lib/utils';
+import { BING_IP, parseCookie, parseUA } from '@/lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {
     headers: {
-      'x-forwarded-for': RND_IP,
+      'x-forwarded-for': BING_IP,
       'accept-language': 'zh-CN,zh;q=0.9',
       'cache-control': 'no-cache',
       'User-Agent': ua,

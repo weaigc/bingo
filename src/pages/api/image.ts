@@ -1,7 +1,7 @@
 'use server'
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import { RND_IP, parseCookie, parseUA } from '@/lib/utils'
+import { BING_IP, parseCookie, parseUA } from '@/lib/utils'
 import { createImage } from '@/lib/bots/bing/utils'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const parsedCookie = parseCookie(BING_COOKIE, '_U')
   const headers = {
-    'x-forwarded-for': RND_IP,
+    'x-forwarded-for': BING_IP,
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
     cookie: `_U=${parsedCookie}` || '',

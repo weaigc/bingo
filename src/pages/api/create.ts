@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch, debug } from '@/lib/isomorphic'
-import { RND_IP, parseCookie, parseUA } from '@/lib/utils'
+import { BING_IP, parseCookie, parseUA } from '@/lib/utils'
 
 const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 // const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const headers = {
-    'x-forwarded-for': RND_IP,
+    'x-forwarded-for': BING_IP,
     'Accept-Encoding': 'gzip, deflate, br, zsdch',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',

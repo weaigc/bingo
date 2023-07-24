@@ -27,7 +27,7 @@ export function randomIP() {
   return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
 }
 
-export const RND_IP = randomIP()
+export const BING_IP = process.env.BING_IP || randomIP()
 
 export function formatDate(input: string | number | Date): string {
   const date = new Date(input)

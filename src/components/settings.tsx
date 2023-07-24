@@ -58,8 +58,9 @@ export function Settings() {
               variant="secondary"
               onClick={() => {
                 if (cookieValue) {
-                  document.cookie = `BING_COOKIE=${encodeURIComponent(cookieValue)};path=/`
-                  document.cookie = `BING_UA=${encodeURIComponent(ua!)};path=/`
+                  const maxAge = 86400 * 30
+                  document.cookie = `BING_COOKIE=${encodeURIComponent(cookieValue)}; Max-Age=${maxAge}; path=/`
+                  document.cookie = `BING_UA=${encodeURIComponent(ua!)}; Max-Age=${maxAge}; path=/`
                 } else {
                   document.cookie = `BING_COOKIE=;path=/`
                   document.cookie = `BING_UA=;path=/`

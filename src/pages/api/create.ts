@@ -48,10 +48,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const maxAge = 86400 * 30
     res.writeHead(200, {
       'Content-Type': 'application/json',
-      'Set-Cookie': [
-        `BING_COOKIE=${encodeURIComponent(parsedCookie)}; Max-Age=${maxAge}; Path=/`,
-        `BING_UA=${encodeURIComponent(ua!)}; Max-Age=${maxAge}; Path=/`,
-      ]
     })
 
     res.end(response)

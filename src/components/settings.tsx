@@ -11,7 +11,7 @@ import {
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
-import { parseCookie, parseUA } from '@/lib/utils'
+import { parseCookie, parseUA, randomIP } from '@/lib/utils'
 import { ExternalLink } from './external-link'
 import { useState } from 'react'
 
@@ -61,9 +61,11 @@ export function Settings() {
                   const maxAge = 86400 * 30
                   document.cookie = `BING_COOKIE=${encodeURIComponent(cookieValue)}; Max-Age=${maxAge}; path=/`
                   document.cookie = `BING_UA=${encodeURIComponent(ua!)}; Max-Age=${maxAge}; path=/`
+                  document.cookie = `BING_IP=${randomIP()}; Max-Age=${maxAge}; path=/`
                 } else {
                   document.cookie = `BING_COOKIE=;path=/`
                   document.cookie = `BING_UA=;path=/`
+                  document.cookie = `BING_IP=;path=/`
                 }
 
                 toast.success('保存成功')

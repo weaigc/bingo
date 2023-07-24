@@ -2,46 +2,20 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { WebSocket } from '@/lib/isomorphic';
 import { BingWebBot } from '@/lib/bots/bing';
 import { websocketUtils } from '@/lib/bots/bing/utils';
-import { BING_IP, parseCookie, parseUA } from '@/lib/utils';
+import { createHeaders } from '@/lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
-  const {
-    BING_COOKIE = process.env.BING_COOKIE!,
-    BING_UA = process.env.BING_UA
-  } = req.cookies
-
-  const ua = parseUA(decodeURIComponent(BING_UA || '') || req.headers['user-agent'])
-
-  if (!BING_COOKIE) {
-    return res.json({
-      result: {
-        value: 'UnauthorizedRequest',
-        message: 'No Cookie'
-      }
-    })
-  }
-
-  const parsedCookie = parseCookie(BING_COOKIE, '_U')
-  if (!parsedCookie) {
-    return res.json({
-      result: {
-        value: 'UnauthorizedRequest',
-        message: 'Invalid Cookie'
-      }
-    })
-  }
+  const headers = createHeaders(req.cookies)
 
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
   const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {
     headers: {
-      'x-forwarded-for': BING_IP,
+      ...headers,
       'accept-language': 'zh-CN,zh;q=0.9',
       'cache-control': 'no-cache',
-      'User-Agent': ua,
       pragma: 'no-cache',
-      cookie: `_U=${parsedCookie}` || '',
     }
   })
 

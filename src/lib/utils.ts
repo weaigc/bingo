@@ -27,8 +27,6 @@ export function randomIP() {
   return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
 }
 
-export const BING_IP = process.env.BING_IP || randomIP()
-
 export function formatDate(input: string | number | Date): string {
   const date = new Date(input)
   return date.toLocaleDateString('en-US', {
@@ -44,7 +42,34 @@ export function parseCookie(cookie: string, cookieName: string) {
 }
 
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0'
+export const DEFAULT_IP = process.env.BING_IP || randomIP()
 
 export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
-  return / EDGE?/i.test(ua!) ? ua?.trim() : default_ua
+  return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
+}
+
+export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
+  const {
+    BING_COOKIE = process.env.BING_COOKIE,
+    BING_UA = process.env.BING_UA,
+    BING_IP = process.env.BING_IP
+  } = cookies
+
+  const ua = parseUA(BING_UA)
+
+  if (!BING_COOKIE) {
+    throw new Error('No Cookie')
+  }
+
+  const parsedCookie = parseCookie(BING_COOKIE, '_U')
+  if (!parsedCookie) {
+    throw new Error('Invalid Cookie')
+  }
+  return {
+    'x-forwarded-for': BING_IP || DEFAULT_IP,
+    'Accept-Encoding': 'gzip, deflate, br, zsdch',
+    'User-Agent': ua!,
+    'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+    cookie: `_U=${parsedCookie}` || '',
+  }
 }

@@ -3,7 +3,7 @@ import './index.scss'
 export default function Voice(props: React.ComponentProps<'div'>) {
   return (
     <div className="voice-button" {...props}>
-      {Array.from({ length: 6 }).map(() => <div />)}
+      {Array.from({ length: 6 }).map((_, index) => <div key={index} />)}
     </div>
   )
 }

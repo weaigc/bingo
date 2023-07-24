@@ -59,7 +59,7 @@ export function Settings() {
               onClick={() => {
                 if (cookieValue) {
                   document.cookie = `BING_COOKIE=${encodeURIComponent(cookieValue)};path=/`
-                  document.cookie = `BING_UA=${encodeURIComponent(ua)};path=/`
+                  document.cookie = `BING_UA=${encodeURIComponent(ua!)};path=/`
                 } else {
                   document.cookie = `BING_COOKIE=;path=/`
                   document.cookie = `BING_UA=;path=/`

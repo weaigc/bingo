@@ -1,0 +1,38 @@
+$duration-list: 474 433 407 458 400 427;
+
+.voice-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  > div {
+    background: #52467b;
+    bottom: 1px;
+    height: 3px;
+    width: 1px;
+    margin: 0px 1px;
+    border-radius: 5px;
+    animation: sound 0ms -600ms linear infinite alternate;
+    @for $i from 1 through length($duration-list) {
+      $duration: nth($duration-list, $i);
+      &:nth-child(n + #{$i}) {
+        left: $i * 10px;
+        animation-duration: #{$duration}ms;
+      }
+    }
+  }
+}
+
+
+@keyframes sound {
+  0% {
+     opacity: .35;
+     height: 3px;
+  }
+  100% {
+      opacity: 1;
+      height: 20px;
+  }
+}
+
+

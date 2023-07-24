@@ -1,6 +1,7 @@
 import { BingWebBot } from '@/lib/bots/bing'
 import { BingConversationStyle, ChatMessageModel, BotId } from '@/lib/bots/bing/types'
 import { nanoid } from '@/lib/utils'
+import { atom } from 'jotai'
 import { atomWithImmer } from 'jotai-immer'
 import { atomWithStorage } from 'jotai/utils'
 import { atomFamily } from 'jotai/utils'
@@ -113,3 +114,5 @@ export const chatFamily = atomFamily(
 export const hashAtom = atomWithHash('dialog', '')
 
 export const locationAtom = atomWithLocation()
+
+export const voiceListenAtom = atom(false)

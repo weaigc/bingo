@@ -941,6 +941,9 @@ p {
     gap: 16px;
     justify-content: space-between;
     align-items: flex-start;
+    &>*:nth-child(n+5) {
+      display: none;
+    }
   }
 
   .message-input {

@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Textarea from 'react-textarea-autosize'
+import { useAtomValue } from 'jotai'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { cn } from '@/lib/utils'
 
@@ -14,6 +15,8 @@ import PinIcon from '@/assets/images/pin.svg'
 import PinFillIcon from '@/assets/images/pin-fill.svg'
 
 import { useBing } from '@/lib/hooks/use-bing'
+import { voiceListenAtom } from '@/state'
+import Voice from './voice'
 
 export interface ChatPanelProps
   extends Pick<
@@ -42,6 +45,7 @@ export function ChatPanel({
   const [active, setActive] = React.useState(false)
   const [pin, setPin] = React.useState(false)
   const [tid, setTid] = React.useState<any>()
+  const voiceListening = useAtomValue(voiceListenAtom)
 
   const setBlur = React.useCallback(() => {
     clearTimeout(tid)
@@ -110,11 +114,12 @@ export function ChatPanel({
                 rows={1}
                 value={input}
                 onChange={e => setInput(e.target.value.slice(0, 4000))}
-                placeholder="Shift + Enter 换行"
+                placeholder={voiceListening ? '持续对话中...对话完成说“发送”即可' : 'Shift + Enter 换行'}
                 spellCheck={false}
                 className="message-input min-h-[24px] -mx-1 w-full text-base resize-none bg-transparent focus-within:outline-none"
               />
               <Image alt="visual-search" src={VisualSearchIcon} width={20} />
+              <Voice setInput={setInput} sendMessage={sendMessage} />
               <button type="submit">
                 <Image alt="send" src={SendIcon} width={20} style={{ marginTop: '2px' }} />
               </button>
@@ -122,7 +127,6 @@ export function ChatPanel({
             <div className="body-1 bottom-bar">
               <div className="letter-counter"><span>{input.length}</span>/4000</div>
               <button onClick={() => {
-                console.log('onclick')
                 setPin(!pin)
               }} className="pr-2">
                <Image alt="pin" src={pin ? PinFillIcon : PinIcon} width={20} />

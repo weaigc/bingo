@@ -24,7 +24,7 @@ export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMe
 export default function Chat({ className }: ChatProps) {
   const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
 
-  const { messages, sendMessage, resetConversation, stopGenerating, setInput, input, generating } = useBing()
+  const { messages, sendMessage, resetConversation, stopGenerating, setInput, bot, input, generating } = useBing()
 
   useEffect(() => {
     window.scrollTo({
@@ -44,7 +44,7 @@ export default function Chat({ className }: ChatProps) {
           <>
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={generating} />
-            <ChatNotification message={messages.at(-1)} />
+            <ChatNotification message={messages.at(-1)} bot={bot} />
             <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />
 
             {generating ? (

@@ -1,52 +1,53 @@
 import React, { useEffect } from 'react'
-import 'regenerator-runtime/runtime'
 import { useSetAtom } from 'jotai'
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { useBing } from '@/lib/hooks/use-bing'
 import Image from 'next/image'
 import VoiceIcon from '@/assets/images/voice.svg'
 import VoiceButton from './ui/voice'
+import { SR } from '@/lib/bots/bing/sr'
 import { voiceListenAtom } from '@/state'
 
-const Voice = ({ setInput, sendMessage }: Pick<ReturnType<typeof useBing>, 'setInput' | 'sendMessage'>) => {
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition()
+const sr = new SR(['发送', '清空', '退出'])
 
+const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typeof useBing>, 'setInput' | 'sendMessage' | 'input' | 'isSpeaking'>) => {
   const setListen = useSetAtom(voiceListenAtom)
+  useEffect(() => {
+    if (sr.listening) return
+    sr.transcript = !isSpeaking
+  }, [isSpeaking])
 
   useEffect(() => {
-    if (/[ 。](发送|撤回|退出)。?$/.test(transcript)) {
-      const command = RegExp.$1
-      if (command === '退出') {
-        SpeechRecognition.stopListening()
-      } else if (command === '发送') {
-        sendMessage(transcript.slice(0, -3))
-      }
-
-      resetTranscript()
-      return () => {
-        SpeechRecognition.stopListening()
+    sr.onchange = (msg: string, command?: string) => {
+      console.log('msg', msg, command)
+      switch (command) {
+        case '退出':
+          sr.stop()
+          break;
+        case '发送':
+          sendMessage(input)
+        case '清空':
+          setInput('')
+          break;
+        default:
+          setInput(input + msg)
       }
     }
-    setInput(transcript)
-  }, [transcript])
+  }, [input])
 
-  useEffect(() => {
-    setListen(listening)
-  }, [listening])
-
-  if (!browserSupportsSpeechRecognition) {
-    return null
+  const switchSR = (enable: boolean = false) => {
+    setListen(enable)
+    if (enable) {
+      sr.start()
+    } else {
+      sr.stop()
+    }
   }
 
-  return listening ? (
-    <VoiceButton onClick={SpeechRecognition.stopListening} />
+  return sr.listening ? (
+    <VoiceButton onClick={() => switchSR(false)} />
   ) : (
-    <Image alt="start voice" src={VoiceIcon} width={24} className="-mt-0.5" onClick={() => SpeechRecognition.startListening({ continuous: true, language: 'zh-CN' })} />
+    <Image alt="start voice" src={VoiceIcon} width={24} className="-mt-0.5" onClick={() => switchSR(true)} />
   )
 };
+
 export default Voice;

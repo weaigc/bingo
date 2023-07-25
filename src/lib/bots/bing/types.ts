@@ -13,6 +13,7 @@ export enum ErrorCode {
   BING_UNAUTHORIZED = 'BING_UNAUTHORIZED',
   BING_FORBIDDEN = 'BING_FORBIDDEN',
   BING_CAPTCHA = 'BING_CAPTCHA',
+  THROTTLE_LIMIT = 'THROTTLE_LIMIT',
   NOTFOUND_ERROR = 'NOT_FOUND_ERROR',
   UNKOWN_ERROR = 'UNKOWN_ERROR',
   NETWORK_ERROR = 'NETWORK_ERROR',
@@ -45,6 +46,7 @@ export type Event =
       type: 'UPDATE_ANSWER'
       data: {
         text: string
+        spokenText?: string
         sourceAttributions?: SourceAttribution[]
         suggestedResponses?: SuggestedResponse[]
         throttling?: Throttling
@@ -157,6 +159,7 @@ export interface Throttling {
 
 export interface ChatResponseMessage {
   text: string
+  spokenText?: string
   author: string
   createdAt: Date
   timestamp: Date

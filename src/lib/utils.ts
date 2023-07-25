@@ -66,10 +66,22 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
     throw new Error('Invalid Cookie')
   }
   return {
-    'x-forwarded-for': BING_IP || DEFAULT_IP,
-    'Accept-Encoding': 'gzip, deflate, br, zsdch',
+    // 'x-forwarded-for': BING_IP || DEFAULT_IP,
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
     cookie: `_U=${parsedCookie}` || '',
+  }
+}
+
+export class WatchDog {
+  private tid = 0
+  watch(fn: Function, timeout = 2000) {
+    clearTimeout(this.tid)
+    this.tid = setTimeout(fn, timeout + Math.random() * 1000)
+  }
+  reset() {
+    clearTimeout(this.tid)
   }
 }

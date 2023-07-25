@@ -11,6 +11,14 @@ export interface ChatNotificationProps extends Pick<ReturnType<typeof useBing>, 
 }
 
 function getAction(error: ChatError, reset: () => void) {
+  if (error.code === ErrorCode.THROTTLE_LIMIT) {
+    reset()
+    return (
+      <div>
+        你已达到每日最大发送消息次数，请<a href={`#dialog="settings"`}>更换账号</a>或隔一天后重试
+      </div>
+    )
+  }
   if (error.code === ErrorCode.BING_FORBIDDEN) {
     return (
       <ExternalLink href="https://bing.com/new">
@@ -55,14 +63,14 @@ export function ChatNotification({ message, bot }: ChatNotificationProps) {
       className="notification-container"
     >
       <div className="bottom-notifications">
-      <div className="inline-type with-decorative-line">
-        <div className="text-container mt-1">
-          <div className="title inline-flex items-start">
-            <Image alt="error" src={IconWarning} width={20} className="mr-1 mt-1" />
-            {getAction(message.error, () => bot.resetConversation())}
+        <div className="inline-type with-decorative-line">
+          <div className="text-container mt-1">
+            <div className="title inline-flex items-start">
+              <Image alt="error" src={IconWarning} width={20} className="mr-1 mt-1" />
+              {getAction(message.error, () => bot.resetConversation())}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   )

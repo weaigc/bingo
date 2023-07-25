@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { WebSocket } from '@/lib/isomorphic';
 import { BingWebBot } from '@/lib/bots/bing';
 import { websocketUtils } from '@/lib/bots/bing/utils';
-import { createHeaders } from '@/lib/utils';
+import { WatchDog, createHeaders } from '@/lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
@@ -19,10 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   })
 
+  const watchDog = new WatchDog()
   ws.onmessage = (event) => {
-    if (Math.ceil(Date.now() / 1000) % 6 === 0) {
+    watchDog.watch(() => {
       ws.send(websocketUtils.packMessage({ type: 6 }))
-    }
+    })
     res.write(event.data)
     if (String(event.data).lastIndexOf('{"type":3,"invocationId":"0"}') > 0) {
       ws.close()
@@ -30,6 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   ws.onclose = () => {
+    watchDog.reset()
     res.end()
   }
 

@@ -13,7 +13,7 @@ import {
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
-import { createChunkDecoder } from '@/lib/utils'
+import { WatchDog, createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, useProxy: boolean }>
 
@@ -236,15 +236,16 @@ export class BingWebBot {
 
   private async useWs(params: Params) {
     const wsp = await this.sendWs()
-
+    const watchDog = new WatchDog()
     wsp.onUnpackedMessage.addListener((events) => {
-      if (Math.ceil(Date.now() / 1000) % 3 === 0) {
+      watchDog.watch(() => {
         wsp.sendPacked({ type: 6 })
-      }
+      })
       this.parseEvents(params, events)
     })
 
     wsp.onClose.addListener(() => {
+      watchDog.reset()
       params.onEvent({ type: 'DONE' })
       wsp.removeAllListeners()
     })
@@ -305,7 +306,7 @@ export class BingWebBot {
         if (messages) {
           const text = convertMessageToMarkdown(messages[0])
           this.lastText = text
-          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, throttling: event.arguments[0].throttling } })
+          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, spokenText: messages[0].text, throttling: event.arguments[0].throttling } })
         }
       } else if (event.type === 2) {
         const messages = event.item.messages as ChatResponseMessage[] | undefined
@@ -314,9 +315,9 @@ export class BingWebBot {
             type: 'ERROR',
             error: new ChatError(
               event.item.result.error || 'Unknown error',
-              event.item.result.value !== 'CaptchaChallenge' ? ErrorCode.UNKOWN_ERROR
-                : this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED
-                : ErrorCode.BING_CAPTCHA ,
+              event.item.result.value === 'Throttled' ? ErrorCode.THROTTLE_LIMIT
+                : event.item.result.value === 'CaptchaChallenge' ? (this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED : ErrorCode.BING_CAPTCHA)
+                : ErrorCode.UNKOWN_ERROR
             ),
           })
           return

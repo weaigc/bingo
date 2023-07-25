@@ -1,38 +1,34 @@
-$duration-list: 474 433 407 458 400 427;
 
 .voice-button {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  > div {
+  height: 20px;
+  gap: 2px;
+
+  .voice-button-item {
+    position: relative;
+    pointer-events: none;
     background: #52467b;
-    bottom: 1px;
-    height: 3px;
     width: 1px;
-    margin: 0px 1px;
-    border-radius: 5px;
-    animation: sound 0ms -600ms linear infinite alternate;
-    @for $i from 1 through length($duration-list) {
-      $duration: nth($duration-list, $i);
-      &:nth-child(n + #{$i}) {
-        left: $i * 10px;
-        animation-duration: #{$duration}ms;
-      }
-    }
+    gap: 2px;
+    height: 100%;
+    animation: sound 0ms 0ms linear infinite alternate;
+    flex: 1;
   }
 }
 
 
 @keyframes sound {
   0% {
-     opacity: .35;
-     height: 3px;
+    opacity: .35;
+    transform: scale(0);
   }
+
   100% {
-      opacity: 1;
-      height: 20px;
+    opacity: 1;
+    transform: scale(1);
   }
 }
-
-

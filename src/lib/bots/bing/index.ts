@@ -13,7 +13,7 @@ import {
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
-import { createChunkDecoder } from '@/lib/utils'
+import { WatchDog, createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, useProxy: boolean }>
 
@@ -236,15 +236,16 @@ export class BingWebBot {
 
   private async useWs(params: Params) {
     const wsp = await this.sendWs()
-
+    const watchDog = new WatchDog()
     wsp.onUnpackedMessage.addListener((events) => {
-      if (Math.ceil(Date.now() / 1000) % 3 === 0) {
+      watchDog.watch(() => {
         wsp.sendPacked({ type: 6 })
-      }
+      })
       this.parseEvents(params, events)
     })
 
     wsp.onClose.addListener(() => {
+      watchDog.reset()
       params.onEvent({ type: 'DONE' })
       wsp.removeAllListeners()
     })

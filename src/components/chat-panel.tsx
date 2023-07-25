@@ -26,12 +26,14 @@ export interface ChatPanelProps
     | 'setInput'
     | 'sendMessage'
     | 'resetConversation'
+    | 'isSpeaking'
   > {
   id?: string
   className?: string
 }
 
 export function ChatPanel({
+  isSpeaking,
   generating,
   input,
   setInput,
@@ -119,7 +121,7 @@ export function ChatPanel({
                 className="message-input min-h-[24px] -mx-1 w-full text-base resize-none bg-transparent focus-within:outline-none"
               />
               <Image alt="visual-search" src={VisualSearchIcon} width={20} />
-              <Voice setInput={setInput} sendMessage={sendMessage} />
+              <Voice setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
               <button type="submit">
                 <Image alt="send" src={SendIcon} width={20} style={{ marginTop: '2px' }} />
               </button>

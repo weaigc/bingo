@@ -40,6 +40,15 @@ export function UserMenu() {
             设置用户
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() =>
+              location.href='#dialog="voice"'
+            }
+            className="cursor-pointer"
+          >
+            语音设置
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <a
               href="https://github.com/weaigc/bingo/"

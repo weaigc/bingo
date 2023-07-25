@@ -2,20 +2,21 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
-import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom } from '@/state'
+import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
 import { setConversationMessages } from './chat-history'
 import { ChatMessageModel, BotId } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
-import { Speaker } from '../bots/bing/speak'
-
+import { TTS } from '../bots/bing/tts'
 
 export function useBing(botId: BotId = 'bing') {
   const chatAtom = useMemo(() => chatFamily({ botId, page: 'singleton' }), [botId])
-  const speaker = useMemo(() => new Speaker(),[])
+  const [enableTTS] = useAtom(voiceAtom)
+  const speaker = useMemo(() => new TTS(), [])
   const [hash, setHash] = useAtom(hashAtom)
   const useProxy = useAtomValue(useProxyAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
   const [chatState, setChatState] = useAtom(chatAtom)
+  const [input, setInput] = useState('')
 
   const updateMessage = useCallback(
     (messageId: string, updater: (message: ChatMessageModel) => void) => {
@@ -28,8 +29,6 @@ export function useBing(botId: BotId = 'bing') {
     },
     [setChatState],
   )
-
-  const [input, setInput] = useState('')
 
   const sendMessage = useCallback(
     async (input: string, options = {}) => {
@@ -57,9 +56,10 @@ export function useBing(botId: BotId = 'bing') {
               if (event.data.text.length > message.text.length) {
                 message.text = event.data.text
               }
-              // if (event.data.spokenText) {
-              //   speaker.speak(event.data.spokenText)
-              // }
+              console.log('enableTTS', enableTTS)
+              if (event.data.spokenText && enableTTS) {
+                speaker.speak(event.data.spokenText)
+              }
 
               message.throttling = event.data.throttling || message.throttling
               message.sourceAttributions = event.data.sourceAttributions || message.sourceAttributions
@@ -127,6 +127,7 @@ export function useBing(botId: BotId = 'bing') {
     () => ({
       botId,
       bot: chatState.bot,
+      isSpeaking: speaker.isSpeaking,
       messages: chatState.messages,
       sendMessage,
       setInput,
@@ -140,6 +141,7 @@ export function useBing(botId: BotId = 'bing') {
       chatState.bot,
       chatState.generatingMessageId,
       chatState.messages,
+      speaker.isSpeaking,
       setInput,
       input,
       resetConversation,

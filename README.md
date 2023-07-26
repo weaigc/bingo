@@ -53,6 +53,10 @@ https://bing.github1s.tk
 
 [![Deploy to HuggingFace](https://img.shields.io/badge/%E7%82%B9%E5%87%BB%E9%83%A8%E7%BD%B2-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fbingo%3Fduplicate%3Dtrue%26visibility%3Dpublic)
 
+## 自定义域名
+1. 方式一，借助 Github Pages 及 iframe [如何绑定域名](https://github.com/weaigc/bingo/issues/4)
+2. 方式二，Cloudflare Workers 
+
 ## 环境和依赖
 
 - Node.js >= 18

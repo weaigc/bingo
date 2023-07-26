@@ -49,13 +49,27 @@ https://bing.github1s.tk
  - [ ] 国际化翻译
 
 ## 一键部署
-你也可以一键部署自己的 New Bing AI 到 🤗 HuggingFace 上
+你也可以一键部署自己的 New Bing AI 到 🤗 HuggingFace 、 Netlify 等平台上
 
+### 部署到 Huggingface
 [![Deploy to HuggingFace](https://img.shields.io/badge/%E7%82%B9%E5%87%BB%E9%83%A8%E7%BD%B2-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fbingo%3Fduplicate%3Dtrue%26visibility%3Dpublic)
 
-## 自定义域名
+> Huggingface 不支持绑定自己的域名，不过我们可以使用曲线救国的方式来达到这个目的
 1. 方式一，借助 Github Pages 及 iframe [如何绑定域名](https://github.com/weaigc/bingo/issues/4)
 2. 方式二，Cloudflare Workers 
+
+### 部署到 Netlify
+[![Deploy to Netlify Button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/weaigc/bingo)
+
+### 部署到 Vercel
+如果你是 Vercel 付费用户，可以点以下链接一键部署到 Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=bingo&demo-description=bingo&demo-url=https%3A%2F%2Fbing.github1s.tk%2F&project-name=bingo&repository-name=bingo&repository-url=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo&from=templates&skippable-integrations=1&env=BING_COOKIE%2CBING_UA%2CBING_IP&envDescription=%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%9F%A5%E9%81%93%E6%80%8E%E4%B9%88%E9%85%8D%E7%BD%AE%E8%AF%B7%E7%82%B9%E5%8F%B3%E4%BE%A7Learn+More&envLink=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo%2Fblob%2Fmain%2F.env.example)
+
+### 部署到 Render
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
+
 
 ## 环境和依赖
 

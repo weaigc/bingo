@@ -72,6 +72,9 @@ export function Settings() {
 
                 toast.success('保存成功')
                 setLoc('')
+                setTimeout(() => {
+                  location.href = './'
+                }, 2000)
               }}
             >
               保存
@@ -110,6 +113,9 @@ export function Settings() {
               onClick={() => {
                 toast.success('保存成功')
                 setLoc('')
+                setTimeout(() => {
+                  location.href = './'
+                }, 2000)
               }}
             >
               保存

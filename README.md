@@ -23,7 +23,9 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 ## 演示站点
 
-https://bing.github1s.tk
+ * 站点一：https://bing.github1s.tk （推荐）
+ * 站点二：https://effulgent-bubblegum-e2f5df.netlify.app （此站点部署到 Netlify 上）
+
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)
 

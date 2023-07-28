@@ -24,7 +24,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 ## 演示站点
 
  * 站点一：https://bing.github1s.tk （推荐）
- * 站点二：https://effulgent-bubblegum-e2f5df.netlify.app （此站点部署到 Netlify 上）
+ * 站点二：https://effulgent-bubblegum-e2f5df.netlify.app （此站点部署到 Netlify 上，使用过程中可能需要认证）
 
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)
@@ -99,6 +99,8 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 bingo
 ```
 
 ## 如何获取 BING_HEADER
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/conversation/create
+
 ![BING HEADER](./docs/images/curl.png)，然后打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击转成 BING_HEADER 并复制即可。
 
 > 复制出来的内容应该如下所示:

@@ -25,6 +25,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
  * 站点一：https://bing.github1s.tk （推荐）
  * 站点二：https://effulgent-bubblegum-e2f5df.netlify.app （此站点部署到 Netlify 上，使用过程中可能需要认证）
+ * 站点三：https://bingo-beta-seven.vercel.app/ （此站点部署在 Vercel 上，由于[免费版本限制](https://vercel.com/docs/concepts/limits/overview)，功能不一定正常，仅供参考）
 
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)
@@ -66,7 +67,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 [![Deploy to Netlify Button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/weaigc/bingo)
 
 #### 部署到 Vercel
-如果你是 Vercel 付费用户，可以点以下链接一键部署到 Vercel
+如果你是 Vercel 付费用户，可以点以下链接一键部署到 Vercel。免费版本有[接口超时限制](https://vercel.com/docs/concepts/limits/overview)，不推荐使用
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=bingo&demo-description=bingo&demo-url=https%3A%2F%2Fbing.github1s.tk%2F&project-name=bingo&repository-name=bingo&repository-url=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo&from=templates&skippable-integrations=1&env=BING_HEADER&envDescription=%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%9F%A5%E9%81%93%E6%80%8E%E4%B9%88%E9%85%8D%E7%BD%AE%E8%AF%B7%E7%82%B9%E5%8F%B3%E4%BE%A7Learn+More&envLink=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo%2Fblob%2Fmain%2F.env.example)
 

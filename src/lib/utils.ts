@@ -30,6 +30,7 @@ export function randomIP() {
 export function parseHeadersFromCurl(content: string) {
   const re = /-H '([^:]+):\s*([^']+)/mg
   const headers: HeadersInit = {}
+  content = content.replaceAll('-H "', '-H \'').replaceAll('" ^', '\'\\').replaceAll('^\\^"', '"') // 将 cmd curl 转成 bash curl
   content.replace(re, (_: string, key: string, value: string) => {
     headers[key] = value
     return ''
@@ -50,7 +51,6 @@ export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }>)
   ChunkKeys.forEach((key) => {
     base64Content += (cookies[key] || '')
   })
-  console.log('base64 content', base64Content)
   try {
     return atob(base64Content)
   } catch(e) {

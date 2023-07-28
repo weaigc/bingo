@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { Switch } from '@headlessui/react'
 import { toast } from 'react-hot-toast'
@@ -15,11 +15,19 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { ChunkKeys, parseCookies, extraCurlFromCookie, randomIP, encodeHeadersToCookie } from '@/lib/utils'
 import { ExternalLink } from './external-link'
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
 export function Settings() {
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const [loc, setLoc] = useAtom(hashAtom)
   const [curlValue, setCurlValue] = useState(extraCurlFromCookie(parseCookies(document.cookie, ChunkKeys)))
   const [enableTTS, setEnableTTS] = useAtom(voiceAtom)
+
+  useEffect(() => {
+    if (isCopied) {
+      toast.success('复制成功')
+    }
+  }, [isCopied])
 
   if (loc === 'settings') {
     return (
@@ -42,17 +50,27 @@ export function Settings() {
               <ExternalLink href="https://github.com/weaigc/bingo#如何获取%20BING_HEADER">如何获取 BING_HEADER</ExternalLink>
             </DialogDescription>
           </DialogHeader>
+          <div className="flex gap-4">
+
+          </div>
           <Input
             value={curlValue}
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/conversation/create' ..."
             onChange={e => setCurlValue(e.target.value)}
           />
+          <Button variant="ghost" className="bg-[#F2F2F2] hover:bg-[#DCDCDC]" onClick={() => copyToClipboard(btoa(curlValue))}>
+            转成 BING_HEADER 并复制
+          </Button>
 
           <DialogFooter className="items-center">
             <Button
               variant="secondary"
               onClick={() => {
                 if (curlValue) {
+                  if (/^\s*curl /.test(curlValue)) {
+                    toast.error('格式不正确')
+                    return
+                  }
                   const maxAge = 86400 * 30
                   encodeHeadersToCookie(curlValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/`)
                 } else {

@@ -1,0 +1,27 @@
+curl "https://www.bing.com/turing/conversation/create" ^
+  -H "authority: www.bing.com" ^
+  -H "accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7" ^
+  -H "accept-language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6" ^
+  -H "cache-control: max-age=0" ^
+  -H "cookie: MUID=009D04CD06C766CA3BA01797077D67C6; MUIDB=009D04CD06C766CA3BA01797077D67C6; _EDGE_V=1; SRCHD=AF=NOFORM; SRCHUID=V=2&GUID=5C70AAEF9FFB4D47A76B980593FF7599&dmnchg=1; WLS=C=9df3f9d8518fae19&N=wen; ANON=A=0043C6590EA808ED6E395059FFFFFFFF; _UR=QS=0&TQS=0; SnrOvr=X=rebateson; ENSEARCH=BENVER=1; MicrosoftApplicationsTelemetryDeviceId=566996d5-593f-4ae9-b550-5d2b2bc860e0; _FP=hta=on; ABDEF=V=13&ABDV=13&MRB=1690462854353&MRNB=0; cct=eQMN6JL_qeBGuXpqMtNkTtM7Hx6bA_Po2mR4CjYpDPNcuB-tV5yq1gnbjpNQbrxuwU6ZhErykZJFzBUApJtY7g; SUID=A; _EDGE_S=F=1&SID=2D96A9FA8E9A61911022BAA08F20600B&mkt=zh-CN&ui=zh-cn; SRCHS=PC=U531; USRLOC=HS=1&ELOC=LAT=22.501394271850586^|LON=113.92510223388672^|N=Nanshan^%^20District^%^2C^%^20Guangdong^|ELT=2^|&CLOC=LAT=22.512421478709648^|LON=113.9263516432632^|A=733.4464586120832^|TS=230728113001^|SRC=W; _SS=SID=2D96A9FA8E9A61911022BAA08F20600B&R=3223&RB=3223&GB=0&RG=0&RP=3218&PC=U531; _RwBf=r=1&mta=0&rc=3223&rb=3223&gb=0&rg=0&pc=3218&mtu=0&rbb=0.0&g=0&cid=&clo=0&v=1&l=2023-07-28T07:00:00.0000000Z&lft=0001-01-01T00:00:00.0000000&aof=0&o=0&p=BINGTRIAL5TO250P201808&c=MY01Z9&t=6997&s=2023-02-09T05:23:21.6733322+00:00&ts=2023-07-28T08:04:30.1892946+00:00&rwred=0&wls=2&lka=0&lkt=0&TH=&dci=0&e=ISxxydF1761GjJCNf6Z6GK7md9nm3LRpQfrj2p2J3JZ5QMcYa9Soo7yElgaHhzI8yVWx6EZT_S5xASKN_wQM3VpDf9Z_N35DPUOoM1y89Wk&A=0043C6590EA808ED6E395059FFFFFFFF; SRCHUSR=DOB=20230726&T=1690546780000; _HPVN=CS=eyJQbiI6eyJDbiI6MiwiU3QiOjAsIlFzIjowLCJQcm9kIjoiUCJ9LCJTYyI6eyJDbiI6MiwiU3QiOjAsIlFzIjowLCJQcm9kIjoiSCJ9LCJReiI6eyJDbiI6MiwiU3QiOjAsIlFzIjowLCJQcm9kIjoiVCJ9LCJBcCI6dHJ1ZSwiTXV0ZSI6dHJ1ZSwiTGFkIjoiMjAyMy0wNy0yOFQwMDowMDowMFoiLCJJb3RkIjowLCJHd2IiOjAsIkRmdCI6bnVsbCwiTXZzIjowLCJGbHQiOjAsIkltcCI6N30=; ipv6=hit=1690550381083&t=6; ai_session=Xv4ZpSdXwQkRDi5NJv5paC^|1690546793254^|1690546931479; SNRHOP=I=&TS=; _U=1XEscSUDeQb0RMzHt0rjSxUJfrgmcb7c3vucFKyw-IDZCuIEgUhFQpxCWXHtKTJ2gItuiF9LFaW10K7DrIGApW2LVQBUW_zAXL4H8slXLTonecki98PwTgFB2SrwxZOktDKSTgMJ2U59mTSk0-O4s5-UZyU04ArCQuIroP1k-YHlQ7e4H8ujQE4ssxry63i2YUcB1RW6nmp2SNcgpTW1ePA; GC=eQMN6JL_qeBGuXpqMtNkTtM7Hx6bA_Po2mR4CjYpDPMKAhsZiKe6XCxPiz4B42SnCSOlWnYjc9hXcKzSRaJEfQ; SRCHHPGUSR=SRCHLANG=en&PV=15.0.0&BRW=W&BRH=M&CW=1406&CH=838&SCW=1406&SCH=838&DPR=1.5&UTC=480&DM=0&HV=1690531470&PRVCW=410&PRVCH=827&IG=A0B6AFFB912C4F379863D50590AA9AB0&EXLTT=2" ^
+  -H "dnt: 1" ^
+  -H "sec-ch-ua: ^\^"Chromium^\^";v=^\^"116^\^", ^\^"Not)A;Brand^\^";v=^\^"24^\^", ^\^"Microsoft Edge^\^";v=^\^"116^\^"" ^
+  -H "sec-ch-ua-arch: ^\^"x86^\^"" ^
+  -H "sec-ch-ua-bitness: ^\^"64^\^"" ^
+  -H "sec-ch-ua-full-version: ^\^"116.0.1938.29^\^"" ^
+  -H "sec-ch-ua-full-version-list: ^\^"Chromium^\^";v=^\^"116.0.5845.42^\^", ^\^"Not)A;Brand^\^";v=^\^"24.0.0.0^\^", ^\^"Microsoft Edge^\^";v=^\^"116.0.1938.29^\^"" ^
+  -H "sec-ch-ua-mobile: ?0" ^
+  -H "sec-ch-ua-model: ^\^"^\^"" ^
+  -H "sec-ch-ua-platform: ^\^"Windows^\^"" ^
+  -H "sec-ch-ua-platform-version: ^\^"15.0.0^\^"" ^
+  -H "sec-fetch-dest: document" ^
+  -H "sec-fetch-mode: navigate" ^
+  -H "sec-fetch-site: cross-site" ^
+  -H "sec-fetch-user: ?1" ^
+  -H "sec-ms-gec: 1CEFAF8FC2D7F1949FA24EB9290E8B53AB55C72CD6B742F81A401D7F8E2E13F1" ^
+  -H "sec-ms-gec-version: 1-116.0.1938.29" ^
+  -H "upgrade-insecure-requests: 1" ^
+  -H "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.0.0" ^
+  -H "x-client-data: eyIxIjoiMiIsIjEwIjoiXCJTMGg3R05HOTF2aDQ1TUZSUnZ5NHN2akRmMWdlaVJKenNxNlA3aU1WbnF3PVwiIiwiMiI6IjEiLCIzIjoiMSIsIjQiOiIyMTU4ODQ5NTM4MjY4OTM5NTA3IiwiNSI6IlwiUTdOL0FSSStqYjl2U0FoRVliaWorRTh3QUFyZ0pic0dYWjdNeXlkM3hkdz1cIiIsIjYiOiJiZXRhIiwiNyI6IjE5NzU2ODQ5NTY0MiIsIjkiOiJkZXNrdG9wIn0=" ^
+  -H "x-edge-shopping-flag: 1" ^
+  --compressed

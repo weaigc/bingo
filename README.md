@@ -78,7 +78,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 ## 环境和依赖
 
 - Node.js >= 18
-- Bing AI 的 Cookie (前往 https://www.bing.com/ ，登录，然后[找到 bing.com 域名下的一个名叫 _U 的 Cookie 的值](#如何获取-cookie))
+- Bing AI 的[身份信息](#如何获取-BING_HEADER))
 
 ## 安装和使用
 
@@ -103,9 +103,8 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 bingo
 
 ![BING HEADER](./docs/images/curl.png)
 
-然后打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击转成 BING_HEADER 并复制即可。
 
-> 复制出来的内容应该如下所示:
+> 复制出来的内容应该如下所示。确认格式无误后，打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_HEADER 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
 ```
 curl 'https://www.bing.com/turing/conversation/create' \
   -H 'authority: www.bing.com' \

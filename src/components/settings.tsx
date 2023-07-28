@@ -68,7 +68,7 @@ export function Settings() {
               className="bg-[#c7f3ff] hover:bg-[#fdc7ff]"
               onClick={() => {
                 if (curlValue) {
-                  if (/^\s*curl /.test(curlValue)) {
+                  if (!/^\s*curl /.test(curlValue)) {
                     toast.error('格式不正确')
                     return
                   }

@@ -27,6 +27,41 @@ export function randomIP() {
   return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
 }
 
+export function parseHeadersFromCurl(content: string) {
+  const re = /-H '([^:]+):\s*([^']+)/mg
+  const headers: HeadersInit = {}
+  content.replace(re, (_: string, key: string, value: string) => {
+    headers[key] = value
+    return ''
+  })
+
+  return headers
+}
+
+export const ChunkKeys = ['BING_HEADER', 'BING_HEADER1', 'BING_HEADER2']
+export function encodeHeadersToCookie(content: string) {
+  const base64Content = btoa(content)
+  const contentChunks = base64Content.match(/.{1,4000}/g) || []
+  return ChunkKeys.map((key, index) => `${key}=${contentChunks[index] ?? ''}`)
+}
+
+export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }>) {
+  let base64Content = ''
+  ChunkKeys.forEach((key) => {
+    base64Content += (cookies[key] || '')
+  })
+  console.log('base64 content', base64Content)
+  try {
+    return atob(base64Content)
+  } catch(e) {
+    return ''
+  }
+}
+
+export function extraHeadersFromCookie(cookies: Partial<{ [key: string]: string }>) {
+  return parseHeadersFromCurl(extraCurlFromCookie(cookies))
+}
+
 export function formatDate(input: string | number | Date): string {
   const date = new Date(input)
   return date.toLocaleDateString('en-US', {
@@ -41,6 +76,14 @@ export function parseCookie(cookie: string, cookieName: string) {
   return targetCookie ? decodeURIComponent(targetCookie).trim() : cookie.indexOf('=') === -1 ? cookie.trim() : ''
 }
 
+export function parseCookies(cookie: string, cookieNames: string[]) {
+  const cookies: { [key: string]: string } = {}
+  cookieNames.forEach(cookieName => {
+    cookies[cookieName] = parseCookie(cookie, cookieName)
+  })
+  return cookies
+}
+
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0'
 export const DEFAULT_IP = process.env.BING_IP || randomIP()
 
@@ -52,8 +95,16 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
   const {
     BING_COOKIE = process.env.BING_COOKIE,
     BING_UA = process.env.BING_UA,
-    BING_IP = process.env.BING_IP
+    BING_IP = process.env.BING_IP,
+    BING_HEADER = process.env.BING_HEADER,
   } = cookies
+
+  if (BING_HEADER) {
+    return extraHeadersFromCookie({
+      BING_HEADER,
+      ...cookies,
+    })
+  }
 
   const ua = parseUA(BING_UA)
 
@@ -66,7 +117,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
     throw new Error('Invalid Cookie')
   }
   return {
-    // 'x-forwarded-for': BING_IP || DEFAULT_IP,
+    'x-forwarded-for': BING_IP || DEFAULT_IP,
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,

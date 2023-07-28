@@ -1,0 +1,27 @@
+curl 'https://www.bing.com/turing/conversation/create' \
+  -H 'authority: www.bing.com' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \
+  -H 'cache-control: max-age=0' \
+  -H 'cookie: MicrosoftApplicationsTelemetryDeviceId=3399c004-fd0e-48ec-bb92-d82a27b2bbd4; _EDGE_V=1; SRCHD=AF=NOFORM; SRCHUID=V=2&GUID=29EBDDA4E6674329ACCF1A0A423C3E98&dmnchg=1; _UR=QS=0&TQS=0; _HPVN=CS=eyJQbiI6eyJDbiI6MSwiU3QiOjAsIlFzIjowLCJQcm9kIjoiUCJ9LCJTYyI6eyJDbiI6MSwiU3QiOjAsIlFzIjowLCJQcm9kIjoiSCJ9LCJReiI6eyJDbiI6MSwiU3QiOjAsIlFzIjowLCJQcm9kIjoiVCJ9LCJBcCI6dHJ1ZSwiTXV0ZSI6dHJ1ZSwiTGFkIjoiMjAyMy0wNy0yNVQwMDowMDowMFoiLCJJb3RkIjowLCJHd2IiOjAsIkRmdCI6bnVsbCwiTXZzIjowLCJGbHQiOjAsIkltcCI6Mn0=; _RwBf=ilt=1&ihpd=1&ispd=0&rc=0&rb=0&gb=0&rg=200&pc=0&mtu=0&rbb=0&g=0&cid=&clo=0&v=1&l=2023-07-25T07:00:00.0000000Z&lft=0001-01-01T00:00:00.0000000&aof=0&o=2&p=&c=&t=0&s=0001-01-01T00:00:00.0000000+00:00&ts=2023-07-25T11:00:31.7111548+00:00&rwred=0&wls=&lka=0&lkt=0&TH=&dci=0; ANON=A=0043C6590EA808ED6E395059FFFFFFFF&E=1c8b&W=1; NAP=V=1.9&E=1c31&C=DnaMSbDN_4efZ_xXqBF3Daorjr53kYqYoaP8YHsupjmiXnysX7a37A&W=1; PPLState=1; KievRPSSecAuth=FABSBBRaTOJILtFsMkpLVWSG6AN6C/svRwNmAAAEgAAACMGUA7EGVSjGEAQBGHtNsc5sNL7unmJsfPJ2t6imfo4BeUJlAia3IpMTtMUy4PU/C5QAzRI5pODtsIee0+blgllXt/5IiWwGjwmdhivsFM597pRPkjARPfwsPhNLPNbJrCPNPHdje4Is78MnCADXw6/NBq2FL8V2/byw2fH6IuAMD2MvN/VvqpEa9ZxiDjZtENj4HEj0mO2SgzjfyEhVAkjvznJqU2rw/Q2tHmX94NAM2kzlzKF/hWPhCCUmu8IHLvCnHDS6mSptvJDDP/sp3ovtzOXkP1mlM/Xju5ftesUvccVEQGffXORa1dE5hEMbKIiKXz1tDdduSXE19g9/+mRMAjaQhpwhI8XmilCTx1adb1Ll5qK+VjC9GNfEZzcbsGBPVaOl+anG8rEMq+Xnhjo7J+NqTNolavHgcuV8kJsCeJZIged33UA8eOZeFo+wAECMguxMoSqgpGH+sthqynvD/FJD6r/tiU2N3uqVq8NE8V37asrN6T14Z0FGBJOe6ET1+PGApm3s11OY9/xhFEB9T5BEPUGEbvRcLcW2ncFQX0EU+xweiPqo1Q1hNUg/dCtSI+lZ7c2H8XheePZavZ0TJQ8oNCSAuKiTqJmI0fVGpwbXwfaADkEipuawz3fIuMJBNgMU0OtA7Hm59v2fGLIBuvi6YeKS6GgVk3BIPf+P/eKahwozrxQZaFnoHTSqMkvct7xCP4atBROfXKf5Ww0CcFKp+2WX9BIskTOo2jjk6bAyyYJ+ElUB1fgLKNk5m/YSMc9iYCLIBMIGN8F0Yvy3tZ7cvh7Ue5Klo98US/I+nW1G7ZJMHRgUO8h8lpneHqEMegKd8gynO4VF7RpCjJkunDmW0Ta+RkXAP619pg0dqHMFkoOgknN78oBbGTV6fJUKotv+vi61kLhAeXZGWoHGCRXh2wUC6YgfPgKA6ESRNHtFn7E5B3HHpLc5rVMDSNhKZYfdhupV4Ezf6+5DhMcZLZhi0kk+ivDiN1gdHlVtSN55xpvf+c+XZDzR0uhgcvgy0LAbmzgk6y4WbYH+LQsMpzNNj+aC72vMiWovWrKh9jY4MYCmdgxsS/skPtLdp18muiEIRXTbZQGUmhxFpJAIbBIsCscMpzL0BgeujxUwM5wr79Sd9r4xwbgSMwmBlBfUHRVBdNyg8feepeJbCS63nD6eHOuLqMRsPIio3w/ki/EAa92UUEiZeavLsMUD/y/qAvWUdzdP5Y+C/TM+CMGS/kGL4LEdY/28MQeTvU1qv1X21kQt2aiaj3pPVL36hAzxbcLgqcMo9oymDRy87kdCXW/+g4oKLtMh6fm/G6W6Y/B01JlxohyyvueHQIG557uzkEkTJ3FnOVODSKBKpb3WZ65rExfV71zSZa25F3GmpaIG6HiYrX2YYhQAkIE9pKEQBHbnwHuwNDGottZTXZw=; WLS=C=9df3f9d8518fae19&N=wen; WLID=pGY8HgWCu4p5XYCOk2oa0+DBdftkMUfmNIn8XtSjSTKsgv/Il7GUlYs0Jpjf/E12jZMgV7x44Dy3fXOgjjUoJx7Y/ClLrLhsk20THksJJoI=; _EDGE_S=F=1&SID=17CF6EE006426448213C7DB907436588&mkt=zh-CN; MUID=225621093D8A6C27301632413C0E6D08; MUIDB=225621093D8A6C27301632413C0E6D08; SUID=A; SNRHOP=I=&TS=; _U=nGyzKQruEsDwLiu65fZFIG6e12hf2lwTJmroW__k8joUJIKmG3OIjayXKGW9dCVR3sNhF76mEVxyW6yjUGPodOfjtSa3s3J_DxMOrEK1BqXCOBI9bC66spAIASV7prsYFlVAJz73jVNENp_tBubLHJy6EbT0BKRe4AjrYkH-9uMnmCKB8Zmyg; _SS=SID=17CF6EE006426448213C7DB907436588&R=0&RB=0&GB=0&RG=200&RP=0&PC=U531; SRCHS=PC=U531; USRLOC=HS=1&ELOC=LAT=22.501529693603516|LON=113.9263687133789|N=%E5%8D%97%E5%B1%B1%E5%8C%BA%EF%BC%8C%E5%B9%BF%E4%B8%9C%E7%9C%81|ELT=2|&CLOC=LAT=22.50153029046461|LON=113.92637070632928|A=733.4464586120832|TS=230726151034|SRC=W; SRCHUSR=DOB=20230725&T=1690384908000&POEX=W; ipv6=hit=1690388509974&t=6; SRCHHPGUSR=HV=1690384945&SRCHLANG=zh-Hans&PV=15.0.0&BRW=MW&BRH=MT&CW=410&CH=794&SCW=410&SCH=794&DPR=1.5&UTC=480&DM=0&WTS=63825879627&PRVCW=410&PRVCH=794&PR=1.5; cct=AjWIBYOoVP-Afq6gWwtx80If6yHn6iBuEVHA1XHdAKpny6Y_CVyi_MSyM94VyMWnjdYkkccVtm3czoIAtXUGQA; GC=AjWIBYOoVP-Afq6gWwtx80If6yHn6iBuEVHA1XHdAKpR3Y_D9Ytcks4Ht6XhadXk75dvhzP4YOUS0UmoEyqyxw' \
+  -H 'dnt: 1' \
+  -H 'sec-ch-ua: "Chromium";v="116", "Not)A;Brand";v="24", "Microsoft Edge";v="116"' \
+  -H 'sec-ch-ua-arch: "x86"' \
+  -H 'sec-ch-ua-bitness: "64"' \
+  -H 'sec-ch-ua-full-version: "116.0.1938.29"' \
+  -H 'sec-ch-ua-full-version-list: "Chromium";v="116.0.5845.42", "Not)A;Brand";v="24.0.0.0", "Microsoft Edge";v="116.0.1938.29"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-model: ""' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-ch-ua-platform-version: "15.0.0"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: none' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'sec-ms-gec: B3F47AD4A283CAB374C0451C46AAFD147C6A4DACAFF6A1C13F34B2C72B024494' \
+  -H 'sec-ms-gec-version: 1-116.0.1938.29' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.0.0' \
+  -H 'x-client-data: eyIxIjoiMiIsIjEwIjoiXCJTMGg3R05HOTF2aDQ1TUZSUnZ5NHN2akRmMWdlaVJKenNxNlA3aU1WbnF3PVwiIiwiMiI6IjEiLCIzIjoiMSIsIjQiOiIyMTU4ODQ5NTM4MjY4OTM5NTA3IiwiNSI6IlwiSm9GUWpPTDk3OS9MbkRRZnlCd2N1M2FsOUN3eTZTQmdaMGNYMXBtOWVMZz1cIiIsIjYiOiJiZXRhIiwiNyI6IjE4MDM4ODYyNjQzNSIsIjkiOiJkZXNrdG9wIn0=' \
+  -H 'x-edge-shopping-flag: 1' \
+  --compressed

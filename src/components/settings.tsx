@@ -44,7 +44,7 @@ export function Settings() {
               </ExternalLink>
               ，然后再打开
               <ExternalLink href="https://www.bing.com/turing/conversation/create">Create 接口</ExternalLink>
-              右键 》检查。打开开发者工具，在网络里面找到 Create 接口 》右键复制》复制为 cURL(bash)，粘贴到此处保存。
+              右键 》检查。打开开发者工具，在网络里面找到 Create 接口 》右键复制》复制为 cURL(bash)，粘贴到此处，然后保存。
               <div className="h-2" />
               图文示例：
               <ExternalLink href="https://github.com/weaigc/bingo#如何获取%20BING_HEADER">如何获取 BING_HEADER</ExternalLink>
@@ -58,13 +58,14 @@ export function Settings() {
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/conversation/create' ..."
             onChange={e => setCurlValue(e.target.value)}
           />
-          <Button variant="ghost" className="bg-[#F2F2F2] hover:bg-[#DCDCDC]" onClick={() => copyToClipboard(btoa(curlValue))}>
+          <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
             转成 BING_HEADER 并复制
           </Button>
 
           <DialogFooter className="items-center">
             <Button
               variant="secondary"
+              className="bg-[#c7f3ff] hover:bg-[#fdc7ff]"
               onClick={() => {
                 if (curlValue) {
                   if (/^\s*curl /.test(curlValue)) {

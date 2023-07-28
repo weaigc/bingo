@@ -101,7 +101,9 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 bingo
 ## 如何获取 BING_HEADER
 打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/conversation/create
 
-![BING HEADER](./docs/images/curl.png)，然后打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击转成 BING_HEADER 并复制即可。
+![BING HEADER](./docs/images/curl.png)
+
+然后打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击转成 BING_HEADER 并复制即可。
 
 > 复制出来的内容应该如下所示:
 ```

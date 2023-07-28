@@ -92,7 +92,7 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 }
 
 export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
-  const {
+  let {
     BING_COOKIE = process.env.BING_COOKIE,
     BING_UA = process.env.BING_UA,
     BING_IP = process.env.BING_IP,
@@ -109,7 +109,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
   const ua = parseUA(BING_UA)
 
   if (!BING_COOKIE) {
-    throw new Error('No Cookie')
+    BING_COOKIE = 'xxx' // hf 暂时不用 Cookie 也可以正常使用
   }
 
   const parsedCookie = parseCookie(BING_COOKIE, '_U')

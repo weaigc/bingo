@@ -33,4 +33,4 @@ RUN npm run build
 ENV PORT 7860
 EXPOSE 7860
 
-CMD npm start -- --port $PORT
+CMD npm start

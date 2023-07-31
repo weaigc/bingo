@@ -62,6 +62,7 @@ export type Event =
 
 export interface SendMessageParams<T> {
   prompt: string
+  imageUrl?: string
   options: T
   onEvent: (event: Event) => void
   signal?: AbortSignal
@@ -138,6 +139,7 @@ export interface ConversationInfo {
   invocationId: number
   conversationStyle: BingConversationStyle
   prompt: string
+  imageUrl?: string
 }
 
 export interface BingChatResponse {
@@ -212,4 +214,44 @@ export interface SuggestedResponse {
   feedback?: Feedback
   contentOrigin?: string
   privacy?: null
+}
+
+export interface KBlobRequest {
+  knowledgeRequest: KnowledgeRequestContext
+  imageBase64?: string
+}
+
+export interface KBlobResponse {
+  blobId: string
+  processedBlobId?: string
+}
+
+export interface KnowledgeRequestContext {
+  imageInfo:        ImageInfo;
+  knowledgeRequest: KnowledgeRequest;
+}
+
+export interface ImageInfo {
+  url?: string;
+}
+
+export interface KnowledgeRequest {
+  invokedSkills:            string[];
+  subscriptionId:           string;
+  invokedSkillsRequestData: InvokedSkillsRequestData;
+  convoData:                ConvoData;
+}
+
+export interface ConvoData {
+  convoid:   string;
+  convotone: BingConversationStyle;
+}
+
+export interface InvokedSkillsRequestData {
+  enableFaceBlur: boolean;
+}
+
+export interface FileItem {
+  url: string;
+  status?: 'loading' | 'error' | 'loaded'
 }

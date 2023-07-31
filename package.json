@@ -1,6 +1,6 @@
 {
   "name": "bingo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "cross-env DEBUG=bingo next dev --hostname 0.0.0.0",
@@ -26,6 +26,7 @@
     "dotenv": "^16.3.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "form-data": "^4.0.0",
     "http-proxy-middleware": "^2.0.6",
     "https-proxy-agent": "^7.0.1",
     "i18next": "^22.5.0",

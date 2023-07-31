@@ -24,7 +24,20 @@ export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMe
 export default function Chat({ className }: ChatProps) {
 
   const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
-  const { messages, sendMessage, resetConversation, stopGenerating, setInput, bot,input, generating, isSpeaking } = useBing()
+  const {
+    messages,
+    sendMessage,
+    resetConversation,
+    stopGenerating,
+    setInput,
+    bot,
+    input,
+    generating,
+    isSpeaking,
+    uploadImage,
+    attachmentList,
+    setAttachmentList,
+  } = useBing()
 
   useEffect(() => {
     window.scrollTo({
@@ -69,6 +82,9 @@ export default function Chat({ className }: ChatProps) {
         input={input}
         setInput={setInput}
         resetConversation={resetConversation}
+        uploadImage={uploadImage}
+        attachmentList={attachmentList}
+        setAttachmentList={setAttachmentList}
       />
       <ButtonScrollToBottom />
     </div>

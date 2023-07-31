@@ -1,4 +1,4 @@
-import { useBing } from "@/lib/hooks/use-bing"
+import { useBing } from '@/lib/hooks/use-bing'
 
 const exampleMessages = [
   {

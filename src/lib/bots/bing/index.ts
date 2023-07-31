@@ -9,7 +9,9 @@ import {
   InvocationEventType,
   ChatError,
   ErrorCode,
-  ChatUpdateCompleteResponse
+  ChatUpdateCompleteResponse,
+  ImageInfo,
+  KBlobResponse
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
@@ -103,6 +105,7 @@ export class BingWebBot {
             author: 'user',
             inputMethod: 'Keyboard',
             text: conversation.prompt,
+            imageUrl: conversation.imageUrl,
             messageType: 'Chat',
           },
           conversationId: conversation.conversationId,
@@ -153,21 +156,25 @@ export class BingWebBot {
     return resp
   }
 
+  private async createContext(conversationStyle: BingConversationStyle) {
+    if (!this.conversationContext) {
+      const conversation = await this.createConversation()
+      this.conversationContext = {
+        conversationId: conversation.conversationId,
+        conversationSignature: conversation.conversationSignature,
+        clientId: conversation.clientId,
+        invocationId: 0,
+        conversationStyle,
+        prompt: '',
+      }
+    }
+    return this.conversationContext
+  }
+
   async sendMessage(params: Params) {
     try {
-      if (!this.conversationContext) {
-        const conversation = await this.createConversation()
-        this.conversationContext = {
-          conversationId: conversation.conversationId,
-          conversationSignature: conversation.conversationSignature,
-          clientId: conversation.clientId,
-          invocationId: 0,
-          conversationStyle: params.options.bingConversationStyle,
-          prompt: ''
-        }
-      }
-      Object.assign(this.conversationContext, { prompt: params.prompt })
-
+      await this.createContext(params.options.bingConversationStyle)
+      Object.assign(this.conversationContext!, { prompt: params.prompt, imageUrl: params.imageUrl })
       if (params.options.useProxy) {
         return this.useProxy(params)
       }
@@ -284,6 +291,62 @@ export class BingWebBot {
     }
   }
 
+  private buildKnowledgeApiPayload(imageUrl: string, conversationStyle: BingConversationStyle) {
+    const imageInfo: ImageInfo = {}
+    let imageBase64: string | undefined = undefined
+    const knowledgeRequest = {
+      imageInfo,
+      knowledgeRequest: {
+        invokedSkills: [
+          'ImageById'
+        ],
+        subscriptionId: 'Bing.Chat.Multimodal',
+        invokedSkillsRequestData: {
+            enableFaceBlur: true
+        },
+        convoData: {
+          convoid: this.conversationContext?.conversationId,
+          convotone: conversationStyle,
+        }
+      },
+    }
+
+    if (imageUrl.startsWith('data:image/jpeg;base64,')) {
+      imageBase64 = imageUrl.replace('data:image/', '');
+      const partIndex = imageBase64.indexOf(',')
+      if (partIndex) {
+        imageBase64 = imageBase64.substring(partIndex + 1)
+      }
+    } else {
+      imageInfo.url = imageUrl
+    }
+    return { knowledgeRequest, imageBase64 }
+  }
+
+  async uploadImage(imageUrl: string, conversationStyle: BingConversationStyle = BingConversationStyle.Creative): Promise<KBlobResponse | undefined> {
+    if (!imageUrl) {
+      return
+    }
+    await this.createContext(conversationStyle)
+    const payload = this.buildKnowledgeApiPayload(imageUrl, conversationStyle)
+
+    const response = await fetch(this.endpoint + '/api/kblob',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        body: JSON.stringify(payload),
+      })
+      .then(res => res.json())
+      .catch(e => {
+        console.log('Error', e)
+      })
+    return response
+  }
+
   private async generateContent(message: ChatResponseMessage) {
     if (message.contentType === 'IMAGE') {
       this.asyncTasks.push(this.createImage(message.text, message.messageId))
@@ -317,7 +380,7 @@ export class BingWebBot {
               event.item.result.error || 'Unknown error',
               event.item.result.value === 'Throttled' ? ErrorCode.THROTTLE_LIMIT
                 : event.item.result.value === 'CaptchaChallenge' ? (this.conversationContext?.conversationId?.includes('BingProdUnAuthenticatedUsers') ? ErrorCode.BING_UNAUTHORIZED : ErrorCode.BING_CAPTCHA)
-                : ErrorCode.UNKOWN_ERROR
+                  : ErrorCode.UNKOWN_ERROR
             ),
           })
           return

@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
 import { setConversationMessages } from './chat-history'
-import { ChatMessageModel, BotId } from '@/lib/bots/bing/types'
+import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
 
@@ -17,6 +17,7 @@ export function useBing(botId: BotId = 'bing') {
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
   const [chatState, setChatState] = useAtom(chatAtom)
   const [input, setInput] = useState('')
+  const [attachmentList, setAttachmentList] = useState<FileItem[]>([])
 
   const updateMessage = useCallback(
     (messageId: string, updater: (message: ChatMessageModel) => void) => {
@@ -33,8 +34,11 @@ export function useBing(botId: BotId = 'bing') {
   const sendMessage = useCallback(
     async (input: string, options = {}) => {
       const botMessageId = nanoid()
+      const imageUrl = attachmentList?.[0]?.status === 'loaded' ? attachmentList[0].url : undefined
       setChatState((draft) => {
-        draft.messages.push({ id: nanoid(), text: input, author: 'user' }, { id: botMessageId, text: '', author: 'bot' })
+        const text = imageUrl ? `${input}\n\n![image](${imageUrl})` : input
+        draft.messages.push({ id: nanoid(), text, author: 'user' }, { id: botMessageId, text: '', author: 'bot' })
+        setAttachmentList([])
       })
       const abortController = new AbortController()
       setChatState((draft) => {
@@ -44,6 +48,7 @@ export function useBing(botId: BotId = 'bing') {
       speaker.reset()
       await chatState.bot.sendMessage({
         prompt: input,
+        imageUrl,
         options: {
           ...options,
           useProxy,
@@ -56,7 +61,7 @@ export function useBing(botId: BotId = 'bing') {
               if (event.data.text.length > message.text.length) {
                 message.text = event.data.text
               }
-              console.log('enableTTS', enableTTS)
+
               if (event.data.spokenText && enableTTS) {
                 speaker.speak(event.data.spokenText)
               }
@@ -82,8 +87,18 @@ export function useBing(botId: BotId = 'bing') {
         },
       })
     },
-    [botId, chatState.bot, setChatState, updateMessage],
+    [botId, attachmentList, chatState.bot, setChatState, updateMessage],
   )
+
+  const uploadImage = useCallback(async (imgUrl: string) => {
+    setAttachmentList([{ url: imgUrl, status: 'loading' }])
+    const response = await chatState.bot.uploadImage(imgUrl, bingConversationStyle)
+    if (response?.blobId) {
+      setAttachmentList([{ url: `https://www.bing.com/images/blob?bcid=${response.blobId}`, status: 'loaded' }])
+    } else {
+      setAttachmentList([{ url: imgUrl, status: 'error' }])
+    }
+  }, [chatState.bot])
 
   const resetConversation = useCallback(() => {
     chatState.bot.resetConversation()
@@ -135,15 +150,21 @@ export function useBing(botId: BotId = 'bing') {
       resetConversation,
       generating: !!chatState.generatingMessageId,
       stopGenerating,
+      uploadImage,
+      setAttachmentList,
+      attachmentList,
     }),
     [
       botId,
+      bingConversationStyle,
       chatState.bot,
       chatState.generatingMessageId,
       chatState.messages,
       speaker.isSpeaking,
       setInput,
       input,
+      setAttachmentList,
+      attachmentList,
       resetConversation,
       sendMessage,
       stopGenerating,

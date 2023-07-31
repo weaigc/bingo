@@ -17,6 +17,8 @@ import PinFillIcon from '@/assets/images/pin-fill.svg'
 import { useBing } from '@/lib/hooks/use-bing'
 import { voiceListenAtom } from '@/state'
 import Voice from './voice'
+import { ChatImage } from './chat-image'
+import { ChatAttachments } from './chat-attachments'
 
 export interface ChatPanelProps
   extends Pick<
@@ -27,6 +29,9 @@ export interface ChatPanelProps
     | 'sendMessage'
     | 'resetConversation'
     | 'isSpeaking'
+    | 'attachmentList'
+    | 'uploadImage'
+    | 'setAttachmentList'
   > {
   id?: string
   className?: string
@@ -39,7 +44,10 @@ export function ChatPanel({
   setInput,
   className,
   sendMessage,
-  resetConversation
+  resetConversation,
+  attachmentList,
+  uploadImage,
+  setAttachmentList
 }: ChatPanelProps) {
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const {formRef, onKeyDown} = useEnterSubmit()
@@ -104,8 +112,8 @@ export function ChatPanel({
           <div
             className={cn('main-container', { active: active || pin })}
             style={{ minHeight: pin ? '360px' : undefined }}
-            onClickCapture={setFocus}
-            onBlurCapture={setBlur}
+            onClick={setFocus}
+            onBlur={setBlur}
           >
             <div className="main-bar">
               <Image alt="chat" src={ChatIcon} width={20} color="blue" />
@@ -120,12 +128,15 @@ export function ChatPanel({
                 spellCheck={false}
                 className="message-input min-h-[24px] -mx-1 w-full text-base resize-none bg-transparent focus-within:outline-none"
               />
-              <Image alt="visual-search" src={VisualSearchIcon} width={20} />
+              <ChatImage uploadImage={uploadImage}>
+                <Image alt="visual-search" src={VisualSearchIcon} width={24} />
+              </ChatImage>
               <Voice setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
               <button type="submit">
                 <Image alt="send" src={SendIcon} width={20} style={{ marginTop: '2px' }} />
               </button>
             </div>
+            <ChatAttachments attachmentList={attachmentList} setAttachmentList={setAttachmentList} uploadImage={uploadImage} />
             <div className="body-1 bottom-bar">
               <div className="letter-counter"><span>{input.length}</span>/4000</div>
               <button onClick={() => {

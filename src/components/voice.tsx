@@ -18,7 +18,6 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typ
 
   useEffect(() => {
     sr.onchange = (msg: string, command?: string) => {
-      console.log('msg', msg, command)
       switch (command) {
         case '退出':
           sr.stop()

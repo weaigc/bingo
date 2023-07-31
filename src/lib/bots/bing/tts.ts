@@ -8,7 +8,6 @@ export class TTS {
   private controller = new AbortController()
   speaking = false
   get isSpeaking() {
-    console.log('get speak', this.speaking)
     return this.speaking
   }
   finished = false
@@ -29,7 +28,7 @@ export class TTS {
     if (!synth || text?.trim()?.length < 2) {
       return
     }
-    this.currentText = text.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9，。？,：\.,:]+/g, '')
+    this.currentText = text.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9，。？,：；\.,:]+/g, '')
     this.finished = false
     this.loop()
   }
@@ -37,7 +36,13 @@ export class TTS {
   private async doSpeek() {
     return new Promise((resolve) => {
       const endIndex = this.finished ? this.currentText.length :
-        Math.max(this.currentText.lastIndexOf('。'), this.currentText.lastIndexOf('？'), this.currentText.lastIndexOf('\n'))
+        Math.max(
+          this.currentText.lastIndexOf('。'),
+          this.currentText.lastIndexOf('；'),
+          this.currentText.lastIndexOf('、'),
+          this.currentText.lastIndexOf('？'),
+          this.currentText.lastIndexOf('\n')
+        )
       const startIndex = this.speakText.length ? Math.max(0, this.currentText.lastIndexOf(this.speakText) + this.speakText.length) : 0
 
       if (startIndex >= endIndex) {

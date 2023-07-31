@@ -14,13 +14,16 @@ const SpeechRecognitionPolyfill: typeof webkitSpeechRecognition = typeof window 
 type subscriber = (msg: string, command?: string) => void
 
 export class SR {
-  recognition: SpeechRecognition
+  recognition?: SpeechRecognition
   onchange?: subscriber
   transcript: boolean = false
   listening: boolean = false
   private commandsRe?: RegExp
   constructor(commands: string[]) {
-    this.recognition = new SpeechRecognitionPolyfill()
+    this.recognition = SpeechRecognitionPolyfill ? new SpeechRecognitionPolyfill() : undefined
+    if (!this.recognition) {
+      return
+    }
     this.configuration('zh-CN')
     if (commands.length) {
       this.commandsRe = new RegExp(`^(${commands.join('|')})。?$`)
@@ -31,10 +34,9 @@ export class SR {
       this.stop()
     }
     this.recognition.onend = () => {
-      if (this.listening) {
+      if (this.recognition && this.listening) {
         this.recognition.start()
       }
-      console.log('end')
     }
   }
 
@@ -54,11 +56,13 @@ export class SR {
     }
   }
 
-  configuration = async (lang: string = 'zh-CN') => {
+  private configuration = async (lang: string = 'zh-CN') => {
     return new Promise((resolve) => {
-      this.recognition.continuous = true
-      this.recognition.lang = lang
-      this.recognition.onstart = resolve
+      if (this.recognition) {
+        this.recognition.continuous = true
+        this.recognition.lang = lang
+        this.recognition.onstart = resolve
+      }
     })
   }
 

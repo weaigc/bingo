@@ -28,7 +28,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
  * 站点三：https://bingo-beta-seven.vercel.app/ （此站点部署在 Vercel 上，由于[免费版本限制](https://vercel.com/docs/concepts/limits/overview)，功能不一定正常，仅供参考）
 
 
-[![img](./docs/images/demo.png)](https://bing.github1s.tk)
+[![img](./docs/images/demo2.png)](https://bing.github1s.tk)
 
 ## 功能和特点
 

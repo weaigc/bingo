@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { toast } from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
 import { version } from '../../package.json'
 import {
@@ -12,13 +14,20 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { IconCopy, IconExternalLink, IconGitHub } from '@/components/ui/icons'
 import SettingIcon from '@/assets/images/settings.svg'
-import { useEffect, useState } from 'react'
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
 export function UserMenu() {
   const [host, setHost] = useState('')
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   useEffect(() => {
     setHost(location.host)
   }, [])
+
+  useEffect(() => {
+    if (isCopied) {
+      toast.success('复制成功')
+    }
+  }, [isCopied])
   return (
     <div className="flex items-center justify-between">
       <DropdownMenu>
@@ -82,8 +91,7 @@ export function UserMenu() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-between w-full gap-2 cursor-pointer"
             >
-              克隆站点
-              <IconCopy />
+              复制站点
               <IconExternalLink className="w-3 h-3 ml-auto" />
             </a>
           </DropdownMenuItem>
@@ -93,8 +101,10 @@ export function UserMenu() {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex-col items-start">
-            <div className="font-medium">空间地址</div>
-            <div className="text-xs text-zinc-500">{host}</div>
+            <div className="font-medium">站点域名</div>
+            <div onClick={() => copyToClipboard(host)} className="flex gap-1 text-xs text-zinc-500 cursor-pointer">
+              {host} <IconCopy />
+            </div>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

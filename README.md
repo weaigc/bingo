@@ -16,8 +16,8 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 高度还原 New Bing 网页版的主要操作，国内可用，兼容绝大多数微软 Bing AI 的功能，可自行部署使用。
 
+[![docker build](https://github.com/weaigc/bingo/actions/workflows/docker.yml/badge.svg)](https://hub.docker.com/repository/docker/weaigc/bingo/)
 [![MIT License](https://img.shields.io/badge/license-MIT-97c50f)](https://github.com/weaigc/bingo/blob/main/license)
-
 
 </div>
 
@@ -28,7 +28,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
  * 站点三：https://bingo-beta-seven.vercel.app/ （此站点部署在 Vercel 上，由于[免费版本限制](https://vercel.com/docs/concepts/limits/overview)，功能不一定正常，仅供参考）
 
 
-[![img](./docs/images/demo2.png)](https://bing.github1s.tk)
+[![img](./docs/images/demo.png)](https://bing.github1s.tk)
 
 ## 功能和特点
 
@@ -66,7 +66,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 > 2. 方式二，Cloudflare Workers 
 <details>
 <summary>
-其它平台部署（由于其他平台目前遭到 new bing 封杀，会遇到更多问题，不再做推荐，有需要的可以通过此链接快速部署）
+其它平台部署（由于其他平台目前遭到 new bing 封杀，会遇到更多问题，不再做推荐，有需要的可以自行查看）
 </summary>
 
 #### 部署到 Netlify

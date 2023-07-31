@@ -11,7 +11,7 @@ export function ChatAttachments({ attachmentList = [], setAttachmentList, upload
   return attachmentList.length ? (
     <div className="attachment-list">
       {attachmentList.map(file => (
-        <div className="file-item">
+        <div className="file-item" key={file.url}>
           {file.status === 'loading' && (
             <div className="loading">
               <div className="bar" />

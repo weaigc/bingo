@@ -23,9 +23,8 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 ## 演示站点
 
- * 站点一：https://bing.github1s.tk （推荐）
- * 站点二：https://effulgent-bubblegum-e2f5df.netlify.app （此站点部署到 Netlify 上，使用过程中可能需要认证）
- * 站点三：https://bingo-beta-seven.vercel.app/ （此站点部署在 Vercel 上，由于[免费版本限制](https://vercel.com/docs/concepts/limits/overview)，功能不一定正常，仅供参考）
+https://bing.github1s.tk
+
 
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)
@@ -64,9 +63,11 @@ Bingo，一个让你呼吸顺畅 New Bing。
 > Huggingface 不支持绑定自己的域名，不过我们可以使用曲线救国的方式来达到这个目的
 > 1. 方式一，借助 Github Pages 及 iframe [如何绑定域名](https://github.com/weaigc/bingo/issues/4)
 > 2. 方式二，Cloudflare Workers 
+
+### 部署其它平台
 <details>
 <summary>
-其它平台部署（由于其他平台目前遭到 new bing 封杀，会遇到更多问题，不再做推荐，有需要的可以自行查看）
+由于其他平台目前遭到 new bing 封杀，会遇到更多问题，不再做推荐，有需要的可以自行查看
 </summary>
 
 #### 部署到 Netlify
@@ -159,7 +160,13 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 
 ## 鸣谢
  - 感谢 [EdgeGPT](https://github.com/acheong08/EdgeGPT) 提供的代理 API 的方法。
- - 感谢 [Vercel AI](https://github.com/vercel-labs/ai-chatbot) 提供的基础脚手架和 [ChatHub](https://github.com/chathub-dev/chathub) [go-proxy-bingai](https://github.com/adams549659584/go-proxy-bingai) 提供的部分代码。
+ - 感谢 [Vercel AI](https://github.com/vercel-labs/ai-chatbot) 提供的基础脚手架和 [ChatHub](https://github.com/chathub-dev/chathub) [go-proxy-bingai](https://github.com/adams549659584/go-proxy-bingai) 提供的部分代码。 
+
+
+## 答疑及交流
+
+![wechat](./docs/images/wechat.jpg)
+
 
 ## License
 

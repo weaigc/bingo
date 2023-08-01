@@ -16,7 +16,10 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 高度还原 New Bing 网页版的主要操作，国内可用，兼容绝大多数微软 Bing AI 的功能，可自行部署使用。
 
+![Github stars](https://badgen.net/github/stars/weaigc/bingo?icon=github&label=stars)
+![Gthub issues](https://img.shields.io/github/issues/weaigc/bingo)
 [![docker build](https://github.com/weaigc/bingo/actions/workflows/docker.yml/badge.svg)](https://hub.docker.com/repository/docker/weaigc/bingo/)
+[![docker hub](https://badgen.net/docker/size/weaigc/bingo?icon=docker&label=image%20size)](https://hub.docker.com/repository/docker/weaigc/bingo/)
 [![MIT License](https://img.shields.io/badge/license-MIT-97c50f)](https://github.com/weaigc/bingo/blob/main/license)
 
 </div>
@@ -165,8 +168,7 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 
 ## 答疑及交流
 
-![wechat](./docs/images/wechat.jpg)
-
+<image src="./docs/images/wechat.jpg" width=240 />
 
 ## License
 

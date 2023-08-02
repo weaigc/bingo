@@ -48,7 +48,7 @@ https://bing.github1s.tk
  - [x] 支持语音输入(支持语音指令，目前仅支持 PC 版 Edge 及 Chrome 浏览器)
  - [x] 支持语音输出(需要手动开启)
  - [x] 支持图片输入
- - [ ] 支持绑定 CloudFlare
+ - [x] 支持自定义域名
  - [ ] 适配深色模式
  - [ ] 支持内置提示词
  - [ ] 支持离线访问
@@ -64,8 +64,22 @@ https://bing.github1s.tk
 2. 部署署完成后，点击“设置” 》“站点域名”，点一下，复制一下 HF 域名信息，然后分享给别人即可。
 
 > Huggingface 不支持绑定自己的域名，不过我们可以使用曲线救国的方式来达到这个目的
-> 1. 方式一，借助 Github Pages 及 iframe [如何绑定域名](https://github.com/weaigc/bingo/issues/4)
-> 2. 方式二，Cloudflare Workers 
+> 1. 方式二，借助 Cloudflare Workers [部署Cloudflare Workers](#使用Cloudflare-Workers自定义域名)
+> 2. 方式一，借助 Github Pages 及 iframe [如何绑定域名](https://github.com/weaigc/bingo/issues/4)
+
+### 使用Cloudflare Workers自定义域名
+
+> 核心代码 [worker.js](./cloudflare/worker.js)
+
+- [注册 Cloudflare 账号](https://dash.cloudflare.com/sign-up)
+
+- 添加一个新的网站，需要你有自己的域名并且将域名`Name Server`托管给 Cloudflare 才行（更多信息可自行 Google)
+
+- 通过左侧菜单进入「Workers」，并点击「Create a Worker」。
+
+- 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码，粘贴至创建的服务中，根据注释进行改动，保存并部署。
+
+- 触发器 中自定义访问域名。
 
 ### 部署其它平台
 <details>
@@ -168,7 +182,7 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 
 ## 答疑及交流
 
-<image src="./docs/images/wechat.jpg" width=240 />
+<image src="./docs/images/wechat.png" width=240 />
 
 ## License
 

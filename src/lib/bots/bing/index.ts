@@ -311,7 +311,7 @@ export class BingWebBot {
       },
     }
 
-    if (imageUrl.startsWith('data:image/jpeg;base64,')) {
+    if (imageUrl.startsWith('data:image/')) {
       imageBase64 = imageUrl.replace('data:image/', '');
       const partIndex = imageBase64.indexOf(',')
       if (partIndex) {

@@ -43,7 +43,7 @@ export function Settings() {
                 打开并登录 Bing
               </ExternalLink>
               ，然后再打开
-              <ExternalLink href="https://www.bing.com/turing/conversation/create">Create 接口</ExternalLink>
+              <ExternalLink href="https://www.bing.com/turing/captcha/challenge">Challenge 接口</ExternalLink>
               右键 》检查。打开开发者工具，在网络里面找到 Create 接口 》右键复制》复制为 cURL(bash)，粘贴到此处，然后保存。
               <div className="h-2" />
               图文示例：
@@ -55,7 +55,7 @@ export function Settings() {
           </div>
           <Input
             value={curlValue}
-            placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/conversation/create' ..."
+            placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/captcha/challenge' ..."
             onChange={e => setCurlValue(e.target.value)}
           />
           <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
@@ -68,7 +68,7 @@ export function Settings() {
               className="bg-[#c7f3ff] hover:bg-[#fdc7ff]"
               onClick={() => {
                 if (curlValue) {
-                  if (!/^\s*curl /.test(curlValue)) {
+                  if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(curlValue)) {
                     toast.error('格式不正确')
                     return
                   }

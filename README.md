@@ -124,7 +124,7 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 bingo
 ```
 
 ## 如何获取 BING_HEADER
-打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/conversation/create
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge，通过人机校验，然后
 
 ![BING HEADER](./docs/images/curl.png)
 
@@ -136,7 +136,7 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 bingo
 <summary>正常格式/网页端保存的格式(格式仅供参考)</summary>
 
 ```
-curl 'https://www.bing.com/turing/conversation/create' \
+curl 'https://www.bing.com/turing/captcha/challenge' \
   -H 'authority: www.bing.com' \
   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
   -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \

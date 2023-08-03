@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { WebSocket } from '@/lib/isomorphic';
+import { WebSocket, debug } from '@/lib/isomorphic';
 import { BingWebBot } from '@/lib/bots/bing';
 import { websocketUtils } from '@/lib/bots/bing/utils';
 import { WatchDog, createHeaders } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { WatchDog, createHeaders } from '@/lib/utils';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)
-
+  debug(headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
   const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {

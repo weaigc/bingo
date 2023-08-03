@@ -5,8 +5,8 @@ import { fetch } from '@/lib/isomorphic'
 import { KBlobRequest } from '@/lib/bots/bing/types'
 import FormData from 'form-data'
 
-// const API_DOMAIN = 'https://www.bing.com'
-const API_DOMAIN = 'https://bing.vcanbb.top'
+const API_DOMAIN = 'https://www.bing.com'
+// const API_DOMAIN = 'https://bing.vcanbb.top'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

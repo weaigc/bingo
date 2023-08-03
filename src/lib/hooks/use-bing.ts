@@ -48,7 +48,7 @@ export function useBing(botId: BotId = 'bing') {
       speaker.reset()
       await chatState.bot.sendMessage({
         prompt: input,
-        imageUrl,
+        imageUrl: /\?bcid=([^&]+)/.test(imageUrl ?? '') ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
         options: {
           ...options,
           useProxy,
@@ -94,7 +94,7 @@ export function useBing(botId: BotId = 'bing') {
     setAttachmentList([{ url: imgUrl, status: 'loading' }])
     const response = await chatState.bot.uploadImage(imgUrl, bingConversationStyle)
     if (response?.blobId) {
-      setAttachmentList([{ url: `https://www.bing.com/images/blob?bcid=${response.blobId}`, status: 'loaded' }])
+      setAttachmentList([{ url: `/api/blob?bcid=${response.blobId}`, status: 'loaded' }])
     } else {
       setAttachmentList([{ url: imgUrl, status: 'error' }])
     }

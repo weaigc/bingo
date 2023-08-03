@@ -16,10 +16,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
   }
   try {
-    const headers = createHeaders(req.cookies)
+    const headers = createHeaders(req.cookies, {
+      IMAGE_BING_COOKIE: process.env.IMAGE_BING_COOKIE
+    })
 
     debug('headers', headers)
-    const response = await createImage(String(prompt), String(id), headers)
+    const response = await createImage(String(prompt), String(id), {
+      ...headers,
+      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+    })
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=UTF-8',
     })

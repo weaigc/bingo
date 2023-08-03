@@ -7,6 +7,8 @@ const nextConfig = {
       config.resolve = {
         ...config.resolve,
         fallback: {
+          'bufferutil': false,
+          'utf-8-validate': false,
           http: false,
           https: false,
           stream: false,

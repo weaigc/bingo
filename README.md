@@ -84,7 +84,7 @@ https://bing.github1s.tk
 ### 部署其它平台
 <details>
 <summary>
-由于其他平台目前遭到 new bing 封杀，会遇到更多问题，不再做推荐，有需要的可以自行查看
+由于其他平台目前遭到 New Bing 封杀，会遇到很多问题，不再做推荐，有需要的可以自行查看
 </summary>
 
 #### 部署到 Netlify

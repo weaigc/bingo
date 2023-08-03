@@ -91,7 +91,7 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, defaultHeaders?: Partial<{ [key: string]: string }>) {
   let {
     BING_COOKIE = process.env.BING_COOKIE,
     BING_UA = process.env.BING_UA,
@@ -109,7 +109,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>) {
   const ua = parseUA(BING_UA)
 
   if (!BING_COOKIE) {
-    BING_COOKIE = 'xxx' // hf 暂时不用 Cookie 也可以正常使用
+    BING_COOKIE = defaultHeaders?.IMAGE_BING_COOKIE || 'xxx' // hf 暂时不用 Cookie 也可以正常使用
   }
 
   const parsedCookie = parseCookie(BING_COOKIE, '_U')

@@ -75,7 +75,7 @@ export function Settings() {
                   const maxAge = 86400 * 30
                   encodeHeadersToCookie(curlValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/`)
                 } else {
-                  ChunkKeys.forEach(key => document.cookie = `${key}=; Path=/`)
+                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => document.cookie = `${key}=; Path=/`)
                 }
 
                 toast.success('保存成功')

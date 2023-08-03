@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ...headers,
       'accept-language': 'zh-CN,zh;q=0.9',
       'cache-control': 'no-cache',
+      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
       pragma: 'no-cache',
     }
   })

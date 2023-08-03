@@ -73,9 +73,9 @@ export function Settings() {
                     return
                   }
                   const maxAge = 86400 * 30
-                  encodeHeadersToCookie(curlValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/`)
+                  encodeHeadersToCookie(curlValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
                 } else {
-                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => document.cookie = `${key}=; Path=/`)
+                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => document.cookie = `${key}=; Path=/; SameSite=None; Secure`)
                 }
 
                 toast.success('保存成功')

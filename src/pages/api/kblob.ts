@@ -7,6 +7,14 @@ import { KBlobRequest } from '@/lib/bots/bing/types'
 
 const API_DOMAIN = 'https://bing.vcanbb.top'
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb' // Set desired value here
+    }
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { knowledgeRequest, imageBase64 } = req.body as KBlobRequest

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
-import { useProxyAtom, chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
+import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
 import { setConversationMessages } from './chat-history'
 import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
@@ -13,7 +13,6 @@ export function useBing(botId: BotId = 'bing') {
   const [enableTTS] = useAtom(voiceAtom)
   const speaker = useMemo(() => new TTS(), [])
   const [hash, setHash] = useAtom(hashAtom)
-  const useProxy = useAtomValue(useProxyAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
   const [chatState, setChatState] = useAtom(chatAtom)
   const [input, setInput] = useState('')
@@ -51,7 +50,6 @@ export function useBing(botId: BotId = 'bing') {
         imageUrl: /\?bcid=([^&]+)/.test(imageUrl ?? '') ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
         options: {
           ...options,
-          useProxy,
           bingConversationStyle,
         },
         signal: abortController.signal,

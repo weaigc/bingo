@@ -17,7 +17,7 @@ import {
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
 import { WatchDog, createChunkDecoder } from '@/lib/utils'
 
-type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, useProxy: boolean }>
+type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle }>
 
 const OPTIONS_SETS = [
   'nlu_direct_response_filter',
@@ -175,10 +175,7 @@ export class BingWebBot {
     try {
       await this.createContext(params.options.bingConversationStyle)
       Object.assign(this.conversationContext!, { prompt: params.prompt, imageUrl: params.imageUrl })
-      if (params.options.useProxy) {
-        return this.useProxy(params)
-      }
-      return this.useWs(params)
+      return this.sydneyProxy(params)
     } catch (error) {
       params.onEvent({
         type: 'ERROR',
@@ -187,7 +184,7 @@ export class BingWebBot {
     }
   }
 
-  private async useProxy(params: Params) {
+  private async sydneyProxy(params: Params) {
     const abortController = new AbortController()
     const response = await fetch(this.endpoint + '/api/sydney', {
       method: 'POST',

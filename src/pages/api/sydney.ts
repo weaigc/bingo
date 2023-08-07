@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { WebSocket, debug } from '@/lib/isomorphic';
-import { BingWebBot } from '@/lib/bots/bing';
-import { websocketUtils } from '@/lib/bots/bing/utils';
-import { WatchDog, createHeaders } from '@/lib/utils';
+import { WebSocket, debug } from '@/lib/isomorphic'
+import { BingWebBot } from '@/lib/bots/bing'
+import { websocketUtils } from '@/lib/bots/bing/utils'
+import { WatchDog, createHeaders } from '@/lib/utils'
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
@@ -20,19 +21,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   })
 
-  const watchDog = new WatchDog()
+  const closeDog = new WatchDog()
+  const timeoutDog = new WatchDog()
   ws.onmessage = (event) => {
-    watchDog.watch(() => {
+    timeoutDog.watch(() => {
       ws.send(websocketUtils.packMessage({ type: 6 }))
-    })
-    res.write(event.data)
-    if (String(event.data).lastIndexOf('{"type":3,"invocationId":"0"}') > 0) {
+    }, 1500)
+    closeDog.watch(() => {
       ws.close()
+    }, 10000)
+    res.write(event.data)
+    if (/\{"type":([367])\}/.test(String(event.data))) {
+      const type = parseInt(RegExp.$1, 10)
+      debug('connection type', type)
+      if (type === 3) {
+        ws.close()
+      } else {
+        ws.send(websocketUtils.packMessage({ type }))
+      }
     }
   }
 
   ws.onclose = () => {
-    watchDog.reset()
+    timeoutDog.reset()
+    closeDog.reset()
+    debug('connection close')
     res.end()
   }
 
@@ -42,5 +55,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   ws.send(websocketUtils.packMessage(BingWebBot.buildChatRequest(conversationContext!)))
   req.socket.once('close', () => {
     ws.close()
+    if (!res.closed) {
+      res.end()
+    }
   })
 }

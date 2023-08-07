@@ -101,6 +101,8 @@ export type ChatUpdateCompleteResponse = {
 } | {
   type: 3
   invocationId: string
+} | {
+  type: 6 | 7
 }
 
 export interface ChatRequestResult {

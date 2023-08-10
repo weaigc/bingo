@@ -398,8 +398,9 @@ export class BingWebBot {
         }
 
         const lastMessage = event.item.messages.at(-1) as ChatResponseMessage
-        if (lastMessage?.messageType) {
-          return this.generateContent(lastMessage)
+        const specialMessage = event.item.messages.find(message => message.author === 'bot' && message.contentType === 'IMAGE')
+        if (specialMessage) {
+          this.generateContent(specialMessage)
         }
 
         if (lastMessage) {

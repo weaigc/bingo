@@ -67,13 +67,17 @@ export function Settings() {
               variant="secondary"
               className="bg-[#c7f3ff] hover:bg-[#fdc7ff]"
               onClick={() => {
-                if (curlValue) {
-                  if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(curlValue)) {
+                let headerValue = curlValue
+                if (headerValue) {
+                  try {
+                    headerValue = atob(headerValue)
+                  } catch (e) {}
+                  if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
                     toast.error('格式不正确')
                     return
                   }
                   const maxAge = 86400 * 30
-                  encodeHeadersToCookie(curlValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
+                  encodeHeadersToCookie(headerValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
                 } else {
                   [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => document.cookie = `${key}=; Path=/; SameSite=None; Secure`)
                 }

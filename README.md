@@ -119,6 +119,7 @@ npm run start
 
 * 使用 Docker 启动
 ```bash
+docker pull weaigc/bingo
 docker run --rm -it -p 7860:7860 weaigc/bingo
 # 或者
 docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 weaigc/bingo

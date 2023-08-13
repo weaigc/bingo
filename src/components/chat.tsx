@@ -18,6 +18,7 @@ import { useBing } from '@/lib/hooks/use-bing'
 import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { ChatNotification } from './chat-notification'
 import { Settings } from './settings'
+import { ChatHistory } from './chat-history'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast'
+import Script from 'next/script'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
@@ -29,6 +30,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
@@ -41,6 +43,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
           <TailwindIndicator />
         </Providers>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'GA_MEASUREMENT_ID');
+          `}
+        </Script>
       </body>
     </html>
   )

@@ -108,6 +108,8 @@ https://bing.github1s.tk
 
 ## 安装和使用
 
+> 由于目前微软封杀比较严重，推荐优先使用 [部署 Huggingface](#部署到-huggingface) 。
+
 * 使用 Node 启动
 
 ```bash

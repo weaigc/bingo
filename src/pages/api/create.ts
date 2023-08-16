@@ -4,8 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch, debug } from '@/lib/isomorphic'
 import { createHeaders } from '@/lib/utils'
 
-// const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
-const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
+const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
+// const API_ENDPOINT = 'https://edgeservices.bing.com/edgesvc/turing/conversation/create';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

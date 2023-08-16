@@ -13,14 +13,16 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { ChunkKeys, parseCookies, extraCurlFromCookie, randomIP, encodeHeadersToCookie } from '@/lib/utils'
+import { ChunkKeys, parseCookies, extraCurlFromCookie, encodeHeadersToCookie, getCookie, setCookie } from '@/lib/utils'
 import { ExternalLink } from './external-link'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+
 
 export function Settings() {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const [loc, setLoc] = useAtom(hashAtom)
   const [curlValue, setCurlValue] = useState(extraCurlFromCookie(parseCookies(document.cookie, ChunkKeys)))
+  const [imageOnly, setImageOnly] = useState(getCookie('IMAGE_ONLY') !== '0')
   const [enableTTS, setEnableTTS] = useAtom(voiceAtom)
 
   useEffect(() => {
@@ -58,6 +60,19 @@ export function Settings() {
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/captcha/challenge' ..."
             onChange={e => setCurlValue(e.target.value)}
           />
+          <div className="flex gap-2">
+            身份信息仅用于画图（推荐）
+            <Switch
+              checked={imageOnly}
+              className={`${imageOnly ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
+              onChange={(checked: boolean) => setImageOnly(checked)}
+            >
+              <span
+                className={`${imageOnly ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              />
+            </Switch>
+          </div>
+
           <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
             转成 BING_HEADER 并复制
           </Button>
@@ -71,7 +86,7 @@ export function Settings() {
                 if (headerValue) {
                   try {
                     headerValue = atob(headerValue)
-                  } catch (e) {}
+                  } catch (e) { }
                   if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
                     toast.error('格式不正确')
                     return
@@ -79,8 +94,9 @@ export function Settings() {
                   const maxAge = 86400 * 30
                   encodeHeadersToCookie(headerValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
                 } else {
-                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => document.cookie = `${key}=; Path=/; SameSite=None; Secure`)
+                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => setCookie(key, ''))
                 }
+                setCookie('IMAGE_ONLY', imageOnly ? '1' : '0')
 
                 toast.success('保存成功')
                 setLoc('')

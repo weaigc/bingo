@@ -27,6 +27,8 @@ export function randomIP() {
   return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
 }
 
+export const defaultUID = Math.random().toString(36).slice(2)
+
 export function parseHeadersFromCurl(content: string) {
   const re = /-H '([^:]+):\s*([^']+)/mg
   const headers: HeadersInit = {}
@@ -76,6 +78,16 @@ export function parseCookie(cookie: string, cookieName: string) {
   return targetCookie ? decodeURIComponent(targetCookie).trim() : cookie.indexOf('=') === -1 ? cookie.trim() : ''
 }
 
+export function setCookie(key: string, value: string) {
+  const maxAge = 86400 * 30
+  document.cookie = `${key}=${value || ''}; Path=/; Max-Age=${maxAge}; SameSite=None; Secure`
+}
+
+export function getCookie(cookieName: string) {
+  const re = new RegExp(`(?:[; ]|^)${cookieName}=([^;]*)`)
+  return re.test(document.cookie) ? RegExp.$1 : ''
+}
+
 export function parseCookies(cookie: string, cookieNames: string[]) {
   const cookies: { [key: string]: string } = {}
   cookieNames.forEach(cookieName => {
@@ -91,25 +103,33 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, defaultHeaders?: Partial<{ [key: string]: string }>) {
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, defaultHeaders?: Partial<{ [key: string]: string }>, type?: string) {
   let {
     BING_COOKIE = process.env.BING_COOKIE,
     BING_UA = process.env.BING_UA,
     BING_IP = process.env.BING_IP,
     BING_HEADER = process.env.BING_HEADER,
+    IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies
 
   if (BING_HEADER) {
-    return extraHeadersFromCookie({
+    const headers = extraHeadersFromCookie({
       BING_HEADER,
       ...cookies,
-    })
+    }) || {}
+    if (/^(1|true|yes)$/.test(String(IMAGE_ONLY)) && type !== 'image') {
+      // 仅画图时设置 cookie
+      headers.cookie = `_U=${defaultUID}`
+    }
+    if (headers['user-agent']) {
+      return headers
+    }
   }
 
   const ua = parseUA(BING_UA)
 
   if (!BING_COOKIE) {
-    BING_COOKIE = defaultHeaders?.IMAGE_BING_COOKIE || 'xxx' // hf 暂时不用 Cookie 也可以正常使用
+    BING_COOKIE = defaultHeaders?.IMAGE_BING_COOKIE || defaultUID // hf 暂时不用 Cookie 也可以正常使用
   }
 
   const parsedCookie = parseCookie(BING_COOKIE, '_U')

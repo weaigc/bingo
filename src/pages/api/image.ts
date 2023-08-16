@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const headers = createHeaders(req.cookies, {
       IMAGE_BING_COOKIE: process.env.IMAGE_BING_COOKIE
-    })
+    }, 'image')
 
     debug('headers', headers)
     const response = await createImage(String(prompt), String(id), {

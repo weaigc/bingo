@@ -87,7 +87,7 @@ export function Settings() {
                   try {
                     headerValue = atob(headerValue)
                   } catch (e) { }
-                  if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
+                  if (!/^\s*curl ['"]https:\/\/(www|cn)\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
                     toast.error('格式不正确')
                     return
                   }
@@ -96,7 +96,7 @@ export function Settings() {
                 } else {
                   [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => setCookie(key, ''))
                 }
-                setCookie('IMAGE_ONLY', imageOnly ? '1' : '0')
+                setCookie('IMAGE_ONLY', RegExp.$1 === 'cn' || imageOnly ? '1' : '0')
 
                 toast.success('保存成功')
                 setLoc('')

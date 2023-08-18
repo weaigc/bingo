@@ -19,6 +19,13 @@ function getAction(error: ChatError, reset: () => void) {
       </div>
     )
   }
+  if (error.code === ErrorCode.BING_IP_FORBIDDEN) {
+    return (
+      <ExternalLink href="https://github.com/weaigc/bingo/issues">
+        你的服务器或代理已被封禁，请更换服务器或使用代理重试
+      </ExternalLink>
+    )
+  }
   if (error.code === ErrorCode.BING_FORBIDDEN) {
     return (
       <ExternalLink href="https://bing.com/new">

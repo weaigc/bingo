@@ -144,13 +144,16 @@ export class BingWebBot {
     }
 
     if (!resp?.result) {
-      throw new ChatError('你的 VPS 或代理可能被封禁，如有疑问，请前往 https://github.com/weaigc/bingo 咨询', ErrorCode.UNKOWN_ERROR)
+      throw new ChatError('你的 VPS 或代理可能被封禁，如有疑问，请前往 https://github.com/weaigc/bingo 咨询', ErrorCode.BING_IP_FORBIDDEN)
     }
 
     const { value, message } = resp.result || {}
     if (value !== 'Success') {
       const errorMsg = `${value}: ${message}`
       if (value === 'UnauthorizedRequest') {
+        if (/fetch failed/i.test(message || '')) {
+          throw new ChatError(errorMsg, ErrorCode.BING_IP_FORBIDDEN)
+        }
         throw new ChatError(errorMsg, ErrorCode.BING_UNAUTHORIZED)
       }
       if (value === 'Forbidden') {

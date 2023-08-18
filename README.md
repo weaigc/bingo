@@ -130,7 +130,7 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 weaigc/bingo
 ## 如何获取 BING_HEADER
 > 配置了 BING_HEADER 意味着你将自己的账号共享给所有使用此服务的人，如果不需要免登录画图的功能，不建议设置此变量
 
-打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge，通过人机校验，然后
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验，然后
 
 ![BING HEADER](./docs/images/curl.png)
 

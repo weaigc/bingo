@@ -46,7 +46,7 @@ export async function createImage(prompt: string, id: string, headers: HeadersIn
   );
 
   if (!/&id=([^&]+)$/.test(responseHeaders.get('location') || '')) {
-    throw new Error('请求异常，请检查 cookie 是否有效')
+    throw new Error('请求异常，请检查身份信息是否有效')
   }
 
   const resultId = RegExp.$1;

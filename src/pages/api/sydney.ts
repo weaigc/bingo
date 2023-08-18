@@ -4,7 +4,6 @@ import { BingWebBot } from '@/lib/bots/bing'
 import { websocketUtils } from '@/lib/bots/bing/utils'
 import { WatchDog, createHeaders } from '@/lib/utils'
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
 import { customAlphabet } from 'nanoid'
 import { twMerge } from 'tailwind-merge'
+import { debug } from './isomorphic'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -27,7 +28,7 @@ export function randomIP() {
   return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
 }
 
-export const defaultUID = Math.random().toString(36).slice(2)
+export const defaultUID = 'xxx'
 
 export function parseHeadersFromCurl(content: string) {
   const re = /-H '([^:]+):\s*([^']+)/mg
@@ -79,7 +80,7 @@ export function parseCookie(cookie: string, cookieName: string) {
 }
 
 export function setCookie(key: string, value: string) {
-  const maxAge = 86400 * 30
+  const maxAge = value ? 86400 * 30 : 0
   document.cookie = `${key}=${value || ''}; Path=/; Max-Age=${maxAge}; SameSite=None; Secure`
 }
 
@@ -103,47 +104,42 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, defaultHeaders?: Partial<{ [key: string]: string }>, type?: string) {
-  let {
-    BING_COOKIE = process.env.BING_COOKIE,
+export function mockUser(cookies: Partial<{ [key: string]: string }>) {
+  const {
     BING_UA = process.env.BING_UA,
     BING_IP = process.env.BING_IP,
-    BING_HEADER = process.env.BING_HEADER,
-    IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
+    _U = defaultUID,
   } = cookies
-
-  if (BING_HEADER) {
-    const headers = extraHeadersFromCookie({
-      BING_HEADER,
-      ...cookies,
-    }) || {}
-    if (/^(1|true|yes)$/.test(String(IMAGE_ONLY)) && type !== 'image') {
-      // 仅画图时设置 cookie
-      headers.cookie = `_U=${defaultUID}`
-    }
-    if (headers['user-agent']) {
-      return headers
-    }
-  }
-
   const ua = parseUA(BING_UA)
 
-  if (!BING_COOKIE) {
-    BING_COOKIE = defaultHeaders?.IMAGE_BING_COOKIE || defaultUID // hf 暂时不用 Cookie 也可以正常使用
-  }
-
-  const parsedCookie = parseCookie(BING_COOKIE, '_U')
-  if (!parsedCookie) {
-    throw new Error('Invalid Cookie')
-  }
   return {
     'x-forwarded-for': BING_IP || DEFAULT_IP,
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
-    cookie: `_U=${parsedCookie}` || '',
+    cookie: `_U=${_U}` || '',
   }
+}
+
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: string) {
+  let {
+    BING_HEADER = process.env.BING_HEADER,
+    IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
+  } = cookies
+  const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
+  if (BING_HEADER) {
+    if (
+      (imageOnly && type === 'image')
+      || !imageOnly
+    ) {
+      return extraHeadersFromCookie({
+        BING_HEADER,
+        ...cookies,
+      }) || {}
+    }
+  }
+  return mockUser(cookies)
 }
 
 export class WatchDog {

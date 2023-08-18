@@ -11,6 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const headers = createHeaders(req.cookies)
 
+    res.setHeader('set-cookie', headers.cookie)
     res.writeHead(200, {
       'Content-Type': 'application/json',
     })

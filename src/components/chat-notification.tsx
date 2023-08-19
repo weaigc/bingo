@@ -26,6 +26,13 @@ function getAction(error: ChatError, reset: () => void) {
       </ExternalLink>
     )
   }
+  if (error.code === ErrorCode.BING_TRY_LATER) {
+    return (
+      <ExternalLink href="/">
+        创建会话失败，请稍候重试
+      </ExternalLink>
+    )
+  }
   if (error.code === ErrorCode.BING_FORBIDDEN) {
     return (
       <ExternalLink href="https://bing.com/new">

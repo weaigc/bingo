@@ -156,6 +156,9 @@ export class BingWebBot {
         }
         throw new ChatError(errorMsg, ErrorCode.BING_UNAUTHORIZED)
       }
+      if (value === 'TryLater') {
+        throw new ChatError(errorMsg, ErrorCode.BING_TRY_LATER)
+      }
       if (value === 'Forbidden') {
         throw new ChatError(errorMsg, ErrorCode.BING_FORBIDDEN)
       }

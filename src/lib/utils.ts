@@ -1,7 +1,9 @@
 import { clsx, type ClassValue } from 'clsx'
 import { customAlphabet } from 'nanoid'
 import { twMerge } from 'tailwind-merge'
-import { debug } from './isomorphic'
+// @ts-ignore
+import randomip from 'random-ip'
+import cidr from './cidr.json'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,11 +23,13 @@ export function createChunkDecoder() {
 }
 
 export function random (start: number, end: number) {
-  return start + Math.ceil(Math.random() * (end - start))
+  return start + Math.floor(Math.random() * (end - start))
 }
 
 export function randomIP() {
-  return `104.${random(0, 21)}.${random(0, 127)}.${random(1, 255)}`
+  // return `104.${random(0, 21)}.${random(0, 127)}.${random(1, 255)}`
+  const [ip, range] = cidr.at(random(0, cidr.length))?.split('/')!
+  return randomip(ip, range)
 }
 
 export const defaultUID = 'xxx'
@@ -97,7 +101,6 @@ export function parseCookies(cookie: string, cookieNames: string[]) {
 }
 
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.0.0'
-export const DEFAULT_IP = process.env.BING_IP || randomIP()
 
 export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
@@ -106,17 +109,17 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
     BING_UA = process.env.BING_UA,
-    BING_IP = process.env.BING_IP,
+    BING_IP,
     _U = defaultUID,
   } = cookies
   const ua = parseUA(BING_UA)
 
   return {
-    'x-forwarded-for': BING_IP || DEFAULT_IP,
+    'x-forwarded-for': BING_IP!,
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
-    'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+    'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
     cookie: `_U=${_U}` || '',
   }
 }
@@ -124,7 +127,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
 export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: string) {
   let {
     BING_HEADER = process.env.BING_HEADER,
-    BING_IP = process.env.BING_IP,
+    BING_IP,
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies
   const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
@@ -137,7 +140,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
         BING_HEADER,
         ...cookies,
       }) || {}
-      headers['x-forward-for'] = BING_IP || DEFAULT_IP
+      headers['x-forward-for'] = BING_IP!
       return headers
     }
   }

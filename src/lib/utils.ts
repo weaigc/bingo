@@ -38,7 +38,6 @@ export function parseHeadersFromCurl(content: string) {
     headers[key] = value
     return ''
   })
-
   return headers
 }
 
@@ -125,6 +124,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
 export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: string) {
   let {
     BING_HEADER = process.env.BING_HEADER,
+    BING_IP = process.env.BING_IP,
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies
   const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
@@ -133,10 +133,12 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
       (imageOnly && type === 'image')
       || !imageOnly
     ) {
-      return extraHeadersFromCookie({
+      const headers = extraHeadersFromCookie({
         BING_HEADER,
         ...cookies,
       }) || {}
+      headers['x-forward-for'] = BING_IP || DEFAULT_IP
+      return headers
     }
   }
   return mockUser(cookies)

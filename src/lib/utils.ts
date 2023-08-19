@@ -25,7 +25,7 @@ export function random (start: number, end: number) {
 }
 
 export function randomIP() {
-  return `11.${random(104, 107)}.${random(1, 255)}.${random(1, 255)}`
+  return `104.${random(0, 21)}.${random(0, 127)}.${random(1, 255)}`
 }
 
 export const defaultUID = 'xxx'

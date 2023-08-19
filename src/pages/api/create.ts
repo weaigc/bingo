@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const headers = createHeaders(req.cookies)
 
-    res.setHeader('set-cookie', headers.cookie)
+    res.setHeader('set-cookie', [headers.cookie, `BING_IP=${headers['x-forwarded-for']}`])
+
     res.writeHead(200, {
       'Content-Type': 'application/json',
     })
@@ -22,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.end(response)
   } catch (e) {
+    console.log('error', e)
     return res.end(JSON.stringify({
       result: {
         value: 'UnauthorizedRequest',

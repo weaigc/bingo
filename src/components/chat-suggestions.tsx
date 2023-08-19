@@ -24,7 +24,7 @@ export function ChatSuggestions({ setInput, suggestions = [] }: ChatSuggestionsP
   useMemo(() => {
     setSuggestions(suggestions)
     window.scrollBy(0, 2000)
-  }, [suggestions.length])
+  }, [suggestions.length, setSuggestions])
 
   return currentSuggestions?.length ? (
     <div className="py-6">

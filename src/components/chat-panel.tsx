@@ -75,7 +75,7 @@ export function ChatPanel({
     if (input) {
       setFocus()
     }
-  }, [input])
+  }, [input, setFocus])
 
   return (
     <form

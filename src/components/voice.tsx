@@ -31,7 +31,7 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typ
           setInput(input + msg)
       }
     }
-  }, [input])
+  }, [input, setInput, sendMessage])
 
   const switchSR = (enable: boolean = false) => {
     setListen(enable)

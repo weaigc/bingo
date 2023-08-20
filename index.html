@@ -91,6 +91,11 @@
 
         /* loading end */
     </style>
+    <script>
+        if (location.protocol === 'http:') {
+            location.replace(location.href.replace(/^http:/i, 'https:'))
+        }
+    </script>
 </head>
 
 <body>

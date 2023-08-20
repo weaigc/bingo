@@ -26,10 +26,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           'Content-Type': 'application/json',
         })
         res.end(await response.text())
-        break;
+        return
       }
       BING_IP = ''
-      await sleep(1000)
+      await sleep(2000)
       debug('loop', count)
     } while(count++ < 10)
     res.end(JSON.stringify({

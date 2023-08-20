@@ -5,8 +5,8 @@ import {
   ChangeEvent,
   ClipboardEvent,
   MouseEventHandler,
-  FormEvent,
-  useRef
+  useRef,
+  KeyboardEvent
 } from "react"
 import Image from 'next/image'
 import PasteIcon from '@/assets/images/paste.svg'
@@ -14,6 +14,7 @@ import UploadIcon from '@/assets/images/upload.svg'
 import CameraIcon from '@/assets/images/camera.svg'
 import { useBing } from '@/lib/hooks/use-bing'
 import { cn } from '@/lib/utils'
+import { toast } from "react-hot-toast"
 
 interface ChatImageProps extends Pick<ReturnType<typeof useBing>, 'uploadImage'> {}
 
@@ -33,6 +34,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mediaStream = useRef<MediaStream>()
   const [panel, setPanel] = useState('none')
+  const [inputUrl, setInputUrl] = useState('')
 
   const upload = useCallback((url: string) => {
     if (url) {
@@ -56,15 +58,17 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
     upload(pasteUrl)
   }, [])
 
-  const onEnter = useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const onEnter = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     // @ts-ignore
-    const inputUrl = event.target.elements.image.value
-    if (inputUrl) {
+    event.preventDefault()
+    // @ts-ignore
+    event.stopPropagation()
+    if (/^https?:\/\/.+/.test(inputUrl)) {
       upload(inputUrl)
+    } else {
+      toast.error('请输入有效的图片链接')
     }
-  }, [])
+  }, [inputUrl])
 
   const openVideo: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation()
@@ -123,18 +127,22 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
           </div>
           <div className="paste">
             <Image alt="paste" src={PasteIcon} width={24} />
-            <form onSubmitCapture={onEnter}>
-              <input
-                className="paste-input"
-                id="sb_imgpst"
-                type="text"
-                name="image"
-                placeholder="粘贴图像 URL"
-                aria-label="粘贴图像 URL"
-                onPaste={onPaste}
-                onClickCapture={(e) => e.stopPropagation()}
-              />
-            </form>
+            <input
+              className="paste-input"
+              id="sb_imgpst"
+              type="text"
+              name="image"
+              placeholder="粘贴图像 URL"
+              aria-label="粘贴图像 URL"
+              onPaste={onPaste}
+              onChange={(event) => setInputUrl(event.target.value.trim())}
+              onKeyDownCapture={event => {
+                if (event.key === 'Enter') {
+                  onEnter(event)
+                }
+              }}
+              onClickCapture={(e) => e.stopPropagation()}
+            />
           </div>
           <div className="buttons">
             <button type="button" aria-label="从此设备上传">

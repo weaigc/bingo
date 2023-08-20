@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env DEBUG=bingo next dev --hostname 0.0.0.0",
+    "dev": "cross-env DEBUG=bingo* next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -32,6 +32,7 @@
     "i18next": "^22.5.0",
     "i18next-browser-languagedetector": "^7.0.2",
     "idb-keyval": "^6.2.1",
+    "ifw": "^0.0.2",
     "immer": "^9.0.19",
     "inter-ui": "^3.19.3",
     "jotai": "^2.2.1",
@@ -67,7 +68,6 @@
     "tailwind-scrollbar": "^3.0.4",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6",
-    "undici": "^5.22.1",
     "websocket-as-promised": "^2.0.1",
     "ws": "^8.13.0"
   },

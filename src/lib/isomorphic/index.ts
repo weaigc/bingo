@@ -1,17 +1,8 @@
 'use client'
 
-import Default from './browser'
+import Debug from 'debug'
+export * from 'ifw'
 
-let exportsModel: any = {}
-
-if (process.browser) {
-  Object.assign(exportsModel, require('./browser').default)
-} else {
-  Object.assign(exportsModel, require('./node').default)
-}
-
-export default exportsModel! as typeof Default
-
-export const fetch: typeof Default.fetch = exportsModel!.fetch
-export const WebSocket: typeof Default.WebSocket = exportsModel!.WebSocket
-export const debug: typeof Default.debug = exportsModel!.debug
+export const debug = typeof document === 'undefined' ? Debug('bingo')
+  : process.env.NEXT_PUBLIC_DEBUG ? console.info.bind(console)
+  : () => {}

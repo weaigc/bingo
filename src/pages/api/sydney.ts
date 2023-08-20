@@ -7,7 +7,9 @@ import { WatchDog, createHeaders } from '@/lib/utils'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)
-  debug(headers)
+  const id = headers['x-forwarded-for']
+
+  debug(id, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
   const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {
@@ -24,15 +26,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const timeoutDog = new WatchDog()
   ws.onmessage = (event) => {
     timeoutDog.watch(() => {
+      debug(id, 'timeout')
       ws.send(websocketUtils.packMessage({ type: 6 }))
-    }, 1500)
+    }, 3000)
     closeDog.watch(() => {
+      debug(id, 'timeout close')
       ws.close()
-    }, 10000)
+    }, 20000)
     res.write(event.data)
     if (/\{"type":([367])\}/.test(String(event.data))) {
       const type = parseInt(RegExp.$1, 10)
-      debug('connection type', type)
+      debug(id, 'connection type', type)
       if (type === 3) {
         ws.close()
       } else {
@@ -44,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   ws.onclose = () => {
     timeoutDog.reset()
     closeDog.reset()
-    debug('connection close')
+    debug(id, 'ws close')
     res.end()
   }
 
@@ -53,6 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   ws.send(websocketUtils.packMessage({ type: 6 }))
   ws.send(websocketUtils.packMessage(BingWebBot.buildChatRequest(conversationContext!)))
   req.socket.once('close', () => {
+    debug(id, 'connection close')
     ws.close()
     if (!res.closed) {
       res.end()

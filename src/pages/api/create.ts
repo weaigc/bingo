@@ -11,12 +11,10 @@ const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     let count = 0
-    let { BING_IP, ...cookies } = req.cookies
+    const headers = createHeaders(req.cookies)
     do {
-      const headers = createHeaders({
-        ...cookies,
-        BING_IP: BING_IP || randomIP(),
-      })
+      headers['x-forwarded-for'] = headers['x-forwarded-for'] || randomIP()
+      debug(`try ${count+1}`, headers['x-forwarded-for'])
       const response = await fetch(API_ENDPOINT, { method: 'GET', headers })
       if (response.status === 200) {
         res.setHeader('set-cookie', [headers.cookie, `BING_IP=${headers['x-forwarded-for']}`]
@@ -28,9 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.end(await response.text())
         return
       }
-      BING_IP = ''
       await sleep(2000)
-      debug('loop', count)
+      headers['x-forwarded-for'] = ''
     } while(count++ < 10)
     res.end(JSON.stringify({
       result: {

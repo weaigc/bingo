@@ -249,28 +249,6 @@ export class BingWebBot {
     return wsp
   }
 
-  private async useWs(params: Params) {
-    const wsp = await this.sendWs()
-    const watchDog = new WatchDog()
-    wsp.onUnpackedMessage.addListener((events) => {
-      watchDog.watch(() => {
-        wsp.sendPacked({ type: 6 })
-      })
-      this.parseEvents(params, events)
-    })
-
-    wsp.onClose.addListener(() => {
-      watchDog.reset()
-      params.onEvent({ type: 'DONE' })
-      wsp.removeAllListeners()
-    })
-
-    params.signal?.addEventListener('abort', () => {
-      wsp.removeAllListeners()
-      wsp.close()
-    })
-  }
-
   private async createImage(prompt: string, id: string) {
     try {
       const headers = {

@@ -9,25 +9,19 @@ import {
   KeyboardEvent
 } from "react"
 import Image from 'next/image'
+import { toast } from "react-hot-toast"
 import PasteIcon from '@/assets/images/paste.svg'
 import UploadIcon from '@/assets/images/upload.svg'
 import CameraIcon from '@/assets/images/camera.svg'
 import { useBing } from '@/lib/hooks/use-bing'
 import { cn } from '@/lib/utils'
-import { toast } from "react-hot-toast"
+import { ImageUtils } from "@/lib/image"
 
 interface ChatImageProps extends Pick<ReturnType<typeof useBing>, 'uploadImage'> {}
 
 const preventDefault: MouseEventHandler<HTMLDivElement> = (event) => {
   event.nativeEvent.stopImmediatePropagation()
 }
-
-const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
-  const reader = new FileReader()
-  reader.readAsDataURL(file)
-  reader.onload = () => resolve(reader.result as string)
-  reader.onerror = reject
-})
 
 export function ChatImage({ children, uploadImage }: React.PropsWithChildren<ChatImageProps>) {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -46,7 +40,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
   const onUpload = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      const fileDataUrl = await toBase64(file)
+      const fileDataUrl = await ImageUtils.getCompressedImageDataAsync(file)
       if (fileDataUrl) {
         upload(fileDataUrl)
       }

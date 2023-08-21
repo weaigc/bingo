@@ -109,13 +109,13 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
     BING_UA = process.env.BING_UA,
-    BING_IP,
+    BING_IP = '',
     _U = defaultUID,
   } = cookies
   const ua = parseUA(BING_UA)
 
   return {
-    'x-forwarded-for': BING_IP!,
+    'x-forwarded-for': BING_IP,
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
@@ -124,10 +124,10 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   }
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: string) {
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: 'image') {
   let {
     BING_HEADER = process.env.BING_HEADER,
-    BING_IP,
+    BING_IP = '',
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies
   const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
@@ -140,7 +140,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
         BING_HEADER,
         ...cookies,
       }) || {}
-      headers['x-forward-for'] = BING_IP!
+      headers['x-forward-for'] = BING_IP
       return headers
     }
   }

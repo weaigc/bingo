@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }))
   } catch (e) {
     console.log('error', e)
-    return res.end(JSON.stringify({
+    res.end(JSON.stringify({
       result: {
         value: 'UnauthorizedRequest',
         message: `${e}`

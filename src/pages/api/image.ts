@@ -26,9 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=UTF-8',
     })
-    return res.end(response)
+    res.end(response)
   } catch (e) {
-    return res.json({
+    res.json({
       result: {
         value: 'Error',
         message: `${e}`

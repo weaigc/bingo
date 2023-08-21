@@ -2,10 +2,11 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import FormData from 'form-data'
-import { fetch } from '@/lib/isomorphic'
+import { debug, fetch } from '@/lib/isomorphic'
 import { KBlobRequest } from '@/lib/bots/bing/types'
+import { createHeaders } from '@/lib/utils'
 
-const API_DOMAIN = 'https://bing.vcanbb.top'
+const API_DOMAIN = 'https://www.bing.com'
 
 export const config = {
   api: {
@@ -18,6 +19,7 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { knowledgeRequest, imageBase64 } = req.body as KBlobRequest
+    const headers = createHeaders(req.cookies, 'image')
 
     const formData = new FormData()
     formData.append('knowledgeRequest', JSON.stringify(knowledgeRequest))
@@ -30,23 +32,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         method: 'POST',
         body: formData.getBuffer(),
         headers: {
-          "sec-ch-ua": "\"Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"115\", \"Chromium\";v=\"115\"",
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": "\"Windows\"",
-          "Referer": `${API_DOMAIN}/web/index.html`,
-          "Referrer-Policy": "origin-when-cross-origin",
-          'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+          'x-forward-for': headers['x-forwarded-for'],
+          'user-agent': headers['User-Agent'],
+          cookie: headers['cookie'],
+          'Referer': 'https://www.bing.com/search',
           ...formData.getHeaders()
         }
       }
-    ).then(res => res.text())
+    )
 
+    if (response.status !== 200) {
+      throw new Error('图片上传失败')
+    }
     res.writeHead(200, {
       'Content-Type': 'application/json',
     })
-    res.end(response || JSON.stringify({ result: { value: 'UploadFailed', message: '请更换 IP 或代理后重试' } }))
+    res.end(await response.text())
   } catch (e) {
-    return res.json({
+    res.json({
       result: {
         value: 'UploadFailed',
         message: `${e}`

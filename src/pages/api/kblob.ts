@@ -2,11 +2,11 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import FormData from 'form-data'
-import { debug, fetch } from '@/lib/isomorphic'
+import { fetch } from '@/lib/isomorphic'
 import { KBlobRequest } from '@/lib/bots/bing/types'
 import { createHeaders } from '@/lib/utils'
 
-const API_DOMAIN = 'https://www.bing.com'
+const { ENDPOINT = 'www.bing.com' } = process.env
 
 export const config = {
   api: {
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       formData.append('imageBase64', imageBase64)
     }
 
-    const response = await fetch(`${API_DOMAIN}/images/kblob`,
+    const response = await fetch(`https://${ENDPOINT}/images/kblob`,
       {
         method: 'POST',
         body: formData.getBuffer(),

@@ -5,12 +5,12 @@ import { Readable } from 'node:stream'
 import { fetch } from '@/lib/isomorphic'
 import { createHeaders } from '@/lib/utils'
 
-const API_DOMAIN = 'https://www.bing.com'
+const { ENDPOINT = 'www.bing.com' } = process.env
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { bcid } = req.query
-    const { headers, body } = await fetch(`${API_DOMAIN}/images/blob?bcid=${bcid}`,
+    const { headers, body } = await fetch(`https://${ENDPOINT}/images/blob?bcid=${bcid}`,
       {
         method: 'GET',
         headers: createHeaders(req.cookies, 'image'),

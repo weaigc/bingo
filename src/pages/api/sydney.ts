@@ -4,6 +4,8 @@ import { BingWebBot } from '@/lib/bots/bing'
 import { websocketUtils } from '@/lib/bots/bing/utils'
 import { WatchDog, createHeaders } from '@/lib/utils'
 
+const { ENDPOINT = 'sydney.bing.com' } = process.env
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)
@@ -12,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   debug(id, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
-  const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {
+  const ws = new WebSocket(`wss://${ENDPOINT}/sydney/ChatHub`, {
     headers: {
       ...headers,
       'accept-language': 'zh-CN,zh;q=0.9',

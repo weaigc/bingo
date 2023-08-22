@@ -353,9 +353,13 @@ export class BingWebBot {
       } else if (event.type === 1) {
         const { messages, throttling } = event.arguments[0] || {}
         if (messages) {
-          const text = convertMessageToMarkdown(messages[0])
+          const message = messages[0]
+          if (message.messageType === 'InternalSearchQuery' || message.messageType === 'InternalLoaderMessage') {
+            return params.onEvent({ type: 'UPDATE_ANSWER', data: { text: '', progressText: message.text} })
+          }
+          const text = convertMessageToMarkdown(message)
           this.lastText = text
-          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, spokenText: messages[0].text } })
+          params.onEvent({ type: 'UPDATE_ANSWER', data: { text } })
         }
         if (throttling) {
           params.onEvent({ type: 'UPDATE_ANSWER', data: { text: '', throttling } })

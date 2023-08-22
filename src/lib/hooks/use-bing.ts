@@ -60,10 +60,12 @@ export function useBing(botId: BotId = 'bing') {
                 message.text = event.data.text
               }
 
-              if (event.data.spokenText && enableTTS) {
-                speaker.speak(event.data.spokenText)
+              if (enableTTS) {
+                speaker.speak(message.text)
               }
-
+              if (event.data.progressText) {
+                message.progress = [...(message.progress ?? []), event.data.progressText]
+              }
               message.throttling = event.data.throttling || message.throttling
               message.sourceAttributions = event.data.sourceAttributions || message.sourceAttributions
               message.suggestedResponses = event.data.suggestedResponses || message.suggestedResponses

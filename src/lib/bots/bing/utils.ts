@@ -1,9 +1,6 @@
 import { ChatResponseMessage, BingChatResponse } from './types'
 
 export function convertMessageToMarkdown(message: ChatResponseMessage): string {
-  if (message.messageType === 'InternalSearchQuery') {
-    return message.text
-  }
   for (const card of message.adaptiveCards??[]) {
     for (const block of card.body) {
       if (block.type === 'TextBlock') {

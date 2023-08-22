@@ -33,6 +33,7 @@ export type ChatMessageModel = {
   id: string
   author: Author
   text: string
+  progress?: string[]
   error?: ChatError
   throttling?: Throttling
   sourceAttributions?: SourceAttribution[]
@@ -48,7 +49,7 @@ export type Event =
       type: 'UPDATE_ANSWER'
       data: {
         text: string
-        spokenText?: string
+        progressText?: string
         sourceAttributions?: SourceAttribution[]
         suggestedResponses?: SuggestedResponse[]
         throttling?: Throttling
@@ -165,7 +166,7 @@ export interface Throttling {
 
 export interface ChatResponseMessage {
   text: string
-  spokenText?: string
+  progressText?: string
   author: string
   createdAt: Date
   timestamp: Date

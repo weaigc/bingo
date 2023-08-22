@@ -1,12 +1,15 @@
+import { cn } from '@/lib/utils';
 import './index.scss'
 
-export interface VoiceProps extends CSSPropertyRule {
+type VoiceProps = {
   num?: number;
   duration?: number;
-}
-export default function Voice({ duration = 400, num = 7, ...others }) {
+  className?: string;
+} & React.ComponentProps<'div'>
+
+export default function Voice({ duration = 400, num = 7, className, ...others }: VoiceProps) {
   return (
-    <div className="voice-button" { ...others }>
+    <div className={cn('voice-button', className)} { ...others }>
       {Array.from({ length: num }).map((_, index) => {
         const randomDuration = Math.random() * 100 + duration
         const initialDelay = Math.random() * 2 * duration

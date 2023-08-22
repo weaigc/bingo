@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
-  // output: 'export',
-  // assetPrefix: '.',
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve = {
@@ -27,6 +26,11 @@ const nextConfig = {
         }
       };
     }
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    })
     config.module.exprContextCritical = false;
 
     return config;

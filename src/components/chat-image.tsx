@@ -8,8 +8,8 @@ import {
   useRef,
   KeyboardEvent
 } from "react"
-import Image from 'next/image'
 import { toast } from "react-hot-toast"
+import { SVG } from "./ui/svg"
 import PasteIcon from '@/assets/images/paste.svg'
 import UploadIcon from '@/assets/images/upload.svg'
 import CameraIcon from '@/assets/images/camera.svg'
@@ -120,7 +120,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
             <h4>添加图像</h4>
           </div>
           <div className="paste">
-            <Image alt="paste" src={PasteIcon} width={24} />
+            <SVG alt="paste" src={PasteIcon} width={24} />
             <input
               className="paste-input"
               id="sb_imgpst"
@@ -147,11 +147,11 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
                 accept="image/gif, image/jpeg, image/png, image/webp"
                 onChange={onUpload}
               />
-              <Image alt="uplaod" src={UploadIcon} width={20} />
+              <SVG alt="uplaod" src={UploadIcon} width={20} />
               从此设备上传
             </button>
             <button type="button" aria-label="拍照" onClick={openVideo}>
-              <Image alt="camera" src={CameraIcon} width={20} />
+              <SVG alt="camera" src={CameraIcon} width={20} />
               拍照
             </button>
           </div>

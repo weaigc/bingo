@@ -6,21 +6,20 @@ import { Header } from '@/components/header'
 
 import '@/app/globals.scss'
 
-
 export const metadata: Metadata = {
   title: {
-    default: 'Bing AI Chatbot',
-    template: `%s - Bing AI Chatbot`
+    default: 'Bing AI',
+    template: `%s - Bing AI`
   },
-  description: 'Bing AI Chatbot Web App.',
+  description: 'Bing AI Web App.',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'dark' }
   ],
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '../assets/images/logo.svg',
-    apple: '../assets/images/logo.svg'
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg'
   }
 }
 
@@ -35,7 +34,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Toaster />
         <Providers attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
-            {/* @ts-ignore */}
             <Header />
             <main className="flex flex-col flex-1">{children}</main>
           </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { toast } from 'react-hot-toast'
 import { Button } from '@/components/ui/button'
 import pkg from '../../package.json'
@@ -15,6 +14,7 @@ import {
 import { IconCopy, IconExternalLink, IconGitHub } from '@/components/ui/icons'
 import SettingIcon from '@/assets/images/settings.svg'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+import { SVG } from './ui/svg'
 
 export function UserMenu() {
   const [host, setHost] = useState('')
@@ -34,7 +34,7 @@ export function UserMenu() {
         <DropdownMenuTrigger asChild>
           <Button className="pl-0">
             <div className="flex items-center justify-center text-xs font-medium uppercase rounded-full select-none h-7 w-7 shrink-0 bg-muted/50 text-muted-foreground">
-              <Image alt="settings" src={SettingIcon} width={20} />
+              <SVG alt="settings" src={SettingIcon} width={20} />
             </div>
             <span className="ml-2">设置</span>
           </Button>

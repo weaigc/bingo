@@ -49,10 +49,10 @@ https://bing.github1s.tk
  - [x] 支持语音输出(需要手动开启)
  - [x] 支持图片输入
  - [x] 支持自定义域名
+ - [x] 支持离线访问
  - [ ] 支持历史记录
  - [ ] 适配深色模式
  - [ ] 支持内置提示词
- - [ ] 支持离线访问
  - [ ] 国际化翻译
 
 ## 一键部署
@@ -134,7 +134,7 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 weaigc/bingo
 
 ![BING HEADER](./docs/images/curl.png)
 
-> 复制出来的内容应该如下所示。确认格式无误后，打开 https://effulgent-bubblegum-e2f5df.netlify.app/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_HEADER 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
+> 复制出来的内容应该如下所示。确认格式无误后，打开 https://hf4all-bingo.hf.space/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_HEADER 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
 
 以下是格式参考，需要注意的是，网页端保存的格式是以`curl`开头, 而服务端配置的 `BING_HEADER` 是 `base64` 格式，两者不能互通。
 <details>
@@ -187,7 +187,7 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 
 ## 答疑及交流
 
-<image src="./docs/images/wechat.png" width=240 />
+<image src="./docs/images/wechat.jpg" width=240 />
 
 ## License
 

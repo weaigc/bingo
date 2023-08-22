@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import Image from 'next/image'
 
 import IconWarning from '@/assets/images/warning.svg'
 import { ChatError, ErrorCode, ChatMessageModel } from '@/lib/bots/bing/types'
 import { ExternalLink } from './external-link'
 import { useBing } from '@/lib/hooks/use-bing'
+import { SVG } from './ui/svg'
 
 export interface ChatNotificationProps extends Pick<ReturnType<typeof useBing>, 'bot'> {
   message?: ChatMessageModel
@@ -28,9 +28,9 @@ function getAction(error: ChatError, reset: () => void) {
   }
   if (error.code === ErrorCode.BING_TRY_LATER) {
     return (
-      <ExternalLink href="/">
-        创建会话失败，请稍候重试
-      </ExternalLink>
+      <a href={`#dialog="reset"`}>
+        创建会话失败，请手动重试
+      </a>
     )
   }
   if (error.code === ErrorCode.BING_FORBIDDEN) {
@@ -66,10 +66,6 @@ function getAction(error: ChatError, reset: () => void) {
 }
 
 export function ChatNotification({ message, bot }: ChatNotificationProps) {
-  useEffect(() => {
-    window.scrollBy(0, 2000)
-  }, [message])
-
   if (!message?.error) return
 
   return (
@@ -80,7 +76,7 @@ export function ChatNotification({ message, bot }: ChatNotificationProps) {
         <div className="inline-type with-decorative-line">
           <div className="text-container mt-1">
             <div className="title inline-flex items-start">
-              <Image alt="error" src={IconWarning} width={20} className="mr-1 mt-1" />
+              <SVG alt="error" src={IconWarning} width={20} className="mr-1 mt-1" />
               {getAction(message.error, () => bot.resetConversation())}
             </div>
           </div>

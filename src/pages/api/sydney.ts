@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ws.close()
     }, 20000)
     res.write(event.data)
-    if (/\{"type":([367])\}/.test(String(event.data))) {
+    if (/\{"type":([367])\b/.test(String(event.data))) {
       const type = parseInt(RegExp.$1, 10)
       debug(id, 'connection type', type)
       if (type === 3) {

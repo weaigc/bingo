@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const endpoint = endpoints[count % endpoints.length]
       debug(`try ${count+1}`, endpoint, headers['x-forwarded-for'])
       const response = await fetch(`https://${endpoint || 'www.bing.com'}/turing/conversation/create`, { method: 'GET', headers })
+      debug('status', headers, response.status, response.url)
       if (response.status === 200) {
         res.setHeader('set-cookie', [headers.cookie, `BING_IP=${headers['x-forwarded-for']}`]
           .map(cookie => `${cookie}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))

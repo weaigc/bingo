@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import Image from 'next/image'
 import Textarea from 'react-textarea-autosize'
 import { useAtomValue } from 'jotai'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
@@ -19,6 +18,7 @@ import { voiceListenAtom } from '@/state'
 import Voice from './voice'
 import { ChatImage } from './chat-image'
 import { ChatAttachments } from './chat-attachments'
+import { SVG } from './ui/svg'
 
 export interface ChatPanelProps
   extends Pick<
@@ -103,7 +103,7 @@ export function ChatPanel({
             <div className="button-compose-wrapper">
               <button className="body-2 button-compose" type="button" aria-label="新主题" onClick={resetConversation}>
                 <div className="button-compose-content">
-                  <Image className="pl-2" alt="brush" src={BrushIcon} width={40} />
+                  <SVG className="pl-2" alt="brush" src={BrushIcon} width={40} fill="currentColor" />
                   <div className="button-compose-text">新主题</div>
                 </div>
               </button>
@@ -116,7 +116,7 @@ export function ChatPanel({
             onBlur={setBlur}
           >
             <div className="main-bar">
-              <Image alt="chat" src={ChatIcon} width={20} color="blue" />
+              <SVG alt="chat" src={ChatIcon} width={20}/>
               <Textarea
                 ref={inputRef}
                 tabIndex={0}
@@ -129,11 +129,11 @@ export function ChatPanel({
                 className="message-input min-h-[24px] -mx-1 w-full text-base resize-none bg-transparent focus-within:outline-none"
               />
               <ChatImage uploadImage={uploadImage}>
-                <Image alt="visual-search" src={VisualSearchIcon} width={24} />
+                <SVG className="cursor-pointer" src={VisualSearchIcon} width={20} />
               </ChatImage>
               <Voice setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
               <button type="submit">
-                <Image alt="send" src={SendIcon} width={20} style={{ marginTop: '2px' }} />
+                <SVG alt="send" src={SendIcon} width={18} height={22} />
               </button>
             </div>
             <ChatAttachments attachmentList={attachmentList} setAttachmentList={setAttachmentList} uploadImage={uploadImage} />
@@ -142,7 +142,7 @@ export function ChatPanel({
               <button onClick={() => {
                 setPin(!pin)
               }} className="pr-2">
-               <Image alt="pin" src={pin ? PinFillIcon : PinIcon} width={20} />
+               <SVG alt="pin" src={pin ? PinFillIcon : PinIcon} width={20} />
               </button>
             </div>
           </div>

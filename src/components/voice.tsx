@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSetAtom } from 'jotai'
 import { useBing } from '@/lib/hooks/use-bing'
-import Image from 'next/image'
 import VoiceIcon from '@/assets/images/voice.svg'
 import VoiceButton from './ui/voice'
 import { SR } from '@/lib/bots/bing/sr'
 import { voiceListenAtom } from '@/state'
+import { SVG } from './ui/svg'
 
 const sr = new SR(['发送', '清空', '退出'])
 
@@ -42,10 +42,16 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typ
     }
   }
 
-  return sr.listening ? (
-    <VoiceButton onClick={() => switchSR(false)} />
-  ) : (
-    <Image alt="start voice" src={VoiceIcon} width={24} className="-mt-0.5" onClick={() => switchSR(true)} />
+  return (
+    <div className="voice-container">
+      {
+        sr.listening ? (
+          <VoiceButton className="voice-button-theme" onClick={() => switchSR(false)} />
+        ) : (
+          <SVG className="cursor-pointer" alt="start voice" src={VoiceIcon} width={26} height={22} onClick={() => switchSR(true)} />
+        )
+      }
+    </div>
   )
 };
 

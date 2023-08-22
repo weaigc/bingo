@@ -14,6 +14,10 @@ export function useEnterSubmit(): {
       !event.shiftKey &&
       !event.nativeEvent.isComposing
     ) {
+      window.scrollTo({
+        top: document.body.offsetHeight,
+        behavior: 'smooth'
+      })
       formRef.current?.requestSubmit()
       event.preventDefault()
     }

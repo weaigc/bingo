@@ -115,7 +115,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const ua = parseUA(BING_UA)
 
   return {
-    'x-forwarded-for': BING_IP,
+    'x-forwarded-for': BING_IP || randomIP(),
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
@@ -140,7 +140,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
         BING_HEADER,
         ...cookies,
       }) || {}
-      headers['x-forward-for'] = BING_IP
+      headers['x-forward-for'] = BING_IP || randomIP()
       return headers
     }
   }

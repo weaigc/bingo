@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         method: 'POST',
         body: formData.getBuffer(),
         headers: {
-          'x-forward-for': headers['x-forwarded-for'],
+          'x-forwarded-for': headers['x-forwarded-for'],
           'user-agent': headers['User-Agent'],
           cookie: headers['cookie'],
           'Referer': 'https://www.bing.com/search',

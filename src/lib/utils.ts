@@ -140,7 +140,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
         BING_HEADER,
         ...cookies,
       }) || {}
-      headers['x-forward-for'] = BING_IP || randomIP()
+      headers['x-forwarded-for'] = BING_IP || randomIP()
       return headers
     }
   }

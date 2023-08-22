@@ -15,7 +15,7 @@ import {
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
-import { WatchDog, createChunkDecoder } from '@/lib/utils'
+import { createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle }>
 
@@ -351,11 +351,14 @@ export class BingWebBot {
         params.onEvent({ type: 'DONE' })
         conversation.invocationId = parseInt(event.invocationId, 10) + 1
       } else if (event.type === 1) {
-        const messages = event.arguments[0].messages
+        const { messages, throttling } = event.arguments[0] || {}
         if (messages) {
           const text = convertMessageToMarkdown(messages[0])
           this.lastText = text
-          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, spokenText: messages[0].text, throttling: event.arguments[0].throttling } })
+          params.onEvent({ type: 'UPDATE_ANSWER', data: { text, spokenText: messages[0].text } })
+        }
+        if (throttling) {
+          params.onEvent({ type: 'UPDATE_ANSWER', data: { text: '', throttling } })
         }
       } else if (event.type === 2) {
         const messages = event.item.messages as ChatResponseMessage[] | undefined

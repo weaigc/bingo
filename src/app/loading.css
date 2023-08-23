@@ -1,27 +1,3 @@
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  display: none;
-}
-
-::-webkit-scrollbar-button:start:decrement,
-::-webkit-scrollbar-button:end:increment {
-  height: 30px;
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-track-piece {
-  background-color: #3b3b3b;
-  -webkit-border-radius: 16px;
-}
-
-::-webkit-scrollbar-thumb:vertical {
-  height: 50px;
-  background-color: #666;
-  border: 1px solid #eee;
-  -webkit-border-radius: 6px;
-}
-
 /* loading start */
 .loading-spinner {
   display: flex;
@@ -30,6 +6,11 @@
   height: 100vh;
   opacity: 1;
   transition: opacity .8s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .loading-spinner.hidden {

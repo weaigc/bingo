@@ -1,15 +1,18 @@
 import dynamic from 'next/dynamic'
+import './loading.css'
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('../components/chat'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="loading-spinner">
+        {Array.from({length: 3}).map((_, index) => <div className={`bounce${index+1}`}/>)}
+      </div>
+    )
+  }
 )
 
 export default function IndexPage() {
-  return (
-    <>
-      <div className="loading-spinner" />
-      <DynamicComponentWithNoSSR />
-    </>
-  )
+  return <DynamicComponentWithNoSSR />
 }

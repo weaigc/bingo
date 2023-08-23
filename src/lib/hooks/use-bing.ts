@@ -87,7 +87,7 @@ export function useBing(botId: BotId = 'bing') {
         },
       })
     },
-    [botId, attachmentList, chatState.bot, setChatState, updateMessage],
+    [botId, attachmentList, chatState.bot, bingConversationStyle, speaker, setChatState, updateMessage],
   )
 
   const uploadImage = useCallback(async (imgUrl: string) => {
@@ -136,7 +136,7 @@ export function useBing(botId: BotId = 'bing') {
       resetConversation()
       setHash('')
     }
-  }, [hash, setHash])
+  }, [hash, setHash, resetConversation])
 
   const chat = useMemo(
     () => ({

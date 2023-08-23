@@ -133,7 +133,7 @@ export function ChatPanel({
               </ChatImage>
               <Voice setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
               <button type="submit">
-                <SVG alt="send" src={SendIcon} width={18} height={22} />
+                <SVG alt="send" src={SendIcon} width={18} height={20} />
               </button>
             </div>
             <ChatAttachments attachmentList={attachmentList} setAttachmentList={setAttachmentList} uploadImage={uploadImage} />

@@ -24,6 +24,7 @@ export function ChatSuggestions({ setInput, suggestions = [] }: ChatSuggestionsP
 
   useMemo(() => {
     setSuggestions(suggestions)
+    window.scrollBy(0, 400)
   }, [suggestions.length, setSuggestions])
 
   return currentSuggestions?.length ? (

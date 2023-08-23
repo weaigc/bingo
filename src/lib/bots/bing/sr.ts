@@ -68,9 +68,14 @@ export class SR {
 
   start = async () => {
     if (this.recognition && !this.listening) {
-      await this.recognition.start()
-      this.transcript = true
       this.listening = true
+      try {
+        await this.recognition.start()
+        this.transcript = true
+      } catch(e) {
+        console.error('start sr error', e)
+        this.listening = false
+      }
     }
   }
 

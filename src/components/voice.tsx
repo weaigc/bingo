@@ -17,6 +17,10 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typ
   }, [isSpeaking])
 
   useEffect(() => {
+    setListen(sr.listening)
+  }, [sr.listening, setListen])
+
+  useEffect(() => {
     sr.onchange = (msg: string, command?: string) => {
       switch (command) {
         case '退出':
@@ -48,7 +52,7 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typ
         sr.listening ? (
           <VoiceButton className="voice-button-theme" onClick={() => switchSR(false)} />
         ) : (
-          <SVG className="cursor-pointer" alt="start voice" src={VoiceIcon} width={26} height={22} onClick={() => switchSR(true)} />
+          <SVG className="cursor-pointer" alt="start voice" src={VoiceIcon} width={20} height={20} onClick={() => switchSR(true)} />
         )
       }
     </div>

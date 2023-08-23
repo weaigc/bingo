@@ -344,19 +344,15 @@
   z-index: -1;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: light !important;
-  }
-}
-
-body {
-  background: var(--cib-color-fill-accent-gradient-creative-quaternary);
-}
-
 .bg-background {
   background: var(--cib-color-background-surface-app-primary);
 }
+
+body {
+  background: var(--cib-color-background-surface-app-primary);
+}
+
+@import "./dark.scss";
 
 main {
   margin: 0 auto;
@@ -523,6 +519,7 @@ main {
   padding: 0px;
   outline: transparent solid 1px;
   border-radius: var(--cib-border-radius-medium);
+  color: var(--cib-color-foreground-neutral-primary);
 }
 
 .option button {
@@ -562,6 +559,8 @@ main {
 }
 
 .text-message {
+  color: var(--cib-color-foreground-neutral-primary);
+
   &.user {
     align-items: flex-end;
     align-self: flex-end;
@@ -1117,6 +1116,7 @@ button {
   .message-input {
     max-height: 50vh;
     overflow-y: auto;
+    color: var(--cib-color-foreground-neutral-primary);
   }
 }
 

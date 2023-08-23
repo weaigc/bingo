@@ -1,0 +1,317 @@
+@media (prefers-color-scheme: dark) {
+
+
+
+
+  :root {
+    --cib-color-foreground-accent-primary: #D7A7BB;
+    --cib-color-foreground-accent-secondary: #D7A7BB;
+    --cib-color-foreground-accent-tertiary: #F6D0D0;
+    --cib-color-foreground-accent-disabled: rgba(215, 167, 187, 0.3);
+    --cib-color-foreground-on-accent-primary: #FFFFFF;
+    --cib-color-foreground-on-accent-secondary: #FFF5F5;
+    --cib-color-foreground-on-accent-tertiary: #FFF5F5;
+    --cib-color-foreground-on-accent-disabled: rgba(255, 245, 245, 0.3);
+    --cib-color-foreground-neutral-primary: #D2D0CE;
+    --cib-color-foreground-neutral-secondary: #D2D0CE;
+    --cib-color-foreground-neutral-tertiary: #919191;
+    --cib-color-foreground-neutral-disabled: rgba(210, 208, 206, 0.4);
+    --cib-color-foreground-on-accent-strong-primary: #111111;
+    --cib-color-foreground-on-accent-strong-secondary: #111111;
+    --cib-color-foreground-on-accent-strong-disabled: rgba(17, 17, 17, 0.3);
+    --cib-color-foreground-system-attention-primary: #3AA0F3;
+    --cib-color-foreground-system-attribution-primary: #9EC3AE;
+    --cib-color-foreground-system-caution-primary: #FCE100;
+    --cib-color-foreground-system-critical-primary: #FF99A4;
+    --cib-color-foreground-system-link-primary: #82C7FF;
+    --cib-color-foreground-system-neutral-primary: rgba(0, 0, 0, 0.55);
+    --cib-color-foreground-system-success-primary: #6CCB5F;
+    --cib-color-fill-accent-primary: rgba(255, 255, 255, 0.1);
+    --cib-color-fill-accent-secondary: rgba(255, 255, 255, 0.2);
+    --cib-color-fill-accent-tertiary: rgba(255, 255, 255, 0.3);
+    --cib-color-fill-accent-disabled: rgba(255, 255, 255, 0.03);
+    --cib-color-fill-accent-alt-primary: #270022;
+    --cib-color-fill-accent-alt-secondary: rgba(255, 255, 255, 0.06);
+    --cib-color-fill-accent-alt-tertiary: rgba(255, 255, 255, 0.1);
+    --cib-color-fill-accent-alt-disabled: rgba(39, 0, 34, 0.3);
+    --cib-color-fill-accent-gradient-primary: linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-secondary: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-tertiary: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-quaternary: linear-gradient(90deg, rgb(238, 237, 243) 0%, 0.77381%, rgb(239, 238, 244) 1.54762%, 6.72619%, rgb(239, 236, 243) 11.9048%, 12.381%, rgb(240, 237, 244) 12.8571%, 27.9167%, rgb(242, 236, 244) 42.9762%, 51.9048%, rgb(239, 236, 243) 60.8333%, 61.9643%, rgb(238, 235, 246) 63.0952%, 66.7262%, rgb(235, 234, 249) 70.3571%, 73.2738%, rgb(232, 232, 248) 76.1905%, 77.1429%, rgb(230, 231, 248) 78.0952%, 79.9405%, rgb(228, 229, 249) 81.7857%, 84.1667%, rgb(227, 228, 248) 86.5476%, 87.0238%, rgb(226, 227, 248) 87.5%, 89.3452%, rgb(224, 224, 252) 91.1905%, 95.5952%, rgb(220, 223, 252) 100%);
+    --cib-color-fill-accent-strong-primary: #D7A7BB;
+    --cib-color-fill-accent-strong-secondary: #D7A7BB;
+    --cib-color-fill-accent-strong-tertiary: #F6D0D0;
+    --cib-color-fill-accent-strong-disabled: rgba(215, 167, 187, 0.3);
+    --cib-color-fill-neutral-primary: #3B3A39;
+    --cib-color-fill-neutral-secondary: #484644;
+    --cib-color-fill-neutral-tertiary: #605E5C;
+    --cib-color-fill-neutral-quaternary: #ECECEC;
+    --cib-color-fill-neutral-disabled: rgba(59, 58, 57, 0.3);
+    --cib-color-fill-neutral-transparent: transparent;
+    --cib-color-fill-neutral-alt-primary: transparent;
+    --cib-color-fill-neutral-alt-secondary: rgba(0, 0, 0, 0.1);
+    --cib-color-fill-neutral-alt-tertiary: rgba(255, 255, 255, 0.04);
+    --cib-color-fill-neutral-alt-quaternary: rgba(255, 255, 255, 0.07);
+    --cib-color-fill-neutral-alt-disabled: transparent;
+    --cib-color-fill-neutral-alt-transparent: transparent;
+    --cib-color-fill-neutral-strong-primary: #FFFFFF;
+    --cib-color-fill-neutral-strong-secondary: #F5F5F5;
+    --cib-color-fill-neutral-strong-tertriary: #ECECEC;
+    --cib-color-fill-neutral-strong-disabled: rgba(255, 255, 255, 0.3);
+    --cib-color-fill-subtle-primary: transparent;
+    --cib-color-fill-subtle-secondary: rgba(255, 255, 255, 0.06);
+    --cib-color-fill-subtle-tertiary: rgba(255, 255, 255, 0.1);
+    --cib-color-fill-subtle-quaternary: rgba(255, 255, 255, 0.2);
+    --cib-color-fill-subtle-disabled: transparent;
+    --cib-color-fill-subtle-transparent: transparent;
+    --cib-color-fill-subtle-alt-primary: rgba(0, 0, 0, 0.4);
+    --cib-color-fill-subtle-alt-secondary: rgba(0, 0, 0, 0.5);
+    --cib-color-fill-subtle-alt-tertiary: rgba(0, 0, 0, 0.9);
+    --cib-color-fill-accent-gradient-balanced-primary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%);
+    --cib-color-fill-accent-gradient-balanced-secondary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+    --cib-color-fill-accent-gradient-balanced-tertiary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    --cib-color-fill-accent-gradient-balanced-quaternary: linear-gradient(90deg, rgb(239, 242, 247) 0%, 7.60286%, rgb(237, 240, 249) 15.2057%, 20.7513%, rgb(235, 239, 248) 26.297%, 27.6386%, rgb(235, 239, 248) 28.9803%, 38.2826%, rgb(231, 237, 249) 47.585%, 48.1216%, rgb(230, 236, 250) 48.6583%, 53.1306%, rgb(228, 236, 249) 57.6029%, 61.5385%, rgb(227, 234, 250) 65.4741%, 68.7835%, rgb(222, 234, 250) 72.093%, 75.7603%, rgb(219, 230, 248) 79.4275%, 82.8265%, rgb(216, 229, 248) 86.2254%, 87.8354%, rgb(213, 228, 249) 89.4454%, 91.8605%, rgb(210, 226, 249) 94.2755%, 95.4383%, rgb(209, 225, 248) 96.6011%, 98.3005%, rgb(208, 224, 247) 100%);
+    --cib-color-fill-accent-gradient-creative-primary: linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-creative-secondary: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-creative-tertiary: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(130deg, #914887 20%, #8B257E 77.5%);
+    --cib-color-fill-accent-gradient-creative-quaternary: linear-gradient(90deg, rgb(238, 237, 243) 0%, 0.77381%, rgb(239, 238, 244) 1.54762%, 6.72619%, rgb(239, 236, 243) 11.9048%, 12.381%, rgb(240, 237, 244) 12.8571%, 27.9167%, rgb(242, 236, 244) 42.9762%, 51.9048%, rgb(239, 236, 243) 60.8333%, 61.9643%, rgb(238, 235, 246) 63.0952%, 66.7262%, rgb(235, 234, 249) 70.3571%, 73.2738%, rgb(232, 232, 248) 76.1905%, 77.1429%, rgb(230, 231, 248) 78.0952%, 79.9405%, rgb(228, 229, 249) 81.7857%, 84.1667%, rgb(227, 228, 248) 86.5476%, 87.0238%, rgb(226, 227, 248) 87.5%, 89.3452%, rgb(224, 224, 252) 91.1905%, 95.5952%, rgb(220, 223, 252) 100%);
+    --cib-color-fill-accent-gradient-precise-primary: linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-precise-secondary: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-precise-tertiary: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-precise-quaternary: linear-gradient(90deg, rgb(236, 242, 245) 0%, 1.3089%, rgb(234, 243, 245) 2.6178%, 17.4084%, rgb(232, 241, 242) 32.199%, 36.2565%, rgb(229, 241, 242) 40.3141%, 45.0262%, rgb(227, 240, 242) 49.7382%, 51.8325%, rgb(226, 239, 245) 53.9267%, 57.199%, rgb(224, 239, 245) 60.4712%, 62.9581%, rgb(220, 237, 245) 65.445%, 66.2304%, rgb(220, 237, 245) 67.0157%, 68.0628%, rgb(218, 236, 244) 69.1099%, 75.1309%, rgb(214, 233, 240) 81.1518%, 82.5916%, rgb(211, 231, 240) 84.0314%, 84.4241%, rgb(212, 231, 239) 84.8168%, 86.911%, rgb(210, 230, 239) 89.0052%, 94.5026%, rgb(207, 227, 236) 100%);
+    --cib-color-background-surface-app-primary: #11100F;
+    --cib-color-background-surface-card-primary: rgba(255, 255, 255, 0.08);
+    --cib-color-background-surface-card-secondary: rgba(255, 255, 255, 0.05);
+    --cib-color-background-surface-card-tertiary: rgba(255, 255, 255, 0.08);
+    --cib-color-background-surface-card-disabled: rgba(255, 255, 255, 0.03);
+    --cib-color-background-surface-smoke-primary: rgba(0, 0, 0, 0.5);
+    --cib-color-background-surface-solid-base: #1B1A19;
+    --cib-color-background-surface-solid-secondary: #1C1C1C;
+    --cib-color-background-surface-solid-tertiary: #252423;
+    --cib-color-background-surface-solid-quaternary: #2C2C2C;
+    --cib-color-background-system-attention-primary: rgba(255, 255, 255, 0.5);
+    --cib-color-background-system-attention-strong: #106EBE;
+    --cib-color-background-system-success-primary: #DFF6DD;
+    --cib-color-background-system-success-strong: #0F7B0F;
+    --cib-color-background-system-caution-primary: #FFF4CE;
+    --cib-color-background-system-caution-strong: #9D5D00;
+    --cib-color-background-system-critical-primary: #FDE7E9;
+    --cib-color-background-system-critical-strong: #C42B1C;
+    --cib-color-stroke-accent-primary: #D7A7BB;
+    --cib-color-stroke-accent-secondary: #D7A7BB;
+    --cib-color-stroke-accent-tertiary: #F6D0D0;
+    --cib-color-stroke-accent-disabled: rgba(215, 167, 187, 0.3);
+    --cib-color-stroke-neutral-primary: rgba(255, 255, 255, 0.1);
+    --cib-color-stroke-neutral-secondary: rgba(255, 255, 255, 0.2);
+    --cib-color-stroke-neutral-tertiary: rgba(255, 255, 255, 0.1);
+    --cib-color-stroke-neutral-alt-primary: rgba(255, 255, 255, 0.2);
+    --cib-color-stroke-surface-card-primary: transparent;
+    --cib-color-stroke-surface-card-solid: transparent;
+    --cib-color-stroke-surface-divider-primary: rgba(255, 255, 255, 0.2);
+    --cib-color-stroke-focus-outer: #FAF9F8;
+    --cib-color-stroke-focus-inner: #FAF9F8;
+    --cib-color-stroke-system-attention-primary: #106EBE;
+    --cib-color-stroke-system-success-primary: #0F7B0F;
+    --cib-color-stroke-system-caution-primary: #9D5D00;
+    --cib-color-stroke-system-critical-primary: #C42B1C;
+    --cib-color-stroke-system-neutral-primary: rgba(0, 0, 0, 0.45);
+    --cib-color-syntax-background-surface: rgba(0, 0, 0, 0.2);
+    --cib-color-syntax-background-green: #F0FFF4;
+    --cib-color-syntax-background-red: #FFEEF0;
+    --cib-color-syntax-blue: #6CB6FF;
+    --cib-color-syntax-blue-strong: #96D0FF;
+    --cib-color-syntax-gold: #EAC55F;
+    --cib-color-syntax-gray: #768390;
+    --cib-color-syntax-gray-strong: #ADBAC7;
+    --cib-color-syntax-green: #8DDB8C;
+    --cib-color-syntax-orange: #F69D50;
+    --cib-color-syntax-purple: #DCBDFB;
+    --cib-color-syntax-red: #F47067;
+    --cib-color-syntax-red-strong: #FFD8D3;
+    --cib-action-bar-search-border-radius: 24px;
+    --cib-copy-host-border-radius: 8px;
+    --cib-copy-button-border-radius: 6px;
+    --cib-feedback-host-border-radius: 8px;
+    --cib-feedback-menu-border-radius: 8px;
+    --cib-feedback-menu-before-border-radius: 9px;
+    --cib-feedback-button-border-radius: 6px;
+    --cib-flyout-host-border-radius: 6px;
+    --cib-message-ac-container-border-radius: 3px;
+    --cib-modal-before-border-radius: 13px;
+    --cib-side-panel-aad-msa-redirect-border-radius: 9px;
+    --cib-thread-host-border-radius: 6px;
+    --cib-thread-host-preview-border-radius: 8px;
+    --cib-thread-name-border-radius: 3px;
+    --cib-tooltip-host-before-border-radius: 5px;
+    --cib-welcome-container-preview-button-border-radius: 3px;
+    --cib-color-icon-red-cancel: #c80000;
+    --cib-color-icon-green-confirm: #13a10e;
+    --cib-image-background: url(https://bing.vcanbb.top/cdx/bg-dark.jpg);
+    --cib-shadow-card: 0px 0px 0px 1px rgba(255, 255, 255, 0.2);
+    --cib-shadow-card-raised: 0px 4px 8px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-dialog: 0px 32px 64px rgba(0, 0, 0, 0.48), 0px 0px 8px rgba(0, 0, 0, 0.4);
+    --cib-shadow-flyout: 0px 8px 16px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-layer: 0px 1px 2px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-panel: 0px 14px 28px rgba(0, 0, 0, 0.48), 0px 0px 8px rgba(0, 0, 0, 0.4);
+    --cib-shadow-tooltip: 0px 8px 16px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-1: 0px 0.5px 1px rgba(0, 0, 0, 0.28), 0px 0px 1px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-2: 0px 1px 2px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-4: 0px 2px 4px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-8: 0px 4px 8px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-16: 0px 8px 16px rgba(0, 0, 0, 0.28), 0px 0px 2px rgba(0, 0, 0, 0.24);
+    --cib-shadow-elevation-28: 0px 14px 28px rgba(0, 0, 0, 0.48), 0px 0px 8px rgba(0, 0, 0, 0.4);
+    --cib-shadow-elevation-64: 0px 32px 64px rgba(0, 0, 0, 0.48), 0px 0px 8px rgba(0, 0, 0, 0.4);
+    --cib-border-radius-none: 0;
+    --cib-border-radius-small: 2px;
+    --cib-border-radius-medium: 4px;
+    --cib-border-radius-large: 8px;
+    --cib-border-radius-extra-large: 12px;
+    --cib-border-radius-circular: 10000px;
+    --cib-font-text: -apple-system, Roboto, SegoeUI, 'Segoe UI', 'Helvetica Neue', Helvetica, 'Microsoft YaHei', 'Meiryo UI', Meiryo, Arial Unicode MS, sans-serif;
+    --cib-font-icons: 'Fluent Icons';
+    --cib-type-caption2-font-size: 10px;
+    --cib-type-caption2-line-height: 14px;
+    --cib-type-caption2-font-weight: 400;
+    --cib-type-caption2-font-variation-settings: unset;
+    --cib-type-caption2-strong-font-size: 10px;
+    --cib-type-caption2-strong-line-height: 14px;
+    --cib-type-caption2-strong-font-weight: 600;
+    --cib-type-caption2-strong-font-variation-settings: unset;
+    --cib-type-caption1-font-size: 12px;
+    --cib-type-caption1-line-height: 16px;
+    --cib-type-caption1-font-weight: 400;
+    --cib-type-caption1-font-variation-settings: unset;
+    --cib-type-caption1-strong-font-size: 12px;
+    --cib-type-caption1-strong-line-height: 16px;
+    --cib-type-caption1-strong-font-weight: 600;
+    --cib-type-caption1-strong-font-variation-settings: unset;
+    --cib-type-caption1-stronger-font-size: 12px;
+    --cib-type-caption1-stronger-line-height: 16px;
+    --cib-type-caption1-stronger-font-weight: 700;
+    --cib-type-caption1-stronger-font-variation-settings: unset;
+    --cib-type-body1-font-size: 14px;
+    --cib-type-body1-line-height: 20px;
+    --cib-type-body1-font-weight: 400;
+    --cib-type-body1-font-variation-settings: unset;
+    --cib-type-body1-strong-font-size: 14px;
+    --cib-type-body1-strong-line-height: 20px;
+    --cib-type-body1-strong-font-weight: 500;
+    --cib-type-body1-strong-font-variation-settings: unset;
+    --cib-type-body1-stronger-font-size: 14px;
+    --cib-type-body1-stronger-line-height: 20px;
+    --cib-type-body1-stronger-font-weight: 600;
+    --cib-type-body1-stronger-font-variation-settings: unset;
+    --cib-type-body2-font-size: 16px;
+    --cib-type-body2-line-height: 24px;
+    --cib-type-body2-font-weight: 400;
+    --cib-type-body2-font-variation-settings: unset;
+    --cib-type-subtitle2-font-size: 16px;
+    --cib-type-subtitle2-line-height: 24px;
+    --cib-type-subtitle2-font-weight: 500;
+    --cib-type-subtitle2-font-variation-settings: unset;
+    --cib-type-subtitle2-stronger-font-size: 16px;
+    --cib-type-subtitle2-stronger-line-height: 24px;
+    --cib-type-subtitle2-stronger-font-weight: 600;
+    --cib-type-subtitle2-stronger-font-variation-settings: unset;
+    --cib-type-subtitle1-font-size: 20px;
+    --cib-type-subtitle1-line-height: 26px;
+    --cib-type-subtitle1-font-weight: 500;
+    --cib-type-subtitle1-font-variation-settings: unset;
+    --cib-type-subtitle1-stronger-font-size: 20px;
+    --cib-type-subtitle1-stronger-line-height: 26px;
+    --cib-type-subtitle1-stronger-font-weight: 600;
+    --cib-type-subtitle1-stronger-font-variation-settings: unset;
+    --cib-type-message-font-size: 18px;
+    --cib-type-message-line-height: 24px;
+    --cib-type-message-font-weight: 400;
+    --cib-type-message-font-variation-settings: unset;
+    --cib-type-message-strong-font-size: 18px;
+    --cib-type-message-strong-line-height: 24px;
+    --cib-type-message-strong-font-weight: 600;
+    --cib-type-message-strong-font-variation-settings: unset;
+    --cib-type-title3-font-size: 24px;
+    --cib-type-title3-line-height: 32px;
+    --cib-type-title3-font-weight: 600;
+    --cib-type-title3-font-variation-settings: unset;
+    --cib-type-title2-font-size: 28px;
+    --cib-type-title2-line-height: 36px;
+    --cib-type-title2-font-weight: 600;
+    --cib-type-title2-font-variation-settings: unset;
+    --cib-type-title1-font-size: 32px;
+    --cib-type-title1-line-height: 40px;
+    --cib-type-title1-font-weight: 600;
+    --cib-type-title1-font-variation-settings: unset;
+    --cib-type-large-title-font-size: 40px;
+    --cib-type-large-title-line-height: 52px;
+    --cib-type-large-title-font-weight: 600;
+    --cib-type-large-title-font-variation-settings: unset;
+    --cib-type-display-font-size: 68px;
+    --cib-type-display-line-height: 92px;
+    --cib-type-display-font-weight: 600;
+    --cib-type-display-font-variation-settings: unset;
+    --cib-motion-duration-faster: 83ms;
+    --cib-motion-duration-fast: 187ms;
+    --cib-motion-duration-normal: 333ms;
+    --cib-motion-duration-slow: 500ms;
+    --cib-motion-duration-slower: 667ms;
+    --cib-motion-duration-slowest: 1000ms;
+    --cib-motion-duration-faster-number: 83;
+    --cib-motion-duration-fast-number: 187;
+    --cib-motion-duration-normal-number: 333;
+    --cib-motion-duration-slow-number: 500;
+    --cib-motion-duration-slower-number: 667;
+    --cib-motion-duration-slowest-number: 1000;
+    --cib-motion-easing-linear: cubic-bezier(0, 0, 1, 1);
+    --cib-motion-easing-in: cubic-bezier(0, 0, 0, 1);
+    --cib-motion-easing-out: cubic-bezier(1, 0, 1, 1);
+    --cib-motion-easing-strong: cubic-bezier(0.13, 1.62, 0, 0.92);
+    --cib-motion-easing-direct: cubic-bezier(0.55, 0.55, 0, 1);
+    --cib-motion-easing-transition: cubic-bezier(0.75, 0, 0.25, 1);
+  }
+
+  .precise {
+    --cib-color-fill-accent-gradient-creative-primary: linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-creative-secondary: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+      linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-creative-tertiary: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      linear-gradient(130deg, #006880 20%, #005366 77.5%);
+    --cib-color-fill-accent-gradient-creative-quaternary: linear-gradient(90deg, rgb(236, 242, 245) 0%, 1.3089%, rgb(234, 243, 245) 2.6178%, 17.4084%, rgb(232, 241, 242) 32.199%, 36.2565%, rgb(229, 241, 242) 40.3141%, 45.0262%, rgb(227, 240, 242) 49.7382%, 51.8325%, rgb(226, 239, 245) 53.9267%, 57.199%, rgb(224, 239, 245) 60.4712%, 62.9581%, rgb(220, 237, 245) 65.445%, 66.2304%, rgb(220, 237, 245) 67.0157%, 68.0628%, rgb(218, 236, 244) 69.1099%, 75.1309%, rgb(214, 233, 240) 81.1518%, 82.5916%, rgb(211, 231, 240) 84.0314%, 84.4241%, rgb(212, 231, 239) 84.8168%, 86.911%, rgb(210, 230, 239) 89.0052%, 94.5026%, rgb(207, 227, 236) 100%);
+    --cib-color-fill-accent-gradient-primary: linear-gradient(130deg, #006880 20%, #005366 77.5%);
+
+    --cib-color-foreground-accent-primary: #D2D0CE;
+    --cib-color-stroke-accent-primary: #D2D0CE;
+    --cib-color-stroke-accent-secondary: #D2D0CE;
+    --cib-color-fill-accent-secondary: rgba(255, 255, 255, 0.2);
+    --cib-color-foreground-accent-secondary: #D2D0CE;
+  }
+
+  .balanced {
+    --cib-color-fill-accent-gradient-creative-primary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%);
+    --cib-color-fill-accent-gradient-creative-secondary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%),
+      linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+    --cib-color-fill-accent-gradient-creative-tertiary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%),
+      linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    --cib-color-fill-accent-gradient-creative-quaternary: linear-gradient(90deg, rgb(239, 242, 247) 0%, 7.60286%, rgb(237, 240, 249) 15.2057%, 20.7513%, rgb(235, 239, 248) 26.297%, 27.6386%, rgb(235, 239, 248) 28.9803%, 38.2826%, rgb(231, 237, 249) 47.585%, 48.1216%, rgb(230, 236, 250) 48.6583%, 53.1306%, rgb(228, 236, 249) 57.6029%, 61.5385%, rgb(227, 234, 250) 65.4741%, 68.7835%, rgb(222, 234, 250) 72.093%, 75.7603%, rgb(219, 230, 248) 79.4275%, 82.8265%, rgb(216, 229, 248) 86.2254%, 87.8354%, rgb(213, 228, 249) 89.4454%, 91.8605%, rgb(210, 226, 249) 94.2755%, 95.4383%, rgb(209, 225, 248) 96.6011%, 98.3005%, rgb(208, 224, 247) 100%);
+    --cib-color-fill-accent-gradient-primary: linear-gradient(130deg, #2870EA 20%, #1B4AEF 77.5%);
+
+    --cib-color-foreground-accent-primary: #A2B7F4;
+    --cib-color-stroke-accent-primary: #A2B7F4;
+    --cib-color-stroke-accent-secondary: #A2B7F4;
+    --cib-color-fill-accent-secondary: rgba(255, 255, 255, 0.2);
+    --cib-color-foreground-accent-secondary: #A2B7F4;
+  }
+
+  .global-background {
+    background: var(--cib-color-background-surface-app-primary);
+  }
+
+  .bg-background {
+    color: var(--cib-color-foreground-accent-primary);
+  }
+
+  .fade.bottom {
+    .background {
+      background: var(--cib-color-background-surface-app-primary);
+    }
+  }
+}

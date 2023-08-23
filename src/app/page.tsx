@@ -7,7 +7,7 @@ const DynamicComponentWithNoSSR = dynamic(
     ssr: false,
     loading: () => (
       <div className="loading-spinner">
-        {Array.from({length: 3}).map((_, index) => <div className={`bounce${index+1}`}/>)}
+        {Array.from({length: 3}).map((_, index) => <div key={index} className={`bounce${index+1}`}/>)}
       </div>
     )
   }

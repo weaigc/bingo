@@ -1,13 +1,3 @@
----
-title: bingo
-emoji: 📉
-colorFrom: red
-colorTo: red
-sdk: docker
-pinned: true
-license: mit
----
-
 <div align="center">
 
 # Bingo 
@@ -50,8 +40,8 @@ https://bing.github1s.tk
  - [x] 支持图片输入
  - [x] 支持自定义域名
  - [x] 支持离线访问
+ - [x] 适配深色模式
  - [ ] 支持历史记录
- - [ ] 适配深色模式
  - [ ] 支持内置提示词
  - [ ] 国际化翻译
 

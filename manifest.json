@@ -1,0 +1,18 @@
+{
+    "name": "BingAI",
+    "short_name": "BingAI",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "lang": "zh-CN",
+    "scope": "/",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "/logo.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

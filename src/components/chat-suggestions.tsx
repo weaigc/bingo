@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useEffect } from 'react'
+import { atom, useAtom } from 'jotai'
 import HelpIcon from '@/assets/images/help.svg'
 import DismissFillIcon from '@/assets/images/dismiss-fill.svg'
 import { SuggestedResponse } from '@/lib/bots/bing/types'
 import { useBing } from '@/lib/hooks/use-bing'
-import { atom, useAtom } from 'jotai'
 import { SVG } from './ui/svg'
 
 type Suggestions = SuggestedResponse[]
@@ -22,10 +22,10 @@ export function ChatSuggestions({ setInput, suggestions = [] }: ChatSuggestionsP
     }
   })
 
-  useMemo(() => {
+  useEffect(() => {
     setSuggestions(suggestions)
     window.scrollBy(0, 400)
-  }, [suggestions.length, setSuggestions])
+  }, [suggestions, setSuggestions])
 
   return currentSuggestions?.length ? (
     <div className="py-6">

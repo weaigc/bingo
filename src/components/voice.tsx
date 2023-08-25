@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSetAtom } from 'jotai'
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 import VoiceIcon from '@/assets/images/voice.svg'
 import VoiceButton from './ui/voice'
 import { SR } from '@/lib/bots/bing/sr'
@@ -9,7 +9,7 @@ import { SVG } from './ui/svg'
 
 const sr = new SR(['发送', '清空', '退出'])
 
-const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<ReturnType<typeof useBing>, 'setInput' | 'sendMessage' | 'input' | 'isSpeaking'>) => {
+const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<BingReturnType, 'setInput' | 'sendMessage' | 'input' | 'isSpeaking'>) => {
   const setListen = useSetAtom(voiceListenAtom)
   useEffect(() => {
     if (sr.listening) return

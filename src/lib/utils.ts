@@ -1,12 +1,26 @@
 import { clsx, type ClassValue } from 'clsx'
 import { customAlphabet } from 'nanoid'
 import { twMerge } from 'tailwind-merge'
+import dayjs from 'dayjs'
 // @ts-ignore
 import randomip from 'random-ip'
 import cidr from './cidr.json'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function formatDate(date: number) {
+  const time = dayjs(date)
+  if (time > dayjs().startOf('day')) {
+    return dayjs(time).format('H:mm')
+  } else if (time > dayjs().subtract(1, 'day').startOf('day')) {
+    return '昨天'
+  } else if (time > dayjs().startOf('year')) {
+    return dayjs(time).format('MM-DD')
+  } else {
+    return dayjs(time).format('YYYY-MM-DD')
+  }
 }
 
 export const nanoid = customAlphabet(
@@ -45,6 +59,7 @@ export function parseHeadersFromCurl(content: string) {
   return headers
 }
 
+
 export const ChunkKeys = ['BING_HEADER', 'BING_HEADER1', 'BING_HEADER2']
 export function encodeHeadersToCookie(content: string) {
   const base64Content = btoa(content)
@@ -66,15 +81,6 @@ export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }>)
 
 export function extraHeadersFromCookie(cookies: Partial<{ [key: string]: string }>) {
   return parseHeadersFromCurl(extraCurlFromCookie(cookies))
-}
-
-export function formatDate(input: string | number | Date): string {
-  const date = new Date(input)
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  })
 }
 
 export function parseCookie(cookie: string, cookieName: string) {
@@ -129,7 +135,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
     BING_HEADER = process.env.BING_HEADER,
     BING_IP = '',
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
-  } = cookies
+  } = cookies || {}
   const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
   if (BING_HEADER) {
     if (

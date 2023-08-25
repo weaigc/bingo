@@ -13,7 +13,7 @@ import SendIcon from '@/assets/images/send.svg'
 import PinIcon from '@/assets/images/pin.svg'
 import PinFillIcon from '@/assets/images/pin-fill.svg'
 
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 import { voiceListenAtom } from '@/state'
 import Voice from './voice'
 import { ChatImage } from './chat-image'
@@ -22,7 +22,7 @@ import { SVG } from './ui/svg'
 
 export interface ChatPanelProps
   extends Pick<
-    ReturnType<typeof useBing>,
+    BingReturnType,
     | 'generating'
     | 'input'
     | 'setInput'

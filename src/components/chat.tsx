@@ -49,6 +49,7 @@ export default function Chat({ className }: ChatProps) {
 
   return (
     <div className={cn('flex flex-1 flex-col', bingStyle.toLowerCase())}>
+      <ChatHistory bot={bot} />
       <div className="global-background" />
       <Settings />
       <div className={cn('flex-1 pb-16', className)}>

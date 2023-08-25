@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
 import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
-import { setConversationMessages } from './chat-history'
 import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
@@ -126,12 +125,6 @@ export function useBing(botId: BotId = 'bing') {
   }, [chatState.abortController, chatState.generatingMessageId, setChatState, updateMessage])
 
   useEffect(() => {
-    if (chatState.messages.length) {
-      setConversationMessages(botId, chatState.conversationId, chatState.messages)
-    }
-  }, [botId, chatState.conversationId, chatState.messages])
-
-  useEffect(() => {
     if (hash === 'reset') {
       resetConversation()
       setHash('')
@@ -173,3 +166,5 @@ export function useBing(botId: BotId = 'bing') {
 
   return chat
 }
+
+export type BingReturnType = ReturnType<typeof useBing>

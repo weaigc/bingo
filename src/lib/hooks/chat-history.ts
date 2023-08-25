@@ -1,62 +1,113 @@
-import { zip } from 'lodash-es'
-import { ChatMessageModel, BotId } from '@/lib/bots/bing/types'
-import { Storage } from '../storage'
+import { useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { useSetAtom } from 'jotai';
+import { chatHistoryAtom } from '@/state';
 
-/**
- * conversations:$botId => Conversation[]
- * conversation:$botId:$cid:messages => ChatMessageModel[]
- */
-
-interface Conversation {
-  id: string
-  createdAt: number
+export interface ChatConversation {
+  chatName: string;
+  conversationId: string;
+  conversationSignature: string;
+  plugins: string[];
+  tone?: string;
+  createTimeUtc: number;
+  updateTimeUtc: number;
 }
 
-type ConversationWithMessages = Conversation & { messages: ChatMessageModel[] }
 
-async function loadHistoryConversations(botId: BotId): Promise<Conversation[]> {
-  const key = `conversations:${botId}`
-  const { [key]: value } = await Storage.get(key)
-  return value || []
+export interface ChatHistory {
+  chats: ChatConversation[];
+  clientId: string;
 }
 
-async function deleteHistoryConversation(botId: BotId, cid: string) {
-  const conversations = await loadHistoryConversations(botId)
-  const newConversations = conversations.filter((c) => c.id !== cid)
-  await Storage.set({ [`conversations:${botId}`]: newConversations })
+const proxyEndpoint = '/api/proxy'
+const fetchProxy = (data: any) => {
+  return fetch(proxyEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  }).then(res => res.json()).catch(e => {
+    toast.error('Failed to operation')
+    throw e
+  })
 }
 
-async function loadConversationMessages(botId: BotId, cid: string): Promise<ChatMessageModel[]> {
-  const key = `conversation:${botId}:${cid}:messages`
-  const { [key]: value } = await Storage.get(key)
-  return value || []
-}
+export function useChatHistory() {
+  const [chatHistory, setHistory] = useState<ChatHistory>()
+  const updateStorage = useSetAtom(chatHistoryAtom)
 
-export async function setConversationMessages(botId: BotId, cid: string, messages: ChatMessageModel[]) {
-  const conversations = await loadHistoryConversations(botId)
-  if (!conversations.some((c) => c.id === cid)) {
-    conversations.unshift({ id: cid, createdAt: Date.now() })
-    await Storage.set({ [`conversations:${botId}`]: conversations })
-  }
-  const key = `conversation:${botId}:${cid}:messages`
-  await Storage.set({ [key]: messages })
-}
+  const renameChat = useCallback(async (conversation: ChatConversation, chatName: string) => {
+    const { conversationId, conversationSignature } = conversation
 
-export async function loadHistoryMessages(botId: BotId): Promise<ConversationWithMessages[]> {
-  const conversations = await loadHistoryConversations(botId)
-  const messagesList = await Promise.all(conversations.map((c) => loadConversationMessages(botId, c.id)))
-  return zip(conversations, messagesList).map(([c, messages]) => ({
-    id: c!.id,
-    createdAt: c!.createdAt,
-    messages: messages!,
-  }))
-}
+    await fetchProxy({
+      url: 'https://sydney.bing.com/sydney/RenameChat',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chatName,
+        conversationId,
+        conversationSignature,
+        participant: { id: chatHistory?.clientId },
+        source: 'cib',
+        optionsSets: ['autosave'],
+      }),
+    })
+    refreshChats()
+  }, [chatHistory])
 
-export async function deleteHistoryMessage(botId: BotId, conversationId: string, messageId: string) {
-  const messages = await loadConversationMessages(botId, conversationId)
-  const newMessages = messages.filter((m) => m.id !== messageId)
-  await setConversationMessages(botId, conversationId, newMessages)
-  if (!newMessages.length) {
-    await deleteHistoryConversation(botId, conversationId)
+  const deleteChat = useCallback(async (conversation: ChatConversation) => {
+    const { conversationId, conversationSignature } = conversation
+
+    await fetchProxy({
+      url: 'https://sydney.bing.com/sydney/DeleteSingleConversation',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversationId,
+        conversationSignature,
+        participant: { id: chatHistory?.clientId },
+        source: 'cib',
+        optionsSets: ['autosave'],
+      }),
+    })
+    refreshChats()
+  }, [chatHistory])
+
+  const updateMessage = useCallback(async (conversation: ChatConversation) => {
+    const { conversationId, conversationSignature } = conversation
+
+    const uri = new URL('https://sydney.bing.com/sydney/GetConversation')
+    uri.searchParams.append('conversationId', conversationId)
+    uri.searchParams.append('conversationSignature', conversationSignature)
+    uri.searchParams.append('participantId', chatHistory?.clientId || '')
+    uri.searchParams.append('source', 'cib')
+    const data = await fetchProxy({
+      url: uri.toString(),
+      method: 'GET',
+    })
+    console.log('data', data)
+    updateStorage(data)
+  }, [chatHistory])
+
+  const refreshChats = useCallback(async () => {
+    const data = await fetchProxy({
+      url: 'https://www.bing.com/turing/conversation/chats',
+      method: 'GET',
+    })
+    setHistory(data || {})
+  }, [])
+
+  return {
+    chatHistory,
+    refreshChats,
+    renameChat,
+    deleteChat,
+    updateMessage,
   }
 }

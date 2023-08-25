@@ -3,9 +3,12 @@ import { BingConversationStyle, ChatMessageModel, BotId } from '@/lib/bots/bing/
 import { nanoid } from '@/lib/utils'
 import { atom } from 'jotai'
 import { atomWithImmer } from 'jotai-immer'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import { atomFamily } from 'jotai/utils'
+
 import { atomWithHash, atomWithLocation } from 'jotai-location'
+import { initialMessages } from '../../tests/fixtures/messages'
+import storage from './storage'
 
 export const GreetMessages = [
   '谢谢你! 知道你什么时候准备好继续前进总是很有帮助的。我现在能为你回答什么问题?',
@@ -33,6 +36,14 @@ const createBotInstance = () => {
   })
 }
 
+export const chatHistoryAtom = atomWithStorage<{
+  clientId: string;
+  history?: ChatMessageModel[],
+}>('chatHistory', {
+  clientId: '',
+  history: [],
+}, createJSONStorage(storage))
+
 export const chatFamily = atomFamily(
   (param: Param) => {
     return atomWithImmer({
@@ -52,3 +63,4 @@ export const hashAtom = atomWithHash('dialog', '')
 export const locationAtom = atomWithLocation()
 
 export const voiceListenAtom = atom(false)
+

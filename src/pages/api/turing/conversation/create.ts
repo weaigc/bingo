@@ -3,6 +3,7 @@ export const runtime = 'experimental-edge'
 const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url)
   const headers = {
     "x-forwarded-for": req.headers.get('x-forwarded-for')! || undefined,
     "Accept-Encoding": req.headers.get('accept-encoding')! || undefined,
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
   }
   console.log('req headers', headers)
 
-  return fetch(API_ENDPOINT, {
+  return fetch(`${API_ENDPOINT}?${searchParams.toString()}`, {
     method: 'GET',
     // @ts-ignore
     headers,

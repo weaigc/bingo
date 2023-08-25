@@ -124,7 +124,7 @@ export class BingWebBot {
     }
   }
 
-  async createConversation(): Promise<ConversationResponse> {
+  async createConversation(conversationId?: string): Promise<ConversationResponse> {
     const headers = {
       'Accept-Encoding': 'gzip, deflate, br, zsdch',
       'User-Agent': this.ua,
@@ -134,7 +134,8 @@ export class BingWebBot {
 
     let resp: ConversationResponse | undefined
     try {
-      const response = await fetch(this.endpoint + '/api/create', { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
+      const search = conversationId ? `?conversationId=${encodeURIComponent(conversationId)}` : ''
+      const response = await fetch(`${this.endpoint}/api/create${search}`, { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
       if (response.status === 404) {
         throw new ChatError('Not Found', ErrorCode.NOTFOUND_ERROR)
       }

@@ -1,10 +1,10 @@
 import ClearIcon from '@/assets/images/clear.svg'
 import RefreshIcon from '@/assets/images/refresh.svg'
 import { cn } from '@/lib/utils'
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 import { SVG } from './ui/svg'
 
-type ChatAttachmentsProps = Pick<ReturnType<typeof useBing>, 'attachmentList' | 'setAttachmentList' | 'uploadImage'>
+type ChatAttachmentsProps = Pick<BingReturnType, 'attachmentList' | 'setAttachmentList' | 'uploadImage'>
 
 export function ChatAttachments({ attachmentList = [], setAttachmentList, uploadImage }: ChatAttachmentsProps) {
   return attachmentList.length ? (

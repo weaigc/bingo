@@ -1,4 +1,4 @@
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 
 const exampleMessages = [
   {
@@ -15,7 +15,7 @@ const exampleMessages = [
   }
 ]
 
-export function WelcomeScreen({ setInput }: Pick<ReturnType<typeof useBing>, 'setInput'>) {
+export function WelcomeScreen({ setInput }: Pick<BingReturnType, 'setInput'>) {
   return (
     <div className="welcome-container flex">
       {exampleMessages.map(example => (

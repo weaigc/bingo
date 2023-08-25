@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --cib-comp-thread-name-border-radius: 3px;
   --cib-color-foreground-accent-primary: #75306C;
   --cib-color-foreground-accent-secondary: #692B61;
   --cib-color-foreground-accent-tertiary: #5E2656;
@@ -1682,9 +1683,29 @@ button {
     display: flex;
     flex-direction: column;
     padding: 4px;
-    overflow: hidden;
-    max-block-size: calc(100% - 44px);
+    overflow-y: auto;
+    max-height: calc(100vh - 250px);
     box-sizing: border-box;
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      display: none;
+    }
+    &::-webkit-scrollbar-button:start:decrement,
+    &::-webkit-scrollbar-button:end:increment  {
+        height: 30px;
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-track-piece  {
+        background-color: #3b3b3b;
+    -webkit-border-radius: 16px;
+    }
+    &::-webkit-scrollbar-thumb:vertical {
+        height: 50px;
+        background-color: #666;
+        border: 1px solid #eee;
+        -webkit-border-radius: 6px;
+    }
   }
 
   .thread {
@@ -1702,7 +1723,7 @@ button {
     flex-direction: column;
     gap: 5px;
 
-    &:hover {
+    &:hover,&.active {
       background: var(--cib-color-background-surface-card-primary);
       box-shadow: var(--cib-shadow-elevation-1);
 
@@ -1721,13 +1742,12 @@ button {
       .time {
         display: none;
       }
-    }
-
-    &:not(:hover) {
       .controls {
-        display: none;
+        display: flex;
       }
     }
+
+
 
     &>* {
       width: 100%;
@@ -1770,12 +1790,18 @@ button {
   }
 
   .controls {
-    display: flex;
+    display: none;
     align-items: center;
   }
 
   .description {
     -webkit-mask-image: linear-gradient(to right, var(--cib-color-background-surface-app-primary) 90%, transparent);
+  }
+
+  .active {
+    .description {
+      -webkit-mask-image: none;
+    }
   }
 
   .name {
@@ -1791,6 +1817,15 @@ button {
     font-size: var(--cib-type-body1-font-size);
     line-height: var(--cib-type-body1-line-height);
     font-weight: var(--cib-type-body1-font-weight);
+  }
+
+  .input-name {
+    border-radius: var(--cib-comp-thread-name-border-radius);
+    outline: none;
+    border: 1px solid var(--cib-color-stroke-accent-primary);
+    pointer-events: auto;
+    width: 226px;
+    padding-block: calc( ( 20px - var(--cib-type-body1-line-height) - 2px ) / 2 );
   }
 
   .time {

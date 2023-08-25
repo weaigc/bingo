@@ -13,11 +13,11 @@ import { SVG } from "./ui/svg"
 import PasteIcon from '@/assets/images/paste.svg'
 import UploadIcon from '@/assets/images/upload.svg'
 import CameraIcon from '@/assets/images/camera.svg'
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 import { cn } from '@/lib/utils'
 import { ImageUtils } from "@/lib/image"
 
-interface ChatImageProps extends Pick<ReturnType<typeof useBing>, 'uploadImage'> {}
+interface ChatImageProps extends Pick<BingReturnType, 'uploadImage'> {}
 
 const preventDefault: MouseEventHandler<HTMLDivElement> = (event) => {
   event.nativeEvent.stopImmediatePropagation()

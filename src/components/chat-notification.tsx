@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 import IconWarning from '@/assets/images/warning.svg'
 import { ChatError, ErrorCode, ChatMessageModel } from '@/lib/bots/bing/types'
 import { ExternalLink } from './external-link'
-import { useBing } from '@/lib/hooks/use-bing'
+import { BingReturnType } from '@/lib/hooks/use-bing'
 import { SVG } from './ui/svg'
 
-export interface ChatNotificationProps extends Pick<ReturnType<typeof useBing>, 'bot'> {
+export interface ChatNotificationProps extends Pick<BingReturnType, 'bot'> {
   message?: ChatMessageModel
 }
 

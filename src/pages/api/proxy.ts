@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     const text = await response.text()
       res.writeHead(200, {
-        'Content-Type': 'application/text',
+        'Content-Type': 'application/text; charset=UTF-8',
         'x-url': response.url,
         'x-status': response.status,
       })

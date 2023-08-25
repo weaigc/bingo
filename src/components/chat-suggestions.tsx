@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { atom, useAtom } from 'jotai'
 import HelpIcon from '@/assets/images/help.svg'
 import DismissFillIcon from '@/assets/images/dismiss-fill.svg'
@@ -22,9 +22,14 @@ export function ChatSuggestions({ setInput, suggestions = [] }: ChatSuggestionsP
     }
   })
 
-  useEffect(() => {
+  useMemo(() => {
     setSuggestions(suggestions)
-    window.scrollBy(0, 800)
+  }, [suggestions, setSuggestions])
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollBy(0, 800)
+    }, 200)
   }, [])
 
   return currentSuggestions?.length ? (

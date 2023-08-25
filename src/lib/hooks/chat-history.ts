@@ -89,10 +89,13 @@ export function useChatHistory() {
     uri.searchParams.append('source', 'cib')
     const data = await fetchProxy({
       url: uri.toString(),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       method: 'GET',
     })
     console.log('data', data)
-    updateStorage(data)
+    updateStorage({ clientId: chatHistory?.clientId || '', conversationId, history: [{ id: '0', text: 'hello', author: 'user' }] })
   }, [chatHistory])
 
   const refreshChats = useCallback(async () => {

@@ -1,7 +1,7 @@
 import { BingWebBot } from '@/lib/bots/bing'
-import { BingConversationStyle, ChatMessageModel, BotId } from '@/lib/bots/bing/types'
+import { BingConversationStyle, ChatMessageModel, BotId, ConversationInfoBase } from '@/lib/bots/bing/types'
 import { nanoid } from '@/lib/utils'
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai'
 import { atomWithImmer } from 'jotai-immer'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import { atomFamily } from 'jotai/utils'
@@ -37,13 +37,11 @@ const createBotInstance = () => {
 }
 
 export const chatHistoryAtom = atomWithStorage<{
-  clientId: string;
-  conversationId: string;
-  history?: ChatMessageModel[],
+  conversation?: Partial<ConversationInfoBase>;
+  messages?: ChatMessageModel[],
 }>('chatHistory', {
-  clientId: '',
-  conversationId: '',
-  history: initialMessages,
+  conversation: {},
+  messages: initialMessages,
 }, createJSONStorage(storage))
 
 export const chatFamily = atomFamily(
@@ -54,7 +52,7 @@ export const chatFamily = atomFamily(
       messages: [] as ChatMessageModel[],
       generatingMessageId: '',
       abortController: undefined as AbortController | undefined,
-      conversationId: nanoid(),
+      conversation: {} as Partial<ConversationInfoBase>,
     })
   },
   (a, b) => a.botId === b.botId && a.page === b.page,

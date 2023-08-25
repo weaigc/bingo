@@ -35,7 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Providers attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex flex-col flex-1">{children}</main>
+            <main>{children}</main>
           </div>
           <TailwindIndicator />
         </Providers>

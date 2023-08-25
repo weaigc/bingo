@@ -71,10 +71,7 @@ export interface SendMessageParams<T> {
   signal?: AbortSignal
 }
 
-export interface ConversationResponse {
-  conversationId: string
-  clientId: string
-  conversationSignature: string
+export interface ConversationResponse extends ConversationInfoBase {
   result: {
     value: string
     message?: string
@@ -137,11 +134,14 @@ export enum InvocationEventType {
 
 // https://github.com/bytemate/bingchat-api/blob/main/src/lib.ts
 
-export interface ConversationInfo {
+export interface ConversationInfoBase {
   conversationId: string
   clientId: string
   conversationSignature: string
   invocationId: number
+}
+
+export interface ConversationInfo extends ConversationInfoBase {
   conversationStyle: BingConversationStyle
   prompt: string
   imageUrl?: string
@@ -151,7 +151,6 @@ export interface BingChatResponse {
   conversationSignature: string
   conversationId: string
   clientId: string
-  invocationId: number
   conversationExpiryTime: Date
   response: string
   details: ChatResponseMessage

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
@@ -18,11 +18,12 @@ import { useBing } from '@/lib/hooks/use-bing'
 import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { ChatNotification } from './chat-notification'
 import { Settings } from './settings'
+import { ChatHistory } from './chat-history'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
 export default function Chat({ className }: ChatProps) {
-
+  const [expand, setExpand] = useState(false)
   const [bingStyle, setBingStyle] = useAtom(bingConversationStyleAtom)
   const {
     messages,
@@ -46,34 +47,43 @@ export default function Chat({ className }: ChatProps) {
     })
   }, [])
 
+  const onExpaned = () => {
+    setExpand(true)
+  }
+
   return (
-    <div className={cn('flex flex-1 flex-col', bingStyle.toLowerCase())}>
+    <div className={cn(bingStyle.toLowerCase(), { 'side-panel-expanded': expand })}>
+      <ChatHistory onExpaned={onExpaned} />
       <div className="global-background" />
       <Settings />
-      <div className={cn('flex-1 pb-16', className)}>
-        <ChatHeader />
-        <WelcomeScreen setInput={setInput} />
-        <ToneSelector type={bingStyle} onChange={setBingStyle} />
-        {messages.length ? (
-          <>
-            <ChatList messages={messages} />
-            <ChatScrollAnchor trackVisibility={generating} />
-            <ChatNotification message={messages.at(-1)} bot={bot} />
-            {messages.at(-1)?.suggestedResponses && <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />}
+      <div className="flex justify-center left-0 w-full">
+        <div className={cn('main-root items-center flex-1 pb-16', className)}>
+          <div className="main-content">
+            <ChatHeader />
+            <WelcomeScreen setInput={setInput} />
+            <ToneSelector type={bingStyle} onChange={setBingStyle} />
+            {messages.length ? (
+              <>
+                <ChatList messages={messages} />
+                <ChatScrollAnchor trackVisibility={generating} />
+                <ChatNotification message={messages.at(-1)} bot={bot} />
+                {messages.at(-1)?.suggestedResponses && <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />}
 
-            {generating ? (
-              <div className="flex h-10 items-center justify-center my-4">
-                <button
-                  onClick={stopGenerating}
-                  className="typing-control-item stop"
-                >
-                  <SVG alt="stop" src={StopIcon} width={24} className="mr-1" />
-                  <span>停止响应</span>
-                </button>
-              </div>
+                {generating ? (
+                  <div className="flex h-10 items-center justify-center my-4">
+                    <button
+                      onClick={stopGenerating}
+                      className="typing-control-item stop"
+                    >
+                      <SVG alt="stop" src={StopIcon} width={24} className="mr-1" />
+                      <span>停止响应</span>
+                    </button>
+                  </div>
+                ) : null}
+              </>
             ) : null}
-          </>
-        ) : null}
+          </div>
+        </div>
       </div>
       <ChatPanel
         className="pt-24 z-10"

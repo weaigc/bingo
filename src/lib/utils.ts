@@ -17,7 +17,7 @@ export function formatDate(date: number) {
   } else if (time > dayjs().subtract(1, 'day').startOf('day')) {
     return '昨天'
   } else if (time > dayjs().startOf('year')) {
-    return dayjs(time).format('MM-DD')
+    return dayjs(time).format('M-DD')
   } else {
     return dayjs(time).format('YYYY-MM-DD')
   }

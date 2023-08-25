@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useChatHistory, ChatConversation } from '@/lib/hooks/chat-history'
-import { IconEdit, IconTrash, IconMore, IconDownload, IconCheck, IconClose } from './ui/icons'
+import { IconEdit, IconTrash, IconDownload, IconCheck, IconClose } from './ui/icons'
 import { cn, formatDate } from '@/lib/utils'
-import { BingReturnType } from '@/lib/hooks/use-bing'
 
 interface ConversationTheadProps {
   conversation: ChatConversation
   onRename: (conversation: ChatConversation, chatName: string) => void
   onDelete: (conversation: ChatConversation) => void
   onUpdate: (conversation: ChatConversation) => void
+  onDownload: (conversation: ChatConversation) => void
 }
 
-export function ConversationThead({ conversation, onRename, onDelete, onUpdate }: ConversationTheadProps) {
+export function ConversationThead({ conversation, onRename, onDelete, onUpdate, onDownload }: ConversationTheadProps) {
   const [isEdit, setEdit] = useState(false)
   const [name, setName] = useState(conversation.chatName)
   const handleSave = useCallback(() => {
@@ -25,15 +25,19 @@ export function ConversationThead({ conversation, onRename, onDelete, onUpdate }
   const handleDelete = useCallback(() => {
     onDelete(conversation)
   }, [conversation])
+  const handleDownload = useCallback(() => {
+    onDownload(conversation)
+  }, [conversation])
   useEffect(() => {
     setName(conversation.chatName)
   }, [conversation])
+
   return (
-    <div className={cn('thread select-none', { active: isEdit })} onClick={() => onUpdate(conversation)}>
-      <div className="primary-row flex">
+    <div className={cn('thread', { active: isEdit })}>
+      <div className="primary-row flex w-full">
         <div className="description flex-1">
           {!isEdit ? (
-            <h3 className="name w-[200px]">{name}</h3>
+            <h3 className="name" onClick={() => onUpdate(conversation)}>{name}</h3>
           ) : (<input className="input-name" defaultValue={name} onChange={(event) => setName(event.target.value)} />)}
         </div>
         {!isEdit && (<h4 className="time">{formatDate(conversation.updateTimeUtc)}</h4>)}
@@ -47,7 +51,7 @@ export function ConversationThead({ conversation, onRename, onDelete, onUpdate }
               <IconTrash />
             </button>
 
-            <button className="export icon-button" type="button" aria-label="导出">
+            <button className="export icon-button" type="button" aria-label="导出" onClick={handleDownload}>
               <IconDownload />
             </button>
           </>) : (
@@ -66,34 +70,40 @@ export function ConversationThead({ conversation, onRename, onDelete, onUpdate }
   )
 }
 
-export function ChatHistory({ className }: { className?: string }) {
-  const { chatHistory, refreshChats, deleteChat, renameChat, updateMessage } = useChatHistory()
+export function ChatHistory({ className, onExpaned }: { className?: string, onExpaned: (flag: boolean) => void }) {
+  const { chatHistory, refreshChats, deleteChat, renameChat, updateMessage, downloadMessage } = useChatHistory()
   useEffect(() => {
     refreshChats()
+      .then(res =>{
+        if (res?.chats.length > 0) {
+          onExpaned(true)
+        }
+      })
   }, [])
-  return (
-    <div className={cn('chat-history right-4 z-10 fixed w-[342px]', className)}>
+  return chatHistory?.chats?.length ? (
+    <div className={cn('chat-history right-4 z-50 fixed', className)}>
       <div className="chat-history-header text-sm font-semibold text-left px-4 pb-6">
         历史记录
       </div>
-      {chatHistory?.chats?.length ? (
-        <div className="chat-history-main">
-          <div className="scroller">
-            <div className="surface">
-              <div className="threads w-[310px]">
-                {chatHistory.chats.map((chat) => (
-                  <ConversationThead key={chat.conversationId}
-                    conversation={chat}
-                    onDelete={deleteChat}
-                    onRename={renameChat}
-                    onUpdate={updateMessage}
-                  />
-                ))}
-              </div>
+
+      <div className="chat-history-main">
+        <div className="scroller">
+          <div className="surface">
+            <div className="threads">
+              {chatHistory.chats.map((con) => (
+                <ConversationThead
+                  key={con.conversationId}
+                  conversation={con}
+                  onDelete={deleteChat}
+                  onRename={renameChat}
+                  onUpdate={updateMessage}
+                  onDownload={downloadMessage}
+                />
+              ))}
             </div>
           </div>
         </div>
-      ) : []}
+      </div>
     </div>
-  )
+  ) : null
 }

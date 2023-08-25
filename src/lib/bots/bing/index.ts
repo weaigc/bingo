@@ -11,13 +11,14 @@ import {
   ErrorCode,
   ChatUpdateCompleteResponse,
   ImageInfo,
-  KBlobResponse
+  KBlobResponse,
+  ConversationInfoBase
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
 import { createChunkDecoder } from '@/lib/utils'
 
-type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle }>
+type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, conversation: Partial<ConversationInfoBase> }>
 
 const OPTIONS_SETS = [
   'nlu_direct_response_filter',
@@ -168,14 +169,14 @@ export class BingWebBot {
     return resp
   }
 
-  private async createContext(conversationStyle: BingConversationStyle) {
+  private async createContext(conversationStyle: BingConversationStyle, conversation?: ConversationInfoBase) {
     if (!this.conversationContext) {
-      const conversation = await this.createConversation()
+      conversation = conversation?.conversationSignature ? conversation : await this.createConversation() as unknown as ConversationInfo
       this.conversationContext = {
         conversationId: conversation.conversationId,
         conversationSignature: conversation.conversationSignature,
         clientId: conversation.clientId,
-        invocationId: 0,
+        invocationId: conversation.invocationId ?? 0,
         conversationStyle,
         prompt: '',
       }
@@ -185,7 +186,7 @@ export class BingWebBot {
 
   async sendMessage(params: Params) {
     try {
-      await this.createContext(params.options.bingConversationStyle)
+      await this.createContext(params.options.bingConversationStyle, params.options.conversation as ConversationInfoBase)
       Object.assign(this.conversationContext!, { prompt: params.prompt, imageUrl: params.imageUrl })
       return this.sydneyProxy(params)
     } catch (error) {

@@ -1,4 +1,4 @@
-import { ChatResponseMessage, BingChatResponse } from './types'
+import { ChatResponseMessage } from './types'
 
 export function convertMessageToMarkdown(message: ChatResponseMessage): string {
   for (const card of message.adaptiveCards??[]) {

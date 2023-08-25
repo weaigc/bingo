@@ -2,18 +2,19 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue } from 'jotai'
-import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom } from '@/state'
+import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom } from '@/state'
 import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
 
 export function useBing(botId: BotId = 'bing') {
   const chatAtom = useMemo(() => chatFamily({ botId, page: 'singleton' }), [botId])
+  const [chatState, setChatState] = useAtom(chatAtom)
+  const [historyValue, setHistoryValue] = useAtom(chatHistoryAtom)
   const [enableTTS] = useAtom(voiceAtom)
   const speaker = useMemo(() => new TTS(), [])
   const [hash, setHash] = useAtom(hashAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
-  const [chatState, setChatState] = useAtom(chatAtom)
   const [input, setInput] = useState('')
   const [attachmentList, setAttachmentList] = useState<FileItem[]>([])
 
@@ -33,6 +34,7 @@ export function useBing(botId: BotId = 'bing') {
     async (input: string, options = {}) => {
       const botMessageId = nanoid()
       const imageUrl = attachmentList?.[0]?.status === 'loaded' ? attachmentList[0].url : undefined
+
       setChatState((draft) => {
         const text = imageUrl ? `${input}\n\n![image](${imageUrl})` : input
         draft.messages.push({ id: nanoid(), text, author: 'user' }, { id: botMessageId, text: '', author: 'bot' })
@@ -44,12 +46,13 @@ export function useBing(botId: BotId = 'bing') {
         draft.abortController = abortController
       })
       speaker.reset()
-      await chatState.bot.sendMessage({
+      const instance = await chatState.bot.sendMessage({
         prompt: input,
         imageUrl,
         options: {
           ...options,
           bingConversationStyle,
+          conversation: chatState.conversation,
         },
         signal: abortController.signal,
         onEvent(event) {
@@ -79,6 +82,9 @@ export function useBing(botId: BotId = 'bing') {
             })
           } else if (event.type === 'DONE') {
             setChatState((draft) => {
+              setHistoryValue({
+                messages: draft.messages,
+              })
               draft.abortController = undefined
               draft.generatingMessageId = ''
             })
@@ -86,7 +92,7 @@ export function useBing(botId: BotId = 'bing') {
         },
       })
     },
-    [botId, attachmentList, chatState.bot, bingConversationStyle, speaker, setChatState, updateMessage],
+    [botId, attachmentList, chatState.bot,  chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
   )
 
   const uploadImage = useCallback(async (imgUrl: string) => {
@@ -105,8 +111,8 @@ export function useBing(botId: BotId = 'bing') {
     setChatState((draft) => {
       draft.abortController = undefined
       draft.generatingMessageId = ''
+      draft.conversation = {}
       draft.messages = [{ author: 'bot', text: GreetMessages[Math.floor(GreetMessages.length * Math.random())], id: nanoid() }]
-      draft.conversationId = nanoid()
     })
   }, [chatState.bot, setChatState])
 
@@ -130,6 +136,21 @@ export function useBing(botId: BotId = 'bing') {
       setHash('')
     }
   }, [hash, setHash, resetConversation])
+
+  // useEffect(() => {
+  //   setChatState((draft) => {
+  //     draft.abortController = undefined
+  //     draft.generatingMessageId = ''
+  //     draft.messages = historyValue.history || []
+  //     draft.conversationId = historyValue.conversationId
+  //     setTimeout(() => {
+  //       window.scrollTo({
+  //         top: document.body.offsetHeight,
+  //         behavior: 'smooth'
+  //       })
+  //     }, 1000)
+  //   })
+  // }, [])
 
   const chat = useMemo(
     () => ({

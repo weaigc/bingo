@@ -126,7 +126,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
-    cookie: `_U=${_U}` || '',
+    cookie: `_U=${_U}`,
   }
 }
 

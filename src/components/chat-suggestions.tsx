@@ -24,8 +24,8 @@ export function ChatSuggestions({ setInput, suggestions = [] }: ChatSuggestionsP
 
   useEffect(() => {
     setSuggestions(suggestions)
-    window.scrollBy(0, 400)
-  }, [suggestions, setSuggestions])
+    window.scrollBy(0, 800)
+  }, [])
 
   return currentSuggestions?.length ? (
     <div className="py-6">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
@@ -18,7 +18,6 @@ import { useBing } from '@/lib/hooks/use-bing'
 import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { ChatNotification } from './chat-notification'
 import { Settings } from './settings'
-import { ChatHistory } from './chat-history'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
@@ -49,7 +48,6 @@ export default function Chat({ className }: ChatProps) {
 
   return (
     <div className={cn('flex flex-1 flex-col', bingStyle.toLowerCase())}>
-      <ChatHistory bot={bot} />
       <div className="global-background" />
       <Settings />
       <div className={cn('flex-1 pb-16', className)}>
@@ -61,7 +59,7 @@ export default function Chat({ className }: ChatProps) {
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={generating} />
             <ChatNotification message={messages.at(-1)} bot={bot} />
-            <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />
+            {messages.at(-1)?.suggestedResponses && <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />}
 
             {generating ? (
               <div className="flex h-10 items-center justify-center my-4">

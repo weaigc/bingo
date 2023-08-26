@@ -21,13 +21,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const response = await fetch(`https://${endpoint || 'www.bing.com'}/turing/conversation/create?${query}`, { method: 'GET', headers })
       debug('status', headers, response.status, response.url)
       if (response.status === 200) {
+        const json = await response.json().catch(e => {})
+        if (!json?.conversationSignature) {
+          continue
+        }
         res.setHeader('set-cookie', [headers.cookie, `BING_IP=${headers['x-forwarded-for']}`]
           .map(cookie => `${cookie}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))
         debug('headers', headers)
         res.writeHead(200, {
           'Content-Type': 'application/json',
         })
-        res.end(await response.text())
+        res.end(JSON.stringify(json))
         return
       }
       await sleep(2000)

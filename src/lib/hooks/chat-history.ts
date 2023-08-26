@@ -22,7 +22,7 @@ export interface ChatHistory {
 }
 
 const proxyEndpoint = '/api/proxy'
-const fetchProxy = (data: any) => {
+const fetchProxy = (data: any, showError = true) => {
   return fetch(proxyEndpoint, {
     method: 'POST',
     headers: {
@@ -31,13 +31,15 @@ const fetchProxy = (data: any) => {
     credentials: 'include',
     body: JSON.stringify(data),
   }).then(res => res.json()).catch(e => {
-    toast.error('Failed to operation')
+    if (showError) {
+      toast.error('Failed to operation')
+    }
     throw e
   })
 }
 
-export function useChatHistory(botId = 'bing') {
-  const chatAtom = useMemo(() => chatFamily({ botId: 'bing', page: 'singleton' }), [botId])
+export function useChatHistory(historyEnabled: boolean) {
+  const chatAtom = useMemo(() => chatFamily({ botId: 'bing', page: 'singleton' }), ['bing'])
   const [chatState, setChatState] = useAtom(chatAtom)
   const [chatHistory, setHistory] = useState<ChatHistory>()
 
@@ -157,20 +159,18 @@ export function useChatHistory(botId = 'bing') {
     const data = await fetchProxy({
       url: 'https://www.bing.com/turing/conversation/chats',
       method: 'GET',
-    }).catch(e => {
-      console.log(e)
-      return
-    })
+    }, false)
     setHistory(data || {})
     return data
   }, [])
 
   useEffect(() => {
-    if (chatState.generatingMessageId === '') {
+    if (!historyEnabled) return
+    if (chatState.generatingMessageId === '' && [3, 2].includes(chatState.messages.length)) {
       debug('refresh history')
       refreshChats()
     }
-  }, [chatState.generatingMessageId, chatState.messages?.[1]?.text])
+  }, [historyEnabled, chatState.generatingMessageId, chatState.messages.length])
 
   return {
     chatHistory,

@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { useChatHistory, ChatConversation } from '@/lib/hooks/chat-history'
 import { IconEdit, IconTrash, IconDownload, IconCheck, IconClose } from './ui/icons'
 import { cn, formatDate } from '@/lib/utils'
+import { useAtomValue } from 'jotai'
+import { historyAtom } from '@/state'
+import { debug } from '@/lib/isomorphic'
 
 interface ConversationTheadProps {
   conversation: ChatConversation
@@ -71,8 +74,11 @@ export function ConversationThead({ conversation, onRename, onDelete, onUpdate, 
 }
 
 export function ChatHistory({ className, onExpaned }: { className?: string, onExpaned: (flag: boolean) => void }) {
-  const { chatHistory, refreshChats, deleteChat, renameChat, updateMessage, downloadMessage } = useChatHistory()
+  const historyEnabled = useAtomValue(historyAtom)
+  const { chatHistory, refreshChats, deleteChat, renameChat, updateMessage, downloadMessage } = useChatHistory(historyEnabled)
   useEffect(() => {
+    debug('historyEnabled', historyEnabled)
+    if (!historyEnabled) return
     refreshChats()
       .then(res =>{
         if (res?.chats.length > 0) {

@@ -26,6 +26,7 @@ export const GreetMessages = [
 
 export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Balanced, undefined, { unstable_getOnInit: true })
 export const voiceAtom = atomWithStorage<boolean>('enableTTS', false, undefined, { unstable_getOnInit: true })
+export const historyAtom = atomWithStorage<boolean>('enableHistory', false, undefined, { unstable_getOnInit: true })
 
 type Param = { botId: BotId; page: string }
 

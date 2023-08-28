@@ -1,6 +1,5 @@
 import { BingWebBot } from '@/lib/bots/bing'
 import { BingConversationStyle, ChatMessageModel, BotId, ConversationInfoBase } from '@/lib/bots/bing/types'
-import { nanoid } from '@/lib/utils'
 import { atom } from 'jotai'
 import { atomWithImmer } from 'jotai-immer'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -24,11 +23,17 @@ export const GreetMessages = [
   '好的，我已准备好新话题。我们应该一起了解哪些内容？'
 ]
 
+type Param = { botId: BotId; page: string }
+export interface Prompt {
+  title: string
+  prompt: string
+}
+
+
 export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Balanced, undefined, { unstable_getOnInit: true })
 export const voiceAtom = atomWithStorage<boolean>('enableTTS', false, undefined, { unstable_getOnInit: true })
 export const historyAtom = atomWithStorage<boolean>('enableHistory', false, undefined, { unstable_getOnInit: true })
-
-type Param = { botId: BotId; page: string }
+export const localPromptsAtom = atomWithStorage<Prompt[]>('prompts', [], undefined, { unstable_getOnInit: true })
 
 const createBotInstance = () => {
   return new BingWebBot({

@@ -19,6 +19,7 @@ import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { ChatNotification } from './chat-notification'
 import { Settings } from './settings'
 import { ChatHistory } from './chat-history'
+import { PromptsManage } from './prompts'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
@@ -53,6 +54,7 @@ export default function Chat({ className }: ChatProps) {
 
   return (
     <div className={cn(bingStyle.toLowerCase(), { 'side-panel-expanded': expand })}>
+      <PromptsManage insertPrompt={setInput} />
       <ChatHistory onExpaned={onExpaned} />
       <div className="global-background" />
       <Settings />

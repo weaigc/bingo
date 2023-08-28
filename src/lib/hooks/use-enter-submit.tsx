@@ -1,27 +1,33 @@
-import { useRef, type RefObject } from 'react'
+import { useRef, type RefObject, useState } from 'react'
 
-export function useEnterSubmit(): {
-  formRef: RefObject<HTMLFormElement>
-  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void
+export function useEnterSubmit(sumbitCb: () => void): {
+  onKeyDown: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  curKey: string;
 } {
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<() => void>(sumbitCb)
+  const [curKey, setCurKey] = useState('')
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLTextAreaElement>
   ): void => {
     if (
-      event.key === 'Enter' &&
       !event.shiftKey &&
+      !event.ctrlKey &&
       !event.nativeEvent.isComposing
     ) {
-      window.scrollTo({
-        top: document.body.offsetHeight,
-        behavior: 'smooth'
-      })
-      formRef.current?.requestSubmit()
-      event.preventDefault()
+      setCurKey(event.key)
+      if (
+        event.key === 'Enter'
+      ) {
+        window.scrollTo({
+          top: document.body.offsetHeight,
+          behavior: 'smooth'
+        })
+        formRef.current?.()
+        event.preventDefault()
+      }
     }
   }
 
-  return { formRef, onKeyDown: handleKeyDown }
+  return { onKeyDown: handleKeyDown, curKey }
 }

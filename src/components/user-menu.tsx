@@ -32,7 +32,7 @@ export function UserMenu() {
     <div className="flex items-center justify-between">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="pl-0">
+          <Button className="pl-0" variant="secondary">
             <div className="flex items-center justify-center text-xs font-medium uppercase rounded-full select-none h-7 w-7 shrink-0 bg-muted/50 text-muted-foreground">
               <SVG alt="settings" src={SettingIcon} width={20} />
             </div>
@@ -56,6 +56,15 @@ export function UserMenu() {
             className="cursor-pointer"
           >
             语音设置
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() =>
+              location.href='#dialog="prompts"'
+            }
+            className="cursor-pointer"
+          >
+            提示词管理
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>

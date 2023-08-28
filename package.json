@@ -1,6 +1,6 @@
 {
   "name": "bingo",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "scripts": {
     "dev": "cross-env DEBUG=bingo* next dev --hostname 0.0.0.0",
@@ -54,6 +54,7 @@
     "react-hot-toast": "^2.4.1",
     "react-intersection-observer": "^9.5.2",
     "react-markdown": "^8.0.7",
+    "react-spinners": "^0.13.8",
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.5.0",
     "react-viewport-list": "^7.1.1",

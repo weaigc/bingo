@@ -40,7 +40,7 @@ export function ConversationThead({ conversation, onRename, onDelete, onUpdate, 
       <div className="primary-row flex w-full">
         <div className="description flex-1">
           {!isEdit ? (
-            <h3 className="name" onClick={() => onUpdate(conversation)}>{name}</h3>
+            <h3 className="name" title={name} onClick={() => onUpdate(conversation)}>{name}</h3>
           ) : (<input className="input-name" defaultValue={name} onChange={(event) => setName(event.target.value)} />)}
         </div>
         {!isEdit && (<h4 className="time">{formatDate(conversation.updateTimeUtc)}</h4>)}

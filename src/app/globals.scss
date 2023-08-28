@@ -4,6 +4,7 @@
 
 :root {
   --cib-comp-thread-name-border-radius: 3px;
+  --arrow-start-offset: 16px;
   --cib-color-foreground-accent-primary: #75306C;
   --cib-color-foreground-accent-secondary: #692B61;
   --cib-color-foreground-accent-tertiary: #5E2656;
@@ -302,7 +303,9 @@
   --button-compose-collapsed-width: 48px;
   --button-compose-expanded-width: 116px;
   --cib-comp-feedback-host-border-radius: 8px;
+  --cib-comp-feedback-button-border-radius: 6px;
   font-family: var(--cib-font-text);
+  --primary-border: var(--cib-color-stroke-accent-primary);
 }
 
 .precise {
@@ -349,6 +352,12 @@
   background: var(--cib-color-background-surface-app-primary);
 }
 
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+  color: var(--cib-color-foreground-on-accent-primary);
+}
+
 body {
   background: var(--cib-color-background-surface-app-primary);
 }
@@ -387,7 +396,7 @@ body {
 
 .scroll-button {
   bottom: 4rem;
-  z-index: 100;
+  z-index: 50;
 
   @media (max-width: 767px) {
     bottom: 8rem;
@@ -624,7 +633,7 @@ body {
   position: absolute;
   top: -36px;
   inset-inline-end: 0px;
-  z-index: 1001;
+  z-index: 51;
   display: flex;
   flex-direction: row;
   will-change: transform;
@@ -1083,6 +1092,15 @@ button {
   padding-inline-end: 84px;
 }
 
+.action-button {
+  padding: 8px;
+  outline: transparent solid 1px;
+  border-radius: var(--cib-comp-feedback-button-border-radius);
+  &:hover {
+    background: var(--cib-color-fill-subtle-secondary);
+  }
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -1094,8 +1112,7 @@ button {
   height: 100%;
   min-height: 48px;
   box-sizing: border-box;
-  padding-block: 13px 11px;
-  padding-inline: 16px;
+  padding: 13px 16px;
   z-index: 1;
   background: var(--cib-color-background-surface-solid-quaternary);
   border-radius: var(--cib-action-bar-search-border-radius);
@@ -1137,6 +1154,7 @@ button {
     flex-direction: row;
     width: 100%;
     gap: 16px;
+    padding-bottom: 24px;
     justify-content: space-between;
     align-items: flex-start;
   }
@@ -1263,7 +1281,7 @@ button {
     position: absolute;
     bottom: 42px;
     width: 380px;
-    inset-inline-end: -50px;
+    inset-inline-start: calc(0px - var(--arrow-start-offset));
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1386,7 +1404,6 @@ button {
     &::after {
       content: "";
       position: absolute;
-      inset-inline-end: 50px;
       top: 100%;
       inset-inline-start: var(--arrow-start-offset);
       border-top-width: 10px;
@@ -1606,8 +1623,7 @@ button {
   bottom: 4px;
   inset-inline: 0px;
   box-sizing: border-box;
-  padding-block: 0px;
-  padding-inline: 16px 8px;
+  padding: 8px;
   opacity: 0;
   transition-property: opacity;
   transition-duration: var(--cib-motion-duration-faster);
@@ -1891,5 +1907,40 @@ button {
 .voice-button.voice-button-theme {
   .voice-button-item {
     background-color: var(--cib-color-foreground-accent-primary);
+  }
+}
+
+.dialog {
+  z-index: 101;
+}
+
+.prompt-container {
+  border-radius: var(--cib-border-radius-large);
+  max-height: max(324px, 60%);
+  height: min-content;
+  overflow-y: auto;
+  .surface {
+    display: flex;
+    flex-direction: column;
+    max-height: max(324px, 60%);
+    height: min-content;
+    overflow-y: auto;
+    color: var(--cib-color-foreground-accent-primary);
+    border-radius: var(--cib-border-radius-large);
+    background: var(--cib-color-background-surface-app-primary);
+    box-shadow: var(--cib-shadow-card);
+
+    .row {
+      flex-direction: row;
+      width: 100%;
+      position: relative;
+      border-radius: var(--cib-comp-thread-host-border-radius);
+      cursor: pointer;
+      padding-block: 9px;
+      padding-inline: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
   }
 }

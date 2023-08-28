@@ -319,6 +319,7 @@ export class BingWebBot {
           credentials: 'include'
         })
         .then(res => res.text())
+
       if (response) {
         this.lastText += '\n' + response
       }

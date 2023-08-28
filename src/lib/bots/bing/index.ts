@@ -20,24 +20,77 @@ import { createChunkDecoder } from '@/lib/utils'
 
 type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, conversation: Partial<ConversationInfoBase> }>
 
-const OPTIONS_SETS = [
-  'nlu_direct_response_filter',
-  'deepleo',
-  'disable_emoji_spoken_text',
-  'responsible_ai_policy_235',
-  'enablemm',
-  'iycapbing',
-  'iyxapbing',
-  'objopinion',
-  'rweasgv2',
-  'dagslnv1',
-  'dv3sugg',
-  'autosave',
-  'iyoloxap',
-  'iyoloneutral',
-  'clgalileo',
-  'gencontentv3',
-]
+const getOptionSets = (conversationStyle: BingConversationStyle) => {
+  return {
+    [BingConversationStyle.Creative]: [
+      "nlu_direct_response_filter",
+      "deepleo",
+      "disable_emoji_spoken_text",
+      "responsible_ai_policy_235",
+      "enablemm",
+      "dv3sugg",
+      "machine_affinity",
+      "autosave",
+      "iyxapbing",
+      "iycapbing",
+      "h3imaginative",
+      "adsredirecturl",
+      "bof107v2",
+      "streamw",
+      "rctechalwlst",
+      "agicert",
+      "cdxedtgnd",
+      "eredirecturl",
+      "clgalileo",
+      "gencontentv3"
+    ],
+    [BingConversationStyle.Balanced]: [
+      "nlu_direct_response_filter",
+      "deepleo",
+      "disable_emoji_spoken_text",
+      "responsible_ai_policy_235",
+      "enablemm",
+      "dv3sugg",
+      "machine_affinity",
+      "autosave",
+      "iyxapbing",
+      "iycapbing",
+      "galileo",
+      "adsredirecturl",
+      "bof107v2",
+      "streamw",
+      "rctechalwlst",
+      "agicert",
+      "cdxedtgnd",
+      "eredirecturl",
+      "saharagenconv5",
+      "fluxhint",
+      "glfluxv13"
+    ],
+    [BingConversationStyle.Precise]: [
+      "nlu_direct_response_filter",
+      "deepleo",
+      "disable_emoji_spoken_text",
+      "responsible_ai_policy_235",
+      "enablemm",
+      "dv3sugg",
+      "machine_affinity",
+      "autosave",
+      "iyxapbing",
+      "iycapbing",
+      "h3precise",
+      "adsredirecturl",
+      "bof107v2",
+      "streamw",
+      "rctechalwlst",
+      "agicert",
+      "cdxedtgnd",
+      "eredirecturl",
+      "clgalileo",
+      "gencontentv3"
+    ]
+  }[conversationStyle]
+}
 
 export class BingWebBot {
   protected conversationContext?: ConversationInfo
@@ -60,17 +113,11 @@ export class BingWebBot {
   }
 
   static buildChatRequest(conversation: ConversationInfo) {
-    const optionsSets = OPTIONS_SETS
-    if (conversation.conversationStyle === BingConversationStyle.Precise) {
-      optionsSets.push('h3precise')
-    } else if (conversation.conversationStyle === BingConversationStyle.Creative) {
-      optionsSets.push('h3imaginative')
-    }
     return {
       arguments: [
         {
           source: 'cib',
-          optionsSets,
+          optionsSets: getOptionSets(conversation.conversationStyle),
           allowedMessageTypes: [
             'ActionRequest',
             'Chat',
@@ -86,25 +133,25 @@ export class BingWebBot {
             'SearchQuery',
           ],
           sliceIds: [
-            'winmuid1tf',
-            'anssupfor_c',
-            'imgchatgptv2',
-            'tts2cf',
-            'contansperf',
-            'mlchatpc8500w',
-            'mlchatpc2',
-            'ctrlworkpay',
-            'winshortmsgtf',
-            'cibctrl',
-            'sydtransctrl',
-            'sydconfigoptc',
-            '0705trt4',
-            '517opinion',
-            '628ajcopus0',
-            '330uaugs0',
-            '529rwea',
-            '0626snptrcs0',
-            '424dagslnv1',
+            "629adsredir",
+            "edi",
+            "divkorbl2p",
+            "wrapuxslimc",
+            "wrapnoins",
+            "sydconfigoptt",
+            "0731ziv2s0",
+            "0824cntors0",
+            "816bof107v2",
+            "806log2sphs0",
+            "0518logoss0",
+            "0529streamw",
+            "streamw",
+            "178gentech",
+            "824fluxhi52s0",
+            "0825agicert",
+            "804cdxedtgd",
+            "727udtupms0",
+            "727nrprdrt5"
           ],
           isStartOfSession: conversation.invocationId === 0,
           message: {
@@ -198,6 +245,7 @@ export class BingWebBot {
   }
 
   private async sydneyProxy(params: Params) {
+    this.lastText = ''
     const abortController = new AbortController()
     const response = await fetch(this.endpoint + '/api/sydney', {
       method: 'POST',
@@ -290,7 +338,7 @@ export class BingWebBot {
         ],
         subscriptionId: 'Bing.Chat.Multimodal',
         invokedSkillsRequestData: {
-            enableFaceBlur: true
+          enableFaceBlur: true
         },
         convoData: {
           convoid: this.conversationContext?.conversationId,
@@ -357,7 +405,7 @@ export class BingWebBot {
         if (messages) {
           const message = messages[0]
           if (message.messageType === 'InternalSearchQuery' || message.messageType === 'InternalLoaderMessage') {
-            return params.onEvent({ type: 'UPDATE_ANSWER', data: { text: '', progressText: message.text} })
+            return params.onEvent({ type: 'UPDATE_ANSWER', data: { text: '', progressText: message.text } })
           }
           const text = convertMessageToMarkdown(message)
           this.lastText = text

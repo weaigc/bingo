@@ -22,5 +22,7 @@ jobs:
           cd huggingface
           git config user.name hf4all
           git config user.email hf4all@gmail.com
-          git commit -am "auto build" --amend
+          echo "Last deploy time: $(date)" > DEPLOY_INFO.txt
+          git add DEPLOY_INFO.txt
+          git commit -m "auto deploy $(date)"
           git push https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$SPACE_NAME main -f

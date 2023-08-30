@@ -35,7 +35,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           'x-forwarded-for': headers['x-forwarded-for'],
           'user-agent': headers['User-Agent'],
           cookie: headers['cookie'],
-          'Referer': 'https://www.bing.com/search',
+          Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1',
+          'Sec-Fetch-Dest': 'iframe',
           ...formData.getHeaders()
         }
       }

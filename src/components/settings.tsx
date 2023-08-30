@@ -60,7 +60,7 @@ export function Settings() {
             <DialogDescription>
               请使用 Edge 浏览器
               <ExternalLink
-                href="https://www.bing.com/turing/captcha/challenge"
+                href="https://www.bing.com"
               >
                 打开并登录 Bing
               </ExternalLink>

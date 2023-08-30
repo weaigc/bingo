@@ -90,7 +90,7 @@ export function Settings() {
                 className={`${imageOnly ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
               />
             </Switch>
-            身份信息仅用于画图（账号异常时使用）
+            用户信息仅用于画图（账号异常时使用）
           </div>
 
           {!imageOnly && (

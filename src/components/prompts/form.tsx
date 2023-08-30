@@ -160,7 +160,7 @@ function CommunityPrompts(props: { insertPrompt: (text: string) => void }) {
   return (
     <>
       <div className="flex flex-col gap-2 pt-2 overflow-y-auto">
-        {remotePrompts.map((prompt, index) => (
+        {remotePrompts?.length ? remotePrompts.map((prompt, index) => (
           <PromptItem
             key={index}
             title={prompt.title}
@@ -168,7 +168,7 @@ function CommunityPrompts(props: { insertPrompt: (text: string) => void }) {
             insertPrompt={props.insertPrompt}
             addToLocal={() => copyToLocal(prompt)}
           />
-        ))}
+        )) : <PulseLoader size={10} className="mt-5" color="var(--cib-color-fill-accent-gradient-primary)" />}
       </div>
       <span className="text-sm mt-5 block text-primary-text">
         提示词贡献地址：

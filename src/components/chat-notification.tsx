@@ -59,7 +59,13 @@ function getAction(error: ChatError, reset: () => void) {
   if (error.code === ErrorCode.BING_UNAUTHORIZED) {
     reset()
     return (
-      <a href={`#dialog="settings"`}>没有获取到身份信息或身份信息失效，点此重新设置</a>
+      <a href={`#dialog="settings"`}>没有获取到用户信息或用户信息失效，点此重新设置</a>
+    )
+  }
+  if (error.code === ErrorCode.BING_IMAGE_UNAUTHORIZED) {
+    reset()
+    return (
+      <a href={`#dialog="settings"`}>画图需要用户信息，系统没有获取到有效的用户信息，点此设置</a>
     )
   }
   return error.message

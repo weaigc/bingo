@@ -300,31 +300,33 @@ export class BingWebBot {
   }
 
   private async createImage(prompt: string, id: string) {
-    try {
-      const headers = {
-        'Accept-Encoding': 'gzip, deflate, br, zsdch',
-        'User-Agent': this.ua,
-        'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
-        cookie: this.cookie,
-      }
-      const query = new URLSearchParams({
-        prompt,
-        id
+    const headers = {
+      'Accept-Encoding': 'gzip, deflate, br, zsdch',
+      'User-Agent': this.ua,
+      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+      cookie: this.cookie,
+    }
+    const query = new URLSearchParams({
+      prompt,
+      id
+    })
+    const response = await fetch(this.endpoint + '/api/image?' + query.toString(),
+      {
+        method: 'POST',
+        headers,
+        mode: 'cors',
+        credentials: 'include'
       })
-      const response = await fetch(this.endpoint + '/api/image?' + query.toString(),
-        {
-          method: 'POST',
-          headers,
-          mode: 'cors',
-          credentials: 'include'
-        })
-        .then(res => res.text())
+      .then(async (response) => {
+        if (response.status == 200) {
+          return response.text();
+        } else {
+          throw new ChatError(String(await response.text()), ErrorCode.BING_IMAGE_UNAUTHORIZED)
+        }
+      })
 
-      if (response) {
-        this.lastText += '\n' + response
-      }
-    } catch (err) {
-      console.error('Create Image Error', err)
+    if (response) {
+      this.lastText += '\n' + response
     }
   }
 
@@ -397,6 +399,12 @@ export class BingWebBot {
       debug('bing event', event)
       if (event.type === 3) {
         await Promise.all(this.asyncTasks)
+          .catch(error => {
+            params.onEvent({
+              type: 'ERROR',
+              error: error instanceof ChatError ? error : new ChatError('Catch Error', ErrorCode.UNKOWN_ERROR),
+            })
+          })
         this.asyncTasks = []
         params.onEvent({ type: 'UPDATE_ANSWER', data: { text: this.lastText } })
         params.onEvent({ type: 'DONE' })

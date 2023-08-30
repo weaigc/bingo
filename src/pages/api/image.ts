@@ -28,17 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
     res.end(response)
   } catch (e) {
-    if (/CookieError/.test(`${e}`)) {
-      res.writeHead(200, {
-        'Content-Type': 'text/plain; charset=UTF-8',
-      })
-      return res.end(`[没有身份信息或身份信息无效，请重新设置](#dialog="settings")`)
-    }
-    res.json({
-      result: {
-        value: 'Error',
-        message: `${e}`
-      }
+    res.writeHead(500, {
+      'Content-Type': 'text/plain; charset=UTF-8',
     })
+    return res.end(`${e}`)
   }
 }

@@ -94,7 +94,7 @@ https://bing.github1s.tk
 ## 环境和依赖
 
 - Node.js >= 18
-- Bing AI 的[身份信息](#如何获取-BING_HEADER))
+- Bing AI 的[用户信息](#如何获取-BING_HEADER))
 
 ## 安装和使用
 

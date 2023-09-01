@@ -17,6 +17,7 @@ import { ChatImage } from './chat-image'
 import { ChatAttachments } from './chat-attachments'
 import { SVG } from './ui/svg'
 import { ChatPrompts } from './chat-prompts'
+import { debug } from '@/lib/isomorphic'
 
 export interface ChatPanelProps
   extends Pick<
@@ -72,6 +73,7 @@ export function ChatPanel({
     await sendMessage(input)
   }, [generating, input, sendMessage, setInput])
   const onSubmit = useCallback(async (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    debug('event key', event.key)
     if (
       event.shiftKey ||
       event.ctrlKey ||
@@ -83,7 +85,7 @@ export function ChatPanel({
     event.preventDefault()
 
     onSend()
-  }, [attachmentList])
+  }, [generating, attachmentList])
 
   const setBlur = useCallback(() => {
     clearTimeout(tid)

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
-import { useAtom, useAtomValue } from 'jotai'
-import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom } from '@/state'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom, isImageOnly } from '@/state'
 import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
 import { nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
@@ -10,7 +10,7 @@ import { TTS } from '../bots/bing/tts'
 export function useBing(botId: BotId = 'bing') {
   const chatAtom = useMemo(() => chatFamily({ botId, page: 'singleton' }), [botId])
   const [chatState, setChatState] = useAtom(chatAtom)
-  const [historyValue, setHistoryValue] = useAtom(chatHistoryAtom)
+  const setHistoryValue = useSetAtom(chatHistoryAtom)
   const [enableTTS] = useAtom(voiceAtom)
   const speaker = useMemo(() => new TTS(), [])
   const [hash, setHash] = useAtom(hashAtom)
@@ -46,9 +46,9 @@ export function useBing(botId: BotId = 'bing') {
         draft.abortController = abortController
       })
       speaker.reset()
-      const instance = await chatState.bot.sendMessage({
+      await chatState.bot.sendMessage({
         prompt: input,
-        imageUrl,
+        imageUrl: !isImageOnly && imageUrl && /api\/blob.jpg\?bcid=([^&]+)/.test(imageUrl) ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
         options: {
           ...options,
           bingConversationStyle,

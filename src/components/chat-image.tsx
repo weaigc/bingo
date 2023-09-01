@@ -100,7 +100,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
 
   useEffect(() => {
     if (panel === 'camera-mode') {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
       .then(videoStream => {
         mediaStream.current = videoStream
         if (videoRef.current) {

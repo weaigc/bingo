@@ -1110,12 +1110,13 @@ button {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 48px;
+  min-height: 90px;
   box-sizing: border-box;
   padding: 13px 16px;
   z-index: 1;
   background: var(--cib-color-background-surface-solid-quaternary);
-  border-radius: var(--cib-action-bar-search-border-radius);
+  border-radius: var(--cib-border-radius-extra-large);
+
   outline: transparent solid 1px;
   cursor: text;
   transition-property: min-height, height, width, transform, border-radius, box-shadow;
@@ -1137,13 +1138,6 @@ button {
 
   &:hover,
   &.active {
-    min-height: 90px;
-    border-radius: var(--cib-border-radius-extra-large);
-
-    .bottom-bar {
-      opacity: 1;
-    }
-
     textarea {
       white-space: pre-wrap;
     }
@@ -1160,9 +1154,12 @@ button {
   }
 
   .message-input {
-    max-height: 50vh;
+    max-height: min(400px, 50vh);
     overflow-y: auto;
     color: var(--cib-color-foreground-neutral-primary);
+    &:empty {
+      max-height: 24px;
+    }
   }
 }
 
@@ -1182,9 +1179,9 @@ button {
 
 .outside-left-container {
   position: relative;
-  align-self: flex-end;
+  align-self: flex-start;
   height: 48px;
-  bottom: 42px;
+  top: 0px;
   margin: 0px;
   padding: 0px;
   transition-property: opacity;
@@ -1237,8 +1234,11 @@ button {
     }
   }
 
-  &.collapsed .button-compose {
-    width: var(--button-compose-collapsed-width);
+
+  &.collapsed {
+    .button-compose {
+      width: var(--button-compose-collapsed-width);
+    }
   }
 
   &:hover .button-compose {
@@ -1624,7 +1624,6 @@ button {
   inset-inline: 0px;
   box-sizing: border-box;
   padding: 8px;
-  opacity: 0;
   transition-property: opacity;
   transition-duration: var(--cib-motion-duration-faster);
   transition-delay: var(--cib-motion-duration-faster);
@@ -1681,7 +1680,7 @@ button {
 
   .outside-left-container {
     position: absolute;
-    bottom: 0px;
+    top: 0px;
     inset-inline-start: 0px;
   }
 }

@@ -1,9 +1,8 @@
 'use client'
 
-import * as React from 'react'
+import React, { useCallback, useEffect, KeyboardEvent } from 'react'
 import Textarea from 'react-textarea-autosize'
 import { useAtomValue } from 'jotai'
-import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { cn } from '@/lib/utils'
 
 import NewTopic from '@/assets/images/new-topic.svg'
@@ -54,7 +53,14 @@ export function ChatPanel({
   const [tid, setTid] = React.useState<any>()
   const voiceListening = useAtomValue(voiceListenAtom)
 
-  const onSubmit = async () => {
+  const onSend = useCallback(async () => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.offsetHeight,
+        behavior: 'smooth'
+      })
+    }, 200)
+
     if (generating) {
       return;
     }
@@ -64,21 +70,34 @@ export function ChatPanel({
     }
     setInput('')
     await sendMessage(input)
-  }
-  const { onKeyDown } = useEnterSubmit(onSubmit)
-  const setBlur = React.useCallback(() => {
+  }, [generating, input, sendMessage, setInput])
+  const onSubmit = useCallback(async (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (
+      event.shiftKey ||
+      event.ctrlKey ||
+      event.nativeEvent.isComposing ||
+      event.key !== 'Enter'
+    ) {
+      return
+    }
+    event.preventDefault()
+
+    onSend()
+  }, [attachmentList])
+
+  const setBlur = useCallback(() => {
     clearTimeout(tid)
     const _tid = setTimeout(() => setFocused(false), 2000);
     setTid(_tid)
   }, [tid])
 
-  const setFocus = React.useCallback(() => {
+  const setFocus = useCallback(() => {
     setFocused(true)
     clearTimeout(tid)
     inputRef.current?.focus()
   }, [tid])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (input) {
       setFocus()
     }
@@ -86,11 +105,9 @@ export function ChatPanel({
   }, [input, setFocus])
 
   return (
-    <div
-      className={cn('chat-panel relative', className)}
-    >
+    <div className={cn('chat-panel relative', className)}>
       <div className="action-bar pb-4">
-        <div className={cn('action-root focus')} speech-state="hidden" visual-search="" drop-target="">
+        <div className="action-root" speech-state="hidden" visual-search="" drop-target="">
           <div className="fade bottom">
             <div className="background"></div>
           </div>
@@ -105,7 +122,7 @@ export function ChatPanel({
             </div>
           </div>
           <div
-            className={cn('main-container active')}
+            className={cn('main-container')}
             onClick={setFocus}
             onBlur={setBlur}
           >
@@ -117,7 +134,7 @@ export function ChatPanel({
               <Textarea
                 ref={inputRef}
                 tabIndex={0}
-                onKeyDown={onKeyDown}
+                onKeyDown={onSubmit}
                 rows={1}
                 value={input}
                 onChange={e => setInput(e.target.value.slice(0, 8000))}
@@ -125,7 +142,7 @@ export function ChatPanel({
                 spellCheck={false}
                 className="message-input min-h-[24px] w-full text-base resize-none bg-transparent focus-within:outline-none"
               />
-              <Voice setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
+              <Voice className="action-button" setInput={setInput} sendMessage={sendMessage} isSpeaking={isSpeaking} input={input} />
             </div>
             <ChatAttachments attachmentList={attachmentList} setAttachmentList={setAttachmentList} uploadImage={uploadImage} />
             <div className="body-1 bottom-bar">
@@ -136,7 +153,7 @@ export function ChatPanel({
               </div>
               <div className="flex gap-2 items-center">
                 <div className="letter-counter"><span>{input.length}</span>/8000</div>
-                <button type="submit" className="action-button" onClick={onSubmit}>
+                <button type="submit" className="action-button" onClick={onSend}>
                   <SVG alt="send" src={input.length ? SendFillIcon : SendIcon} width={18} height={20} />
                 </button>
               </div>

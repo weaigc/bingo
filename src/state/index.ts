@@ -8,6 +8,7 @@ import { atomFamily } from 'jotai/utils'
 import { atomWithHash, atomWithLocation } from 'jotai-location'
 import { initialMessages } from '../../tests/fixtures/messages'
 import storage from './storage'
+import { getCookie } from '@/lib/utils'
 
 export const GreetMessages = [
   '谢谢你! 知道你什么时候准备好继续前进总是很有帮助的。我现在能为你回答什么问题?',
@@ -29,7 +30,7 @@ export interface Prompt {
   prompt: string
 }
 
-
+export const isImageOnly = getCookie('IMAGE_ONLY') !== '0'
 export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Balanced, undefined, { unstable_getOnInit: true })
 export const voiceAtom = atomWithStorage<boolean>('enableTTS', false, undefined, { unstable_getOnInit: true })
 export const historyAtom = atomWithStorage<boolean>('enableHistory', false, undefined, { unstable_getOnInit: true })

@@ -6,10 +6,11 @@ import VoiceButton from './ui/voice'
 import { SR } from '@/lib/bots/bing/sr'
 import { voiceListenAtom } from '@/state'
 import { SVG } from './ui/svg'
+import { cn } from '@/lib/utils'
 
 const sr = new SR(['发送', '清空', '退出'])
 
-const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<BingReturnType, 'setInput' | 'sendMessage' | 'input' | 'isSpeaking'>) => {
+const Voice = ({ setInput, input, sendMessage, isSpeaking, className }: Pick<BingReturnType, 'setInput' | 'sendMessage' | 'input' | 'isSpeaking'> & { className?: string }) => {
   const setListen = useSetAtom(voiceListenAtom)
   useEffect(() => {
     if (sr.listening) return
@@ -47,7 +48,7 @@ const Voice = ({ setInput, input, sendMessage, isSpeaking }: Pick<BingReturnType
   }
 
   return (
-    <div className="voice-container">
+    <div className={cn('voice-container -mt-2 -mr-2', className)}>
       {
         sr.listening ? (
           <VoiceButton className="voice-button-theme" onClick={() => switchSR(false)} />

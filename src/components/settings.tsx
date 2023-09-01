@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { Switch } from '@headlessui/react'
 import { toast } from 'react-hot-toast'
-import { hashAtom, historyAtom, voiceAtom } from '@/state'
+import { hashAtom, historyAtom, isImageOnly, voiceAtom } from '@/state'
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ export function Settings() {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const [loc, setLoc] = useAtom(hashAtom)
   const [curlValue, setCurlValue] = useState(extraCurlFromCookie(parseCookies(document.cookie, ChunkKeys)))
-  const [imageOnly, setImageOnly] = useState(getCookie('IMAGE_ONLY') !== '0')
+  const [imageOnly, setImageOnly] = useState(isImageOnly)
   const [enabledHistory, setHistory] = useAtom(historyAtom)
   const [enableTTS, setEnableTTS] = useAtom(voiceAtom)
 

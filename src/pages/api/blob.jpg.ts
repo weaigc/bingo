@@ -13,7 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { headers, body } = await fetch(`${API_DOMAIN}/images/blob?bcid=${bcid}`,
       {
         method: 'GET',
-        headers: createHeaders(req.cookies, 'image'),
+        headers: {
+          ...createHeaders(req.cookies, 'image'),
+          Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1',
+          'Sec-Fetch-Dest': 'iframe',
+        },
       },
     )
 

@@ -52,6 +52,8 @@ export default function Chat({ className }: ChatProps) {
     setExpand(true)
   }
 
+  const lastMessage = messages[messages.length - 1]
+
   return (
     <div className={cn(bingStyle.toLowerCase(), { 'side-panel-expanded': expand })}>
       <PromptsManage insertPrompt={setInput} />
@@ -68,8 +70,8 @@ export default function Chat({ className }: ChatProps) {
               <>
                 <ChatList messages={messages} />
                 <ChatScrollAnchor trackVisibility={generating} />
-                <ChatNotification message={messages.at(-1)} bot={bot} />
-                {messages.at(-1)?.suggestedResponses && <ChatSuggestions setInput={setInput} suggestions={messages.at(-1)?.suggestedResponses} />}
+                <ChatNotification message={lastMessage} bot={bot} />
+                {lastMessage?.suggestedResponses && <ChatSuggestions setInput={setInput} suggestions={lastMessage?.suggestedResponses} />}
 
                 {generating ? (
                   <div className="flex h-10 items-center justify-center my-4">

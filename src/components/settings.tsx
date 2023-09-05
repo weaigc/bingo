@@ -109,7 +109,7 @@ export function Settings() {
           )}
 
           <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
-            转成 BING_HEADER 并复制
+            转换为 BASE64 并复制
           </Button>
 
           <DialogFooter className="items-center">

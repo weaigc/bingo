@@ -133,10 +133,9 @@ export enum InvocationEventType {
   Close = 7,
 }
 
-// https://github.com/bytemate/bingchat-api/blob/main/src/lib.ts
-
 export interface ConversationInfoBase {
   conversationId: string
+  userIpAddress: string
   clientId: string
   conversationSignature: string
   invocationId: number

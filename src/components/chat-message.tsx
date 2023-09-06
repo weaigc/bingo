@@ -1,6 +1,10 @@
+'use client'
+
 import { useEffect } from 'react'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import rehypeHighlight from 'rehype-highlight';
 import supersub from 'remark-supersub'
 import remarkBreaks from 'remark-breaks'
 import { cn } from '@/lib/utils'
@@ -37,6 +41,16 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             linkTarget="_blank"
             className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
             remarkPlugins={[remarkGfm, remarkMath, supersub, remarkBreaks]}
+            rehypePlugins={[
+              rehypeKatex,
+              [
+                rehypeHighlight,
+                {
+                  detect: false,
+                  ignoreMissing: true,
+                },
+              ],
+            ]}
             components={{
               img(obj) {
                 try {
@@ -56,16 +70,6 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                 return <p className="mb-2">{children}</p>
               },
               code({ node, inline, className, children, ...props }) {
-                if (children.length) {
-                  if (children[0] == '▍') {
-                    return (
-                      <span className="mt-1 animate-pulse cursor-default">▍</span>
-                    )
-                  }
-
-                  children[0] = (children[0] as string).replace('`▍`', '▍')
-                }
-
                 const match = /language-(\w+)/.exec(className || '')
 
                 if (inline) {

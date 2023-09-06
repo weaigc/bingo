@@ -29,24 +29,26 @@ const getOptionSets = (conversationStyle: BingConversationStyle) => {
       'responsible_ai_policy_235',
       'enablemm',
       'dv3sugg',
+      'machine_affinity',
       'autosave',
       'iyxapbing',
       'iycapbing',
       'h3imaginative',
+      'uquopt',
+      'gcccomp',
+      'utildv3tosah',
       'cpcandi',
-      'cpcatral6',
+      'cpcatral3',
       'cpcatro50',
       'cpcfmql',
       'cpcgnddi',
       'cpcmattr2',
-      'cpcmcit2',
+      'cpcmcit1',
       'e2ecacheread',
       'nocitpass',
-      'logprobsc',
-      'log2sph',
-      'fpsports',
-      'rctechalwlst',
-      'agicert',
+      'iypapyrus',
+      'hlthcndans',
+      'dv3suggtrim',
       'eredirecturl',
       'clgalileo',
       'gencontentv3'
@@ -58,29 +60,27 @@ const getOptionSets = (conversationStyle: BingConversationStyle) => {
       'responsible_ai_policy_235',
       'enablemm',
       'dv3sugg',
+      'machine_affinity',
       'autosave',
       'iyxapbing',
       'iycapbing',
       'galileo',
       'saharagenconv5',
-      'cgptreasondl',
-      'fluxclmodelsp',
-      'fluxhint',
-      'glfluxv13',
+      'uquopt',
+      'gcccomp',
+      'utildv3tosah',
       'cpcandi',
-      'cpcatral6',
+      'cpcatral3',
       'cpcatro50',
       'cpcfmql',
       'cpcgnddi',
       'cpcmattr2',
-      'cpcmcit2',
+      'cpcmcit1',
       'e2ecacheread',
       'nocitpass',
-      'logprobsc',
-      'log2sph',
-      'fpsports',
-      'rctechalwlst',
-      'agicert',
+      'iypapyrus',
+      'hlthcndans',
+      'dv3suggtrim',
       'eredirecturl'
     ],
     [BingConversationStyle.Precise]: [
@@ -90,26 +90,28 @@ const getOptionSets = (conversationStyle: BingConversationStyle) => {
       'responsible_ai_policy_235',
       'enablemm',
       'dv3sugg',
+      'machine_affinity',
       'autosave',
       'iyxapbing',
       'iycapbing',
       'h3precise',
       'clgalileo',
       'gencontentv3',
+      'uquopt',
+      'gcccomp',
+      'utildv3tosah',
       'cpcandi',
-      'cpcatral6',
+      'cpcatral3',
       'cpcatro50',
       'cpcfmql',
       'cpcgnddi',
       'cpcmattr2',
-      'cpcmcit2',
+      'cpcmcit1',
       'e2ecacheread',
       'nocitpass',
-      'logprobsc',
-      'log2sph',
-      'fpsports',
-      'rctechalwlst',
-      'agicert',
+      'iypapyrus',
+      'hlthcndans',
+      'dv3suggtrim',
       'eredirecturl'
     ]
   }[conversationStyle]
@@ -156,22 +158,25 @@ export class BingWebBot {
             'SearchQuery',
           ],
           sliceIds: [
-            'divkorbl2p',
-            'crtrgxnew',
-            'wrapuxslimt',
+            'gbaa',
+            'gba',
+            'emovoice',
+            'tts3cf',
+            'kcinherocf',
+            'inochatv2',
             'wrapnoins',
-            'suppsm-c',
-            'sydconfigoptc',
-            '0824cntors0',
-            '713logprobsc',
+            'mlchatpc9000ns',
+            'mlchatpcbase',
+            'sydconfigoptt',
             '803iyjbexps0',
-            '806log2sph',
-            '804sprts0',
-            '178gentech',
-            '824fluxhi52',
-            '0825agicert',
-            '804cdxedtgds0',
-            '821iypapyrusc',
+            '0529streamws0',
+            '178gentechs0',
+            '0901utilbal',
+            'attr2atral3',
+            '821iypapyrust',
+            '019hlthgrd',
+            '829suggtrim',
+            '821fluxv13s0',
             '727nrprdrt3'
           ],
           isStartOfSession: conversation.invocationId === 0,
@@ -181,10 +186,44 @@ export class BingWebBot {
             text: conversation.prompt,
             imageUrl: conversation.imageUrl,
             messageType: 'Chat',
+            locale: 'zh-CN',
+            market: 'zh-CN',
+            region: 'US',
+            location: 'lat:47.639557;long:-122.128159;re=1000m;',
+            locationHints: [
+              {
+                Center: {
+                  Latitude: 22.51210421452451,
+                  Longitude: 113.92305341085854
+                },
+                RegionType: 2,
+                SourceType: 11
+              },
+              {
+                country: 'United States',
+                state: 'California',
+                city: 'San Jose',
+                zipcode: '95141',
+                timezoneoffset: -8,
+                dma: 807,
+                countryConfidence: 8,
+                cityConfidence: 5,
+                Center: {
+                  Latitude: 37.1771,
+                  Longitude: -121.755
+                },
+                RegionType: 2,
+                SourceType: 1
+              }
+            ],
+            timestamp: new Date(),
+            userIpAddress: conversation.userIpAddress,
           },
           conversationId: conversation.conversationId,
           conversationSignature: conversation.conversationSignature,
           participant: { id: conversation.clientId },
+          scenario: 'SERP',
+          tone: conversation.conversationStyle
         },
       ],
       invocationId: conversation.invocationId.toString(),
@@ -242,6 +281,7 @@ export class BingWebBot {
       conversation = conversation?.conversationSignature ? conversation : await this.createConversation() as unknown as ConversationInfo
       this.conversationContext = {
         conversationId: conversation.conversationId,
+        userIpAddress: conversation.userIpAddress,
         conversationSignature: conversation.conversationSignature,
         clientId: conversation.clientId,
         invocationId: conversation.invocationId ?? 0,
@@ -288,7 +328,8 @@ export class BingWebBot {
     params.signal?.addEventListener('abort', () => {
       abortController.abort()
     })
-
+    const conversation = this.conversationContext!
+    conversation.invocationId++
     const textDecoder = createChunkDecoder()
     for await (const chunk of streamAsyncIterable(response.body!)) {
       this.parseEvents(params, websocketUtils.unpackMessage(textDecoder(chunk)))
@@ -414,8 +455,6 @@ export class BingWebBot {
   }
 
   private async parseEvents(params: Params, events: any) {
-    const conversation = this.conversationContext!
-
     events?.forEach(async (event: ChatUpdateCompleteResponse) => {
       debug('bing event', event)
       if (event.type === 3) {
@@ -429,7 +468,6 @@ export class BingWebBot {
         this.asyncTasks = []
         params.onEvent({ type: 'UPDATE_ANSWER', data: { text: this.lastText } })
         params.onEvent({ type: 'DONE' })
-        conversation.invocationId = parseInt(event.invocationId, 10) + 1
       } else if (event.type === 1) {
         const { messages, throttling } = event.arguments[0] || {}
         if (messages) {

@@ -4,10 +4,17 @@ import { BingWebBot } from '@/lib/bots/bing'
 import { websocketUtils } from '@/lib/bots/bing/utils'
 import { WatchDog, createHeaders } from '@/lib/utils'
 
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)
   const id = headers['x-forwarded-for']
+  headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
 
   debug(id, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')

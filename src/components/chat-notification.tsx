@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import IconWarning from '@/assets/images/warning.svg'
 import { ChatError, ErrorCode, ChatMessageModel } from '@/lib/bots/bing/types'
 import { ExternalLink } from './external-link'

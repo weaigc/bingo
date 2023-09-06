@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx'
 import { customAlphabet } from 'nanoid'
 import { twMerge } from 'tailwind-merge'
 import dayjs from 'dayjs'
+import { lookup } from 'dns'
 // @ts-ignore
 import randomip from 'random-ip'
 import cidr from './cidr.json'
@@ -36,14 +37,23 @@ export function createChunkDecoder() {
   }
 }
 
-export function random (start: number, end: number) {
+export function random(start: number, end: number) {
   return start + Math.floor(Math.random() * (end - start))
 }
 
 export function randomIP() {
   // return `104.${random(0, 21)}.${random(0, 127)}.${random(1, 255)}`
-  const [ip, range] = cidr.at(random(0, cidr.length))?.split('/')!
+  const [ip, range] = cidr.at(random(1, cidr.length))?.split('/')!
   return randomip(ip, range)
+}
+
+export const lookupPromise = async function (domain: string) {
+  return new Promise((resolve, reject) => {
+    lookup(domain, (err, address, family) => {
+      if (err) resolve('')
+      resolve(address)
+    })
+  })
 }
 
 export const defaultUID = 'xxx'
@@ -74,7 +84,7 @@ export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }>)
   })
   try {
     return atob(base64Content)
-  } catch(e) {
+  } catch (e) {
     return ''
   }
 }

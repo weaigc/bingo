@@ -2,8 +2,10 @@ import { ChatMessageModel } from "@/lib/bots/bing/types";
 
 export const initialMessages: ChatMessageModel[] = [
   { author: 'system', text: 'conversation between user and robot', id: '1' },
+  { author: 'user', text: '矩阵', id: 'jz' },
+  { author: 'bot', text:'矩阵的矩可以用行列式表示，对于一个n x n的矩阵A，其行列式记作|A|或det(A)。计算行列式的方法有多种，其中最常用的方法是高斯消元法和拉普拉斯展开法。因此，矩阵的矩可以用以下公式表示：\n\n$$\n|A| = det(A)\n$$\n\n希望这个回答能够帮到你。\n', id: 'xxx' },
   { author: 'user', text: '销量最高的 3 种宠物吸尘器有哪些优点和缺点?  ', id: '2' },
-  {
+ {
     author: 'bot', text: `
 您好，这是必应。根据网上的搜索结果，我为您找到了以下三款销量最高的宠物吸尘器，以及它们的优点和缺点：
 

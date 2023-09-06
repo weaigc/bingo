@@ -4,6 +4,7 @@
 
 :root {
   --cib-comp-thread-name-border-radius: 3px;
+  --cib-comp-message-citation-border-radius: 3px;
   --arrow-start-offset: 16px;
   --cib-color-foreground-accent-primary: #75306C;
   --cib-color-foreground-accent-secondary: #692B61;
@@ -321,6 +322,7 @@
   --cib-color-fill-accent-secondary: #EEF9FC;
   --cib-color-stroke-accent-secondary: #006880;
   --cib-color-foreground-accent-secondary: #005E73;
+  --cib-color-fill-accent-alt-primary: #CAEEF6;
 }
 
 .balanced {
@@ -336,6 +338,7 @@
   --cib-color-fill-accent-secondary: #EFF3FF;
   --cib-color-stroke-accent-secondary: #174AE4;
   --cib-color-foreground-accent-secondary: #1543CD;
+  --cib-color-fill-accent-alt-primary: #D1DBFA;
 }
 
 .global-background {
@@ -587,13 +590,31 @@ body {
   box-shadow: var(--cib-shadow-card);
   border-radius: var(--cib-border-radius-extra-large);
   background: var(--cib-color-background-surface-card-primary);
-}
 
-.text-message {
   color: var(--cib-color-foreground-neutral-primary);
 
+  sup {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    top: -1px;
+    margin: 0px 2px;
+    min-width: 14px;
+    height: 14px;
+    text-decoration-color: transparent;
+    outline: transparent solid 1px;
+    color: var(--cib-color-foreground-accent-primary);
+    background: var(--cib-color-fill-accent-alt-primary);
+    border-radius: var(--cib-comp-message-citation-border-radius);
+    font-size: var(--cib-type-caption2-strong-font-size);
+    line-height: var(--cib-type-caption2-strong-line-height);
+    font-weight: var(--cib-type-caption2-strong-font-weight);
+    font-variation-settings: var(--cib-type-caption2-strong-font-variation-settings);
+  }
+
   &.user {
-    align-items: flex-end;
     align-self: flex-end;
     margin-inline-end: unset;
     margin-inline-start: 80px;
@@ -627,6 +648,10 @@ body {
     position: relative;
     text-decoration: none;
   }
+}
+
+.katex-html[aria-hidden="true"] {
+  display: none;
 }
 
 .chat-feedback {
@@ -669,7 +694,9 @@ body {
     line-height: var(--cib-type-body1-line-height);
     font-weight: var(--cib-type-body1-font-weight);
     font-variation-settings: var(--cib-type-body1-font-variation-settings);
-
+    &:hover::before {
+      opacity: 1;
+    }
     &::before {
       content: "";
       position: absolute;

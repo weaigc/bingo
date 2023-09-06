@@ -46,6 +46,8 @@ https://bing.github1s.tk
  - [ ] 国际化翻译
 
 ## 一键部署
+> HuggingFace 已经被封禁，新方法正在内测中，如有需要，请直接访问演示站点 https://bing.github1s.tk
+
 你也可以一键部署自己的 New Bing AI 到 🤗 HuggingFace 。
 
 ### 部署到 Huggingface
@@ -99,6 +101,7 @@ https://bing.github1s.tk
 ## 安装和使用
 
 > 由于目前微软封杀比较严重，推荐优先使用 [部署 Huggingface](#部署到-huggingface) 。
+> 本地部署需要你本机或服务器 IP 是国外 IP ，否则会无法连接到 New Bing。
 
 * 使用 Node 启动
 

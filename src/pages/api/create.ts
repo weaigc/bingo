@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch, debug } from '@/lib/isomorphic'
-import { createHeaders, randomIP, lookupPromise } from '@/lib/utils'
+import { createHeaders, randomIP, extraHeadersFromCookie } from '@/lib/utils'
 import { sleep } from '@/lib/bots/bing/utils'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -32,19 +32,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!json?.conversationSignature) {
           continue
         }
-        const cookies = [
-          headers.cookie,
-          `BING_IP=${headers['x-forwarded-for']}`,
-        ]
+        const { cookie } = extraHeadersFromCookie(req.cookies) || {}
+        const cookies = cookie?.split(';') || []
+        cookies.push(`BING_IP=${headers['x-forwarded-for']}`)
 
-        res.setHeader('set-cookie', cookies.map(cookie => `${cookie}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))
+        res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))
         debug('headers', headers)
         res.writeHead(200, {
           'Content-Type': 'application/json',
         })
         res.end(JSON.stringify({
           ...json,
-          userIpAddress: endpoint && !endpoint.endsWith('.bing.com') ? await lookupPromise(endpoint.split('/')[0]) : headers['x-forwarded-for']
+          // userIpAddress: endpoint && !endpoint.endsWith('.bing.com') ? await lookupPromise(endpoint.split('/')[0]) : headers['x-forwarded-for']
         }))
         return
       }

@@ -129,7 +129,7 @@ export function Settings() {
                   const maxAge = 86400 * 30
                   encodeHeadersToCookie(headerValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
                 } else {
-                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP'].forEach(key => setCookie(key, ''))
+                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP', '_U'].forEach(key => setCookie(key, ''))
                 }
                 setCookie('IMAGE_ONLY', RegExp.$1 === 'cn' || imageOnly || !headerValue ? '1' : '0')
 

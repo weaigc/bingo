@@ -6,6 +6,7 @@ import { lookup } from 'dns'
 // @ts-ignore
 import randomip from 'random-ip'
 import cidr from './cidr.json'
+import { debug } from './isomorphic'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -69,8 +70,8 @@ export function parseHeadersFromCurl(content: string) {
   return headers
 }
 
-
 export const ChunkKeys = ['BING_HEADER', 'BING_HEADER1', 'BING_HEADER2']
+
 export function encodeHeadersToCookie(content: string) {
   const base64Content = btoa(content)
   const contentChunks = base64Content.match(/.{1,4000}/g) || []
@@ -125,6 +126,7 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
     BING_UA = process.env.BING_UA,
+    MUID = process.env.MUID,
     BING_IP = '',
     _U = defaultUID,
   } = cookies
@@ -136,7 +138,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
-    cookie: `_U=${_U}`,
+    cookie: `_U=${_U}; MUID=${MUID || ''}`,
   }
 }
 

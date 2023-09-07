@@ -42,6 +42,12 @@ export function random(start: number, end: number) {
   return start + Math.floor(Math.random() * (end - start))
 }
 
+export function randomString(length: number = 32) {
+  const char = 'ABCDEFGHJKMNPQRSTWXYZ1234567890';
+  let n = '';
+  return Array.from({ length }, () => char.charAt(random(0, char.length))).join('')
+}
+
 export function randomIP() {
   // return `104.${random(0, 21)}.${random(0, 127)}.${random(1, 255)}`
   const [ip, range] = cidr.at(random(1, cidr.length))?.split('/')!
@@ -137,7 +143,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
-    cookie: `_U=${_U}`,
+    cookie: `_U=${_U}; MUID=${randomString(32)}`,
   }
 }
 

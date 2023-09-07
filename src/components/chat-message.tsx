@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
-import rehypeHighlight from 'rehype-highlight';
 import supersub from 'remark-supersub'
 import remarkBreaks from 'remark-breaks'
 import { cn } from '@/lib/utils'
@@ -43,13 +42,6 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             remarkPlugins={[remarkGfm, remarkMath, supersub, remarkBreaks]}
             rehypePlugins={[
               rehypeKatex,
-              [
-                rehypeHighlight,
-                {
-                  detect: false,
-                  ignoreMissing: true,
-                },
-              ],
             ]}
             components={{
               img(obj) {

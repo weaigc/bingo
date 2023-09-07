@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const id = headers['x-forwarded-for']
   headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
 
-  debug(id, headers)
+  debug(id, conversationContext, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
   const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {

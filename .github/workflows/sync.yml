@@ -1,0 +1,19 @@
+name: Sync endpoint
+on:
+  push:
+    branches:
+      - sync
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: run
+      env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: pip install huggingface_hub && python sync.py

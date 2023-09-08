@@ -16,4 +16,4 @@ jobs:
     - name: run
       env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      run: pip install huggingface_hub && python sync.py
+      run: python sync.py

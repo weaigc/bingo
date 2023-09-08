@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env DEBUG=bingo* next dev --hostname 0.0.0.0",
     "build": "next build",
-    "start": "next start",
+    "start": "cross-env NODE_ENV=production node ./server.js",
     "lint": "next lint"
   },
   "dependencies": {

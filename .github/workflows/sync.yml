@@ -9,11 +9,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Restore cache
+      id: file-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          sync/endpoint.txt
+        key: endpoint
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
         cache: 'pip'
     - name: run
       env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      run: python sync.py
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        ENDPOINTS: ${{ vars.ENDPOINTS }}
+      run: cd sync && cat endpoint.txt && pip install huggingface_hub && python sync.py
+    - name: Save cache
+      id: file-save
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          sync/endpoint.txt
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}

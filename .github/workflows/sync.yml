@@ -15,7 +15,9 @@ jobs:
       with:
         path: |
           sync/endpoint.txt
-        key: endpoint
+        key: endpoint-${{ github.run_id }}
+        restore-keys: |
+          endpoint-
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
@@ -24,11 +26,13 @@ jobs:
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
         ENDPOINTS: ${{ vars.ENDPOINTS }}
-      run: cd sync && cat endpoint.txt && pip install huggingface_hub && python sync.py
+      run: cd sync && cat endpoint.txt && pip install huggingface_hub && python sync.py && cat endpoint.txt
     - name: Save cache
       id: file-save
       uses: actions/cache/save@v3
       with:
         path: |
           sync/endpoint.txt
-        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+        key: endpoint-${{ github.run_id }}
+        restore-keys: |
+          endpoint-

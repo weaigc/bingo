@@ -1,11 +1,11 @@
-name: Sync endpoint
+name: Sync Endpoint
 on:
-  push:
-    branches:
-      - sync
+  schedule:
+    - cron: '0 22 * * *'
 
 jobs:
   sync-to-hub:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -15,9 +15,7 @@ jobs:
       with:
         path: |
           sync/endpoint.txt
-        key: endpoint-${{ github.run_id }}
-        restore-keys: |
-          endpoint-
+        key: endpoint
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
@@ -26,13 +24,22 @@ jobs:
       env:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
         ENDPOINTS: ${{ vars.ENDPOINTS }}
-      run: cd sync && cat endpoint.txt && pip install huggingface_hub && python sync.py && cat endpoint.txt
+      run: cd sync && pip install huggingface_hub && python sync.py && cat endpoint.txt
+    - name: Delete cache
+      run: |
+        gh extension install actions/gh-actions-cache
+        set +e
+        echo "Deleting cache..."
+        gh actions-cache delete endpoint -R ${{ github.repository }} --confirm
+        echo "Done"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Save cache
+      if: always()
       id: file-save
       uses: actions/cache/save@v3
       with:
         path: |
           sync/endpoint.txt
-        key: endpoint-${{ github.run_id }}
-        restore-keys: |
-          endpoint-
+        key: endpoint
+

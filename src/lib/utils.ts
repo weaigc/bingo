@@ -131,7 +131,7 @@ export function parseCookies(cookie: string, cookieNames: string[]) {
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.0.0'
 export const DEFAULT_UA_MOBILE = `Mozilla/5.0 (iPhone; CPU iPhone OS 15_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/605.1.15 BingSapphire/1.0.410427012`
 
-export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
+export function parseUA(ua?: string, default_ua = DEFAULT_UA_MOBILE) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
 }
 

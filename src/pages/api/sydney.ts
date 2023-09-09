@@ -10,6 +10,8 @@ export const config = {
   },
 }
 
+const { WS_ENDPOINT = 'sydney.bing.com' } = process.env
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
   const headers = createHeaders(req.cookies)
@@ -19,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   debug(id, conversationContext, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
-  const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', {
+  const ws = new WebSocket(`wss://${WS_ENDPOINT}/sydney/ChatHub`, {
     headers: {
       ...headers,
       'accept-language': 'zh-CN,zh;q=0.9',

@@ -107,7 +107,8 @@ https://bing.github1s.tk
 
 ```bash
 git clone https://github.com/weaigc/bingo.git
-npm i # 推荐使用 pnpm i
+npm i
+cd bingo
 npm run build
 npm run start
 ```
@@ -179,8 +180,14 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 
 
 ## 答疑及交流
+[Telegram 由此进](https://t.me/+NS5dCA4P-s9hYjNl)
 
-<image src="./docs/images/wechat.jpg" width=240 />
+<div align="left">
+  <image src="./docs/images/wechat.jpg" width=200 />
+  <image src="./docs/images/wechat2.jpg" width=200 />
+</div>
+
+
 
 ## License
 

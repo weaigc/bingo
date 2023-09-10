@@ -9,6 +9,7 @@ import imei from 'node-imei'
 // @ts-ignore
 import randomip from 'random-ip'
 import cidr from './cidr.json'
+import { debug } from './isomorphic'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -41,7 +42,7 @@ export function createChunkDecoder() {
 }
 
 export function muid() {
-  return md5(imei.random()).toUpperCase()
+  return md5(new imei().random()).toUpperCase()
 }
 
 export function random(start: number, end: number) {
@@ -131,7 +132,7 @@ export function parseCookies(cookie: string, cookieNames: string[]) {
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.0.0'
 export const DEFAULT_UA_MOBILE = `Mozilla/5.0 (iPhone; CPU iPhone OS 15_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/605.1.15 BingSapphire/1.0.410427012`
 
-export function parseUA(ua?: string, default_ua = DEFAULT_UA_MOBILE) {
+export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
   return / EDGE?/i.test(decodeURIComponent(ua || '')) ? decodeURIComponent(ua!.trim()) : default_ua
 }
 
@@ -139,7 +140,6 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
     BING_UA = process.env.BING_UA,
     BING_IP = '',
-    _U = defaultUID,
   } = cookies
   const ua = parseUA(BING_UA)
 
@@ -149,7 +149,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
-    cookie: `_U=${_U}; MUID=${muid()}`,
+    cookie: `_U=${defaultUID}; MUID=${muid()}`,
   }
 }
 

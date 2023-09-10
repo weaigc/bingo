@@ -32,9 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!json?.conversationSignature) {
           continue
         }
-        const { cookie } = extraHeadersFromCookie(req.cookies) || {}
-        const cookies = cookie?.split(';') || []
-        cookies.push(`BING_IP=${headers['x-forwarded-for']}`)
+        const cookies = [`BING_IP=${headers['x-forwarded-for']}`]
 
         res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))
         debug('headers', headers)

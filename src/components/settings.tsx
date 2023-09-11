@@ -47,7 +47,7 @@ export function Settings() {
       }
       setImageOnly(checked)
     } else {
-      toast.error('请先配置用户信息')
+      setImageOnly(checked)
     }
   }, [curlValue])
 
@@ -78,7 +78,10 @@ export function Settings() {
           <Input
             value={curlValue}
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/captcha/challenge' ..."
-            onChange={e => setCurlValue(e.target.value)}
+            onChange={e => {
+              setCurlValue(e.target.value)
+              setImageOnly(!Boolean(e.target.value))
+            }}
           />
           <div className="flex gap-2">
             <Switch
@@ -126,8 +129,7 @@ export function Settings() {
                     toast.error('用户信息格式不正确')
                     return
                   }
-                  const maxAge = 86400 * 30
-                  encodeHeadersToCookie(headerValue).forEach(cookie => document.cookie = `${cookie}; Max-Age=${maxAge}; Path=/; SameSite=None; Secure`)
+                  encodeHeadersToCookie(headerValue).forEach(cookie => setCookie(cookie))
                 } else {
                   [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP', '_U'].forEach(key => setCookie(key, ''))
                 }

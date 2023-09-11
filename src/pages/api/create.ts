@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         const cookies = [`BING_IP=${headers['x-forwarded-for']}`]
 
-        res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/; SameSite=None; Secure`))
+        res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/;`))
         debug('headers', headers)
         res.writeHead(200, {
           'Content-Type': 'application/json',

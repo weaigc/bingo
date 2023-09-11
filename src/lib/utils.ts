@@ -75,7 +75,7 @@ export function parseHeadersFromCurl(content: string) {
   const re = /-H '([^:]+):\s*([^']+)/mg
   const headers: HeadersInit = {}
   content = content.replaceAll('-H "', '-H \'').replaceAll('" ^', '\'\\').replaceAll('^\\^"', '"') // 将 cmd curl 转成 bash curl
-  content.split('curl ').shift()?.replace(re, (_: string, key: string, value: string) => {
+  content.split('curl ')[1]?.replace(re, (_: string, key: string, value: string) => {
     headers[key] = value
     return ''
   })
@@ -113,7 +113,7 @@ export function parseCookie(cookie: string, cookieName: string) {
 
 export function setCookie(key: string, value?: string) {
   const cookie = value === undefined ? key : `${key}=${value || ''}`
-  const maxAge = cookie.endsWith('=') ? 0 : 86400 * 30
+  const maxAge = value === '' ? 0 : 86400 * 30
   const cookieSuffix = location.protocol === 'http:' ? '' : 'SameSite=None; Secure'
   document.cookie = `${cookie}; Path=/; Max-Age=${maxAge}; ${cookieSuffix}`
 }

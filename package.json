@@ -1,6 +1,6 @@
 {
   "name": "bingo",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": true,
   "scripts": {
     "dev": "cross-env DEBUG=bingo* next dev --hostname 0.0.0.0",

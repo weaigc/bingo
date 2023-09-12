@@ -41,8 +41,9 @@ export function Settings() {
         toast.error('用户信息格式不正确')
         return
       }
-      if (RegExp.$1 === 'cn' && checked === false) {
-        toast.error('你配置的中文域名 cn.bing.com 仅支持画图')
+      if (RegExp.$1 === 'cn') {
+        toast.error('你配置的国内域名 cn.bing.com 仅支持画图')
+        setImageOnly(true)
         return
       }
       setImageOnly(checked)
@@ -80,7 +81,9 @@ export function Settings() {
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/captcha/challenge' ..."
             onChange={e => {
               setCurlValue(e.target.value)
-              setImageOnly(!Boolean(e.target.value))
+              if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(e.target.value)) {
+                setImageOnly(true)
+              }
             }}
           />
           <div className="flex gap-2">
@@ -93,23 +96,21 @@ export function Settings() {
                 className={`${imageOnly ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
               />
             </Switch>
-            用户信息仅用于画图（账号异常时使用）
+            尝试修复用户信息异常
           </div>
 
-          {!imageOnly && (
-            <div className="flex gap-2">
-              <Switch
-                checked={enabledHistory}
-                className={`${enabledHistory ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
-                onChange={(checked: boolean) => setHistory(checked)}
-              >
-                <span
-                  className={`${enabledHistory ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                />
-              </Switch>
-              启用历史记录
-            </div>
-          )}
+          <div className="flex gap-2">
+            <Switch
+              checked={enabledHistory}
+              className={`${enabledHistory ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
+              onChange={(checked: boolean) => setHistory(checked)}
+            >
+              <span
+                className={`${enabledHistory ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              />
+            </Switch>
+            启用历史记录
+          </div>
 
           <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
             转成 BING_HEADER 并复制

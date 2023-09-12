@@ -13,7 +13,7 @@ function getAction(error: ChatError, reset: () => void) {
     reset()
     return (
       <div>
-        你已达到每日最大发送消息次数，请<a href={`#dialog="settings"`}>更换账号</a>或隔一天后重试
+        请求次数过快，已被限流，请稍候重试...
       </div>
     )
   }
@@ -41,7 +41,7 @@ function getAction(error: ChatError, reset: () => void) {
   if (error.code === ErrorCode.CONVERSATION_LIMIT) {
     return (
       <div>
-        当前话题已中止，请点
+        当前话题已中止，请点击
         <a href={`#dialog="reset"`}>重新开始</a>
         开启新的对话
       </div>

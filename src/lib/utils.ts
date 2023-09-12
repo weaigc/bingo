@@ -107,6 +107,7 @@ export function extraHeadersFromCookie(cookies: Partial<{ [key: string]: string 
 }
 
 export function parseCookie(cookie: string, cookieName: string) {
+  if (!cookie || !cookieName) return ''
   const targetCookie = new RegExp(`(?:[; ]|^)${cookieName}=([^;]*)`).test(cookie) ? RegExp.$1 : cookie
   return targetCookie ? decodeURIComponent(targetCookie).trim() : cookie.indexOf('=') === -1 ? cookie.trim() : ''
 }
@@ -140,10 +141,16 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
+    BING_HEADER,
     BING_UA = process.env.BING_UA,
     BING_IP = '',
   } = cookies
   const ua = parseUA(BING_UA)
+
+  const { _U, MUID } = parseCookies(extraHeadersFromCookie({
+    BING_HEADER,
+    ...cookies,
+  }).cookie, ['MUID'])
 
   return {
     'x-forwarded-for': BING_IP || randomIP(),
@@ -151,7 +158,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
-    cookie: `_U=${defaultUID}; MUID=${muid()}`,
+    cookie: `_U=${_U || defaultUID}; MUID=${MUID || muid()}`,
   }
 }
 
@@ -170,7 +177,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
       const headers = extraHeadersFromCookie({
         BING_HEADER,
         ...cookies,
-      }) || {}
+      })
       headers['x-forwarded-for'] = BING_IP || randomIP()
       return headers
     }

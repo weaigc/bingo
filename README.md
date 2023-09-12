@@ -44,6 +44,7 @@ https://bing.github1s.tk
  - [x] 支持历史记录
  - [x] 支持内置提示词
  - [ ] 国际化翻译
+ - [ ] 支持 OpenAI API
 
 ## 一键部署
 > HuggingFace 已经被封禁，新方法正在内测中，如有需要，请直接访问演示站点 https://bing.github1s.tk
@@ -187,7 +188,15 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
   <image src="./docs/images/wechat2.jpg" width=200 />
 </div>
 
+## Star History
 
+<a href="https://star-history.com/#weaigc/bingo&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=weaigc/bingo&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=weaigc/bingo&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=weaigc/bingo&type=Date" />
+  </picture>
+</a>
 
 ## License
 

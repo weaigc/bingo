@@ -13,7 +13,10 @@ try:
     with open(file,"r") as f:
         content=f.read().strip()
         print('content:', content)
-        endpointIndex = '1' if content == '0' else '0'
+        index = int(content) + 1
+        if index >= len(endpoints):
+            index = 0
+        endpointIndex = str(index)
         f.close()
 except IOError:
     print("File not accessible")

@@ -1,7 +1,7 @@
 name: Sync Endpoint
 on:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '* */24 * * *'
 
 jobs:
   sync-to-hub:

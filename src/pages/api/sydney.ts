@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   debug(id, conversationContext, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
 
-  const ws = new WebSocket(`wss://${WS_ENDPOINT}/sydney/ChatHub`, {
+  const ws = new WebSocket(`wss://${req.headers['x-ws-endpoint'] || WS_ENDPOINT}/sydney/ChatHub`, {
     headers: {
       ...headers,
       'accept-language': 'zh-CN,zh;q=0.9',

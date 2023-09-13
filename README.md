@@ -44,13 +44,15 @@ Bingo，一个让你呼吸顺畅 New Bing。
  - [x] 适配深色模式
  - [x] 支持历史记录
  - [x] 支持内置提示词
+ - [x] 支持 Workers 部署
  - [ ] 国际化翻译
  - [ ] 支持 OpenAI API
 
-## 在线部署（Replit及CF均受到不同程度的封锁，故需要配置用户信息才能使用）
-### 1. 部署到 Replit
+## 在线部署
+### 1. 部署到 Replit（推荐）
 
 [点击部署Replit](https://replit.com/@weaigc/bingo?v=1)
+并修改 `BING_COOKIE` 为自己的 COOKIE
 
 ### 2. 部署到 CloudFlare (需要有自己的域名才可以)
 
@@ -60,9 +62,20 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 - 通过左侧菜单进入「Workers」，并点击「Create a Worker」。
 
-- 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码，修改第一行 `SITE_HOST` 为自己的域名，粘贴至创建的服务中，根据注释进行改动，保存并部署。
+- 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码，修改第一行 `SITE_HOST` 为自己的域名，修改 `BING_COOKIE` 为自己的COOKIE，粘贴至创建的服务中，根据注释进行改动，保存并部署。
 
 - 触发器 中自定义访问域名。
+
+### 如何获取 BING_COOKIE
+
+> 配置了 BING_COOKIE 意味着你将自己的账号共享给所有使用此服务的人，如果不需要免登录画图的功能，不建议设置此变量
+
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验（如果显示**无效域**，则跳过校验不管），然后
+
+![BING_COOKIE](./docs/images/curl.png)
+
+> 复制出来的内容应该如下所示。确认格式无误后，打开 https://bing.github1s.tk/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_COOKIE 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
+
 
 ### 部署其它平台
 <details>
@@ -124,7 +137,7 @@ docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 weaigc/bingo
 
 ![BING HEADER](./docs/images/curl.png)
 
-> 复制出来的内容应该如下所示。确认格式无误后，打开 https://hf4all-bingo.hf.space/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_HEADER 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
+> 复制出来的内容应该如下所示。确认格式无误后，打开 https://bing.github1s.tk/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_HEADER 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
 
 以下是格式参考，需要注意的是，网页端保存的格式是以`curl`开头, 而服务端配置的 `BING_HEADER` 是 `base64` 格式，两者不能互通。
 <details>

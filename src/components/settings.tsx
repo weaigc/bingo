@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { ChunkKeys, parseCookies, extraCurlFromCookie, encodeHeadersToCookie, getCookie, setCookie } from '@/lib/utils'
+import { ChunkKeys, parseCookies, extraCurlFromCookie, parseHeadersFromCurl, encodeHeadersToCookie, setCookie } from '@/lib/utils'
 import { ExternalLink } from './external-link'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
@@ -42,13 +42,17 @@ export function Settings() {
         return
       }
       if (RegExp.$1 === 'cn') {
-        toast.error('你配置的国内域名 cn.bing.com 仅支持画图')
+        toast.error('你配置的国内域名 cn.bing.com 需要启用此选项')
         setImageOnly(true)
+        setHistory(false)
         return
       }
       setImageOnly(checked)
     } else {
       setImageOnly(checked)
+    }
+    if (checked) {
+      setHistory(false)
     }
   }, [curlValue])
 
@@ -81,9 +85,6 @@ export function Settings() {
             placeholder="在此填写用户信息，格式: curl 'https://www.bing.com/turing/captcha/challenge' ..."
             onChange={e => {
               setCurlValue(e.target.value)
-              if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(e.target.value)) {
-                setImageOnly(true)
-              }
             }}
           />
           <div className="flex gap-2">
@@ -102,6 +103,7 @@ export function Settings() {
           <div className="flex gap-2">
             <Switch
               checked={enabledHistory}
+              disabled={imageOnly}
               className={`${enabledHistory ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
               onChange={(checked: boolean) => setHistory(checked)}
             >
@@ -114,6 +116,10 @@ export function Settings() {
 
           <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(btoa(curlValue))}>
             转成 BING_HEADER 并复制
+          </Button>
+
+          <Button variant="ghost" className="bg-[#F5F5F5] hover:bg-[#F2F2F2]" onClick={() => copyToClipboard(parseHeadersFromCurl(curlValue).cookie)}>
+            获取 BING_COOKIE 并复制
           </Button>
 
           <DialogFooter className="items-center">

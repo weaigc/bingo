@@ -1,5 +1,6 @@
-const SITE_HOST = '这城改为你的域名' // 为空则自动推断
+const SITE_HOST = '' // 为空则自动推断
 const TARGET_HOST='hf4all-bingo.hf.space' // 后台服务，默认不需要修改
+const BING_COOKIE = '' // 换成你自己的 BING_COOKIE，操作参见 README.md
 
 export default {
   async handleOptions(request) {
@@ -63,14 +64,18 @@ export default {
       return this.handleWebSocket(headers)
     }
     if (uri.pathname.startsWith('/turing/')) {
+      if (BING_COOKIE) {
+        headers.set('cookie', BING_COOKIE)
+      }
       uri.host = 'www.bing.com'
     } else {
       if (uri.protocol === 'http:' && !/^[0-9.:]+$/.test(TARGET_HOST)) {
         uri.protocol = 'https:';
       }
       headers.set('x-endpoint', SITE_HOST || uri.host)
-      headers.set('x-ws-endpoint', SITE_HOST || uri.host)
+      // headers.set('x-ws-endpoint', SITE_HOST || uri.host)
       uri.host = TARGET_HOST
+      uri.port = TARGET_HOST.split(':')[1] || ''
     }
     headers.set('Host', uri.host)
     return fetch(uri.toString(), {

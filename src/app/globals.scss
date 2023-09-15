@@ -1713,7 +1713,7 @@ button {
 }
 
 .chat-history {
-  max-width: var(--side-panel-width);
+  width: var(--side-panel-width);
   animation-name: message-enter;
   animation-fill-mode: both;
   animation-duration: 633ms;

@@ -103,7 +103,6 @@ export function Settings() {
           <div className="flex gap-2">
             <Switch
               checked={enabledHistory}
-              disabled={imageOnly}
               className={`${enabledHistory ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
               onChange={(checked: boolean) => setHistory(checked)}
             >

@@ -76,6 +76,7 @@ export default {
       // headers.set('x-ws-endpoint', SITE_HOST || uri.host)
       uri.host = TARGET_HOST
       uri.port = TARGET_HOST.split(':')[1] || ''
+      headers.set('cookie', `IMAGE_ONLY=1; ${headers.get('cookie') || ''}`)
     }
     headers.set('Host', uri.host)
     return fetch(uri.toString(), {

@@ -179,6 +179,7 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?
         ...cookies,
       })
       headers['x-forwarded-for'] = BING_IP || randomIP()
+      headers['user-agent'] = parseUA(headers['user-agent'])
       headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32'
       return headers
     }

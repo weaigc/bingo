@@ -19,7 +19,7 @@ function formatCookies(cookieObj) {
   return Object.keys(cookieObj).map(key => `${key}=${cookieObj[key]}`).join('; ')
 }
 
-export default {
+const handlers = {
   async handleOptions(request) {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
@@ -56,7 +56,7 @@ export default {
     })
   },
 
-  async fetch(request, env) {
+  async fetch(request, env = {}) {
     const uri = new URL(request.url)
     console.log('uri', uri.toString())
     if (request.method === 'OPTIONS') {
@@ -107,3 +107,9 @@ export default {
     })
   },
 }
+
+export default handlers
+
+addEventListener("fetch", (event) => {
+  event.respondWith(handlers.fetch(event.request))
+})

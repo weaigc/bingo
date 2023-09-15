@@ -1,6 +1,23 @@
 const SITE_HOST = '' // 为空则自动推断
-const TARGET_HOST='hf4all-bingo.hf.space' // 后台服务，默认不需要修改
 const BING_COOKIE = '' // 换成你自己的 BING_COOKIE，操作参见 README.md
+const TARGET_HOST = 'hf4all-bingo.hf.space' // 后台服务，默认不需要修改
+
+function parseCookie(cookie, cookieName) {
+  if (!cookie || !cookieName) return ''
+  const targetCookie = new RegExp(`(?:[; ]|^)${cookieName}=([^;]*)`).test(cookie) ? RegExp.$1 : cookie
+  return targetCookie ? decodeURIComponent(targetCookie).trim() : cookie.indexOf('=') === -1 ? cookie.trim() : ''
+}
+
+function parseCookies(cookie, cookieNames) {
+  const cookies = {}
+  cookieNames.forEach(cookieName => {
+    cookies[cookieName] = parseCookie(cookie, cookieName)
+  })
+  return cookies
+}
+function formatCookies(cookieObj) {
+  return Object.keys(cookieObj).map(key => `${key}=${cookieObj[key]}`).join('; ')
+}
 
 export default {
   async handleOptions(request) {
@@ -39,7 +56,7 @@ export default {
     })
   },
 
-  async fetch(request) {
+  async fetch(request, env) {
     const uri = new URL(request.url)
     console.log('uri', uri.toString())
     if (request.method === 'OPTIONS') {
@@ -64,8 +81,11 @@ export default {
       return this.handleWebSocket(headers)
     }
     if (uri.pathname.startsWith('/turing/')) {
-      if (BING_COOKIE) {
-        headers.set('cookie', BING_COOKIE)
+      if (BING_COOKIE || env.BING_COOKIE) {
+        headers.set('cookie', formatCookies({
+          ...parseCookies(env.BING_COOKIE || BING_COOKIE, ['MUID']),
+          _U: 'xxx'
+        }))
       }
       uri.host = 'www.bing.com'
     } else {

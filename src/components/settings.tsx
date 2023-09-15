@@ -37,14 +37,8 @@ export function Settings() {
       try {
         headerValue = atob(headerValue)
       } catch (e) { }
-      if (!/^\s*curl ['"]https:\/\/(www|cn)\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
+      if (!/^\s*curl ['"]https:\/\/www\.bing\.com\/turing\/captcha\/challenge['"]/.test(headerValue)) {
         toast.error('用户信息格式不正确')
-        return
-      }
-      if (RegExp.$1 === 'cn') {
-        toast.error('你配置的国内域名 cn.bing.com 需要启用此选项')
-        setImageOnly(true)
-        setHistory(false)
         return
       }
       setImageOnly(checked)

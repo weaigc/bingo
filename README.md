@@ -70,7 +70,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 > 配置了 BING_COOKIE 意味着你将自己的账号共享给所有使用此服务的人，如果不需要免登录画图的功能，不建议设置此变量
 
-打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验（如果显示**无效域**，则跳过校验不管），然后
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验（如果显示**无效域**，意味着需要自行准备梯子），然后
 
 ![BING_COOKIE](./docs/images/curl.png)
 

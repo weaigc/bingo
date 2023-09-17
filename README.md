@@ -45,8 +45,8 @@ Bingo，一个让你呼吸顺畅 New Bing。
  - [x] 支持历史记录
  - [x] 支持内置提示词
  - [x] 支持 Workers 部署
+ - [x] 支持 OpenAI API
  - [ ] 国际化翻译
- - [ ] 支持 OpenAI API
 
 ## 在线部署
 ### 1. 部署到 Replit（推荐）

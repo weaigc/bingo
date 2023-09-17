@@ -1,6 +1,6 @@
 {
   "name": "bingo",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "main": "./cloudflare/cli.js",
   "scripts": {
@@ -92,6 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "cross-env": "^7.0.3",
+    "openai": "^4.7.1",
     "sass": "^1.66.1"
   }
 }

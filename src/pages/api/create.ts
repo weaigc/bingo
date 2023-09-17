@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next'
 import { fetch, debug } from '@/lib/isomorphic'
-import { createHeaders, randomIP, extraHeadersFromCookie } from '@/lib/utils'
+import { createHeaders, randomIP } from '@/lib/utils'
 import { sleep } from '@/lib/bots/bing/utils'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

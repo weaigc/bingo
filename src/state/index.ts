@@ -37,10 +37,7 @@ export const historyAtom = atomWithStorage<boolean>('enableHistory', false, unde
 export const localPromptsAtom = atomWithStorage<Prompt[]>('prompts', [], undefined, { unstable_getOnInit: true })
 
 const createBotInstance = () => {
-  return new BingWebBot({
-    cookie: ' ',
-    ua: ' ',
-  })
+  return new BingWebBot({})
 }
 
 export const chatHistoryAtom = atomWithStorage<{

@@ -141,9 +141,9 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
-    BING_HEADER,
+    BING_HEADER = process.env.BING_HEADER || '',
     BING_UA = process.env.BING_UA,
-    BING_IP = '',
+    BING_IP = process.env.BING_IP || '',
   } = cookies
   const ua = parseUA(BING_UA)
 
@@ -165,7 +165,7 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
 export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: 'image') {
   let {
     BING_HEADER = process.env.BING_HEADER,
-    BING_IP = '',
+    BING_IP = process.env.BING_IP || '',
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies || {}
   const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))

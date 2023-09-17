@@ -119,22 +119,18 @@ const getOptionSets = (conversationStyle: BingConversationStyle) => {
 
 export class BingWebBot {
   protected conversationContext?: ConversationInfo
-  protected cookie: string
-  protected ua: string
   protected endpoint = ''
+  protected cookie = ''
   private lastText = ''
   private asyncTasks: Array<Promise<any>> = []
 
   constructor(opts: {
-    cookie: string
-    ua: string
-    bingConversationStyle?: BingConversationStyle
-    conversationContext?: ConversationInfo
+    endpoint?: string
+    cookie?: string
   }) {
-    const { cookie, ua, conversationContext } = opts
-    this.cookie = cookie?.includes(';') ? cookie : `_EDGE_V=1; _U=${cookie}`
-    this.ua = ua
-    this.conversationContext = conversationContext
+    const { endpoint, cookie } = opts
+    this.endpoint = endpoint || ''
+    this.cookie = cookie || ''
   }
 
   static buildChatRequest(conversation: ConversationInfo) {
@@ -235,7 +231,6 @@ export class BingWebBot {
   async createConversation(conversationId?: string): Promise<ConversationResponse> {
     const headers = {
       'Accept-Encoding': 'gzip, deflate, br, zsdch',
-      'User-Agent': this.ua,
       'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
       cookie: this.cookie,
     }
@@ -276,7 +271,7 @@ export class BingWebBot {
     return resp
   }
 
-  private async createContext(conversationStyle: BingConversationStyle, conversation?: ConversationInfoBase) {
+  async createContext(conversationStyle: BingConversationStyle, conversation?: ConversationInfoBase) {
     if (!this.conversationContext) {
       conversation = conversation?.conversationSignature ? conversation : await this.createConversation() as unknown as ConversationInfo
       this.conversationContext = {
@@ -312,6 +307,7 @@ export class BingWebBot {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        cookie: this.cookie,
       },
       signal: abortController.signal,
       body: JSON.stringify(this.conversationContext!)
@@ -344,7 +340,6 @@ export class BingWebBot {
         headers: {
           'accept-language': 'zh-CN,zh;q=0.9',
           'cache-control': 'no-cache',
-          'User-Agent': this.ua,
           pragma: 'no-cache',
           cookie: this.cookie,
         }
@@ -364,10 +359,10 @@ export class BingWebBot {
   private async createImage(prompt: string, id: string) {
     const headers = {
       'Accept-Encoding': 'gzip, deflate, br, zsdch',
-      'User-Agent': this.ua,
       'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
       cookie: this.cookie,
     }
+
     const query = new URLSearchParams({
       prompt,
       id
@@ -456,7 +451,7 @@ export class BingWebBot {
 
   private async parseEvents(params: Params, events: any) {
     events?.forEach(async (event: ChatUpdateCompleteResponse) => {
-      debug('bing event', event)
+      debug('bing event', JSON.stringify(event))
       if (event.type === 3) {
         await Promise.all(this.asyncTasks)
           .catch(error => {

@@ -63,7 +63,7 @@
     "rehype-stringify": "^10.0.0",
     "remark": "^14.0.3",
     "remark-breaks": "^3.0.3",
-    "remark-gfm": "^3.0.1",
+    "remark-gfm": "^4.0.0",
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.2",
     "remark-rehype": "^10.1.0",

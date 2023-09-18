@@ -26,4 +26,4 @@ with open(file, "w") as wf:
     wf.close()
 
 print('new endpoint', endpoints[int(endpointIndex)])
-hf_api.add_space_secret('hf4all/bingo', 'ENDPOINT', endpoints[int(endpointIndex)].strip())
+hf_api.add_space_secret('Happys/bing', 'ENDPOINT', endpoints[int(endpointIndex)].strip())

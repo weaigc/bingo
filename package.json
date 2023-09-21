@@ -92,7 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "cross-env": "^7.0.3",
-    "openai": "^4.7.1",
+    "openai": "^4.8.0",
     "sass": "^1.66.1"
   }
 }

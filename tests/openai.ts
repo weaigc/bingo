@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: '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',
-  baseURL: 'https://api.openai.com/v1/chat/completions'
+  apiKey: 'dummy',
+  baseURL: 'http://127.0.0.1:3000/api'
 });
 
 async function start() {

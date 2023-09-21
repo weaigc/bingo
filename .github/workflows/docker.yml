@@ -2,7 +2,7 @@ name: Build Docker Image Release
 
 on:
   workflow_run:
-    workflows: [Build Docker Image Test]
+    workflows: [Build Docker Image PR]
     types:
       - completed
 jobs:

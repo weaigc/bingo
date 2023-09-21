@@ -1,4 +1,4 @@
-name: Build Docker Image Test
+name: Build Docker Image PR
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
         with:
           username: happyclo
           password: wumaoyuan
-      - name: Build and push
+      - name: Build Docker Image
         uses: docker/build-push-action@v4
         with:
           context: .

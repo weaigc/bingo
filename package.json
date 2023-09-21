@@ -65,7 +65,7 @@
     "remark-breaks": "^3.0.3",
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
-    "remark-parse": "^10.0.2",
+    "remark-parse": "^11.0.0",
     "remark-rehype": "^11.0.0",
     "remark-supersub": "^1.0.0",
     "tailwind-merge": "^1.14.0",

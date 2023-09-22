@@ -37,6 +37,7 @@ function parseOpenAIMessage(request: APIRequest) {
   return {
     prompt: request.messages?.reverse().find((message) => message.role === 'user')?.content,
     stream: request.stream,
+    model: request.model,
   };
 }
 
@@ -55,10 +56,11 @@ function responseOpenAIMessage(content: string, id?: string): APIResponse {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { prompt, stream } = parseOpenAIMessage(req.body);
+  if (req.method !== 'POST') return res.status(403).end()
+  const { prompt, stream, model } = parseOpenAIMessage(req.body);
   let { id } = req.body
   const chatbot = new BingWebBot({
-    endpoint: 'http://127.0.0.1:3000' || req.headers.origin,
+    endpoint: req.headers.origin || `http://127.0.0.1:${process.env.PORT}`,
     cookie: `BING_IP=${process.env.BING_IP}`
   })
   id ||= JSON.stringify(chatbot.createConversation())
@@ -71,10 +73,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const abortController = new AbortController()
   assert(prompt, 'messages can\'t be empty!')
 
+  const toneType = model as BingConversationStyle
   chatbot.sendMessage({
     prompt,
     options: {
-      bingConversationStyle: BingConversationStyle.Creative,
+      bingConversationStyle: Object.values(BingConversationStyle)
+        .includes(toneType) ? toneType : BingConversationStyle.Creative,
       conversation: JSON.parse(id) as ConversationInfoBase
     },
     signal: abortController.signal,

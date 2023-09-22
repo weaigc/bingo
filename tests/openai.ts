@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: 'dummy',
-  baseURL: 'http://127.0.0.1:3000/api'
+  baseURL: 'https://bing.github1s.tk/api/openai/v1' // 这里改成你自己部署的服务地址
 });
 
 async function start() {

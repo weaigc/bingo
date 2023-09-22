@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import NextCors from 'nextjs-cors';
 import assert from 'assert'
 import { BingWebBot } from '@/lib/bots/bing'
 import { BingConversationStyle, ConversationInfoBase } from '@/lib/bots/bing/types'
@@ -56,11 +57,18 @@ function responseOpenAIMessage(content: string, id?: string): APIResponse {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(403).end()
+  // if (req.method !== 'POST') return res.status(403).end()
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const { prompt, stream, model } = parseOpenAIMessage(req.body);
+  console.log('prompt', prompt, stream, process.env.PORT)
   let { id } = req.body
   const chatbot = new BingWebBot({
-    endpoint: req.headers.origin || `http://127.0.0.1:${process.env.PORT}`,
+    endpoint: `http://127.0.0.1:${process.env.PORT}`,
     cookie: `BING_IP=${process.env.BING_IP}`
   })
   id ||= JSON.stringify(chatbot.createConversation())
@@ -86,16 +94,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (event.type === 'UPDATE_ANSWER') {
         lastText = event.data.text
         if (stream && lastLength !== lastText.length) {
-          res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength), id))}\n`)
+          res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength), id))}\n\n`)
           res.flushHeaders()
           lastLength = lastText.length
         }
       } else if (event.type === 'ERROR') {
-        res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${event.error}`, id))}\n`)
+        res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${event.error}`, id))}\n\n`)
         res.flushHeaders()
       } else if (event.type === 'DONE') {
         if (stream) {
-          res.end(`data: [DONE]\n`);
+          res.end(`data: [DONE]\n\n`);
         } else {
           res.json(responseOpenAIMessage(lastText, id))
         }

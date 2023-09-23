@@ -242,6 +242,9 @@ export class BingWebBot {
       if (response.status === 404) {
         throw new ChatError('Not Found', ErrorCode.NOTFOUND_ERROR)
       }
+      if (response.headers.has('cookie')) {
+        this.cookie = response.headers.get('cookie')!
+      }
       resp = await response.json() as ConversationResponse
     } catch (err) {
       console.error('create conversation error', err)

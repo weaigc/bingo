@@ -14,7 +14,10 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 </div>
 
-## 演示站点（由于 New Bing 封锁，目前需要绑定用户信息才能使用，请参考说明自行配置）
+## 重要说明
+为了应对日益严格的封锁，现已研发 Bingo 2.0，目前稳定性已经得到验证，详见：https://github.com/weaigc/bingo/tree/v2
+
+## 演示站点
 
 站点1：https://bing.github1s.tk
 
@@ -29,6 +32,8 @@ Bingo，一个让你呼吸顺畅 New Bing。
 - 支持 Docker 构建，方便快捷地部署和访问。
 - Cookie 可全局配置，全局共享。
 - 支持持续语音对话
+- 支持免账号使用
+- 完全免费
 
 ## RoadMap
 
@@ -52,7 +57,6 @@ Bingo，一个让你呼吸顺畅 New Bing。
 ### 1. 部署到 Replit（推荐）
 
 [点击部署Replit](https://replit.com/@weaigc/bingo?v=1)
-并修改 `BING_COOKIE` 为自己的 COOKIE
 
 ### 2. 部署到 CloudFlare (需要有自己的域名才可以)
 
@@ -62,7 +66,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 - 通过左侧菜单进入「Workers」，并点击「Create a Worker」。
 
-- 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码，修改第一行 `SITE_HOST` 为自己的域名，修改 `BING_COOKIE` 为自己的COOKIE，粘贴至创建的服务中，根据注释进行改动，保存并部署。
+- 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码粘贴至创建的服务中，保存并部署。
 
 - 触发器 中自定义访问域名。
 
@@ -80,7 +84,8 @@ Bingo，一个让你呼吸顺畅 New Bing。
 ### 部署其它平台
 <details>
 <summary>
-由于其他平台目前遭到 New Bing 比较彻底的封杀，会遇到很多问题，不再做推荐，有需要的可以自行查看
+<del>由于其他平台目前遭到 New Bing 比较彻底的封杀，会遇到很多问题，不再做推荐，有需要的可以自行查看</del>
+V2 版本已解决此问题，详见: https://github.com/weaigc/bingo/tree/v2
 </summary>
 
 #### 部署到 HuggingFace

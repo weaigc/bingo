@@ -1,4 +1,4 @@
-export const runtime = 'experimental-edge'
+export const runtime = 'edge'
 
 const API_ENDPOINT = 'https://www.bing.com/turing/conversation/create'
 

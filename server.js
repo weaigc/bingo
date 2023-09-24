@@ -21,15 +21,18 @@ app.prepare().then(() => {
 
   async function handleRequest(req, res) {
     try {
+      const { method } = req
       // Be sure to pass `true` as the second argument to `url.parse`.
       // This tells it to parse the query portion of the URL.
       const parsedUrl = parse(req.url, true)
-      const { pathname } = parsedUrl
+      const { pathname, query } = parsedUrl
 
       if (pathname === '/api/counts') {
-        server.getConnections(function(error, count) {
+        server.getConnections(function (error, count) {
           res.end(String(count))
         })
+      } else if (pathname.endsWith('/completions')) {
+        await app.render(req, res, '/api/openai/chat/completions', query)
       } else {
         await handle(req, res, parsedUrl)
       }

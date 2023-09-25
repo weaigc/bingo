@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { ChunkKeys, parseCookies, extraCurlFromCookie, parseHeadersFromCurl, encodeHeadersToCookie, setCookie } from '@/lib/utils'
+import { ChunkKeys, parseCookies, extraCurlFromCookie, parseHeadersFromCurl, encodeHeadersToCookie, setCookie, resetCookies } from '@/lib/utils'
 import { ExternalLink } from './external-link'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
@@ -131,7 +131,7 @@ export function Settings() {
                   }
                   encodeHeadersToCookie(headerValue).forEach(cookie => setCookie(cookie))
                 } else {
-                  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', 'BING_IP', '_U'].forEach(key => setCookie(key, ''))
+                  resetCookies()
                 }
                 setCookie('IMAGE_ONLY', RegExp.$1 === 'cn' || imageOnly || !headerValue ? '1' : '0')
 

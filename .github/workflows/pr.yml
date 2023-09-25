@@ -6,7 +6,7 @@ on:
     types: [opened]
     branches:
       - main
-      - dev
+      - develop
       - issue
 jobs:
   docker:

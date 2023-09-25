@@ -238,7 +238,7 @@ export class BingWebBot {
     let resp: ConversationResponse | undefined
     try {
       const search = conversationId ? `?conversationId=${encodeURIComponent(conversationId)}` : ''
-      const response = await fetch(`${this.endpoint}/api/create${search}`, { method: 'POST', headers, redirect: 'error', mode: 'cors', credentials: 'include' })
+      const response = await fetch(`${this.endpoint}/api/create${search}`, { method: 'POST', headers, mode: 'cors', credentials: 'include' })
       if (response.status === 404) {
         throw new ChatError('Not Found', ErrorCode.NOTFOUND_ERROR)
       }

@@ -34,6 +34,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 - 支持持续语音对话
 - 支持免账号使用
 - 完全免费
+- 支持 OpenAI 方式调用 [使用文档](./OPENAI.md)
 
 ## RoadMap
 

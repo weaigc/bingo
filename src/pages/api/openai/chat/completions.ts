@@ -56,22 +56,28 @@ function responseOpenAIMessage(content: string, id?: string): APIResponse {
   };
 }
 
+function getOriginFromHost(host: string) {
+  const uri = new URL(`http://${host}`)
+  if (uri.protocol === 'http:' && !/^[0-9.:]+$/.test(host)) {
+    uri.protocol = 'https:';
+  }
+  return uri.toString().slice(0, -1)
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // if (req.method !== 'POST') return res.status(403).end()
+  if (req.method === 'GET') return res.status(200).end('ok')
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200,
   });
   const { prompt, stream, model } = parseOpenAIMessage(req.body);
-  console.log('prompt', prompt, stream, process.env.PORT)
   let { id } = req.body
   const chatbot = new BingWebBot({
-    endpoint: `http://127.0.0.1:${process.env.PORT}`,
-    cookie: `BING_IP=${process.env.BING_IP}`
+    endpoint: getOriginFromHost(req.headers.host || '127.0.0.1:3000'),
   })
-  id ||= JSON.stringify(chatbot.createConversation())
+  id ||= JSON.stringify(await chatbot.createConversation())
 
   if (stream) {
     res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
@@ -96,10 +102,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (stream && lastLength !== lastText.length) {
           res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength), id))}\n\n`)
           res.flushHeaders()
+
           lastLength = lastText.length
         }
       } else if (event.type === 'ERROR') {
-        res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${event.error}`, id))}\n\n`)
+        res.write(`data: ${JSON.stringify(responseOpenAIMessage(`\n\n${event.error}`, id))}\n\n`)
+        lastText += '\n\n' + event.error
         res.flushHeaders()
       } else if (event.type === 'DONE') {
         if (stream) {

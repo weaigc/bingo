@@ -82,7 +82,7 @@
     "@types/debug": "^4.1.9",
     "@types/dom-speech-recognition": "^0.0.2",
     "@types/md5": "^2.3.2",
-    "@types/node": "20.6.5",
+    "@types/node": "20.7.0",
     "@types/react": "18.2.22",
     "@types/react-color": "^3.0.6",
     "@types/react-copy-to-clipboard": "^5.0.4",

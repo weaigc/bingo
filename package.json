@@ -32,7 +32,7 @@
     "i18next-browser-languagedetector": "^7.0.2",
     "idb-keyval": "^6.2.1",
     "ifw": "^0.0.2",
-    "immer": "^10.0.2",
+    "immer": "^10.0.3",
     "inter-ui": "^3.19.3",
     "jotai": "^2.4.3",
     "jotai-immer": "^0.2.0",

@@ -1,18 +1,22 @@
 import OpenAI from 'openai';
 
+const OpenAI = require('openai');
+
 const openai = new OpenAI({
-  apiKey: 'dummy',
-  baseURL: 'http://127.0.0.1:3000' // 这里改成你自己部署的服务地址
+  apiKey: 'PUT_YOUR_NOVA_API_KEY_HERE', 
+  baseURL: 'https://api.nova-oss.com/v1/',
 });
 
-async function start() {
+async function main() {
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: 'user', content: '你好' },
+      { role: 'system', content: 'You are a helpful assistant.' },
+      { role: 'user', content: 'What is the highest mountain?' }
     ],
-    model: 'bing',
+    model: 'gpt-3.5-turbo',
   });
-  console.log(completion.choices[0].message.content)
+  
+  console.log(completion.choices);
 }
 
-start()
+main();

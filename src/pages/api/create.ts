@@ -29,7 +29,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (response.status === 200) {
         const json = await response.json().catch((e: any) => {})
         console.log('json', json)
-        if (!json?.conversationSignature) {
+        if (!json?.clientId) {
+          continue
+        }
+        json.encryptedconversationsignature = response.headers.get('X-Sydney-encryptedconversationsignature') || undefined
+        
+        if (!json?.conversationSignature && !json.encryptedconversationsignature) {
           continue
         }
 

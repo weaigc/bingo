@@ -137,7 +137,8 @@ export interface ConversationInfoBase {
   conversationId: string
   userIpAddress: string
   clientId: string
-  conversationSignature: string
+  conversationSignature?: string
+  encryptedconversationsignature?: string
   invocationId: number
 }
 
@@ -145,15 +146,6 @@ export interface ConversationInfo extends ConversationInfoBase {
   conversationStyle: BingConversationStyle
   prompt: string
   imageUrl?: string
-}
-
-export interface BingChatResponse {
-  conversationSignature: string
-  conversationId: string
-  clientId: string
-  conversationExpiryTime: Date
-  response: string
-  details: ChatResponseMessage
 }
 
 export interface Throttling {

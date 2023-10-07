@@ -251,7 +251,7 @@ export class BingWebBot {
     }
 
     if (!resp?.result) {
-      throw new ChatError('你的 VPS 或代理可能被封禁，如有疑问，请前往 https://github.com/weaigc/bingo 咨询', ErrorCode.BING_IP_FORBIDDEN)
+      throw new ChatError('你的 VPS 或代理可能被封禁，如有疑问，请前往 https://github.com/weaigc/bingo 咨询', ErrorCode.BING_TRY_LATER)
     }
 
     const { value, message } = resp.result || {}
@@ -259,7 +259,7 @@ export class BingWebBot {
       const errorMsg = `${value}: ${message}`
       if (value === 'UnauthorizedRequest') {
         if (/fetch failed/i.test(message || '')) {
-          throw new ChatError(errorMsg, ErrorCode.BING_IP_FORBIDDEN)
+          throw new ChatError(errorMsg, ErrorCode.BING_TRY_LATER)
         }
         throw new ChatError(errorMsg, ErrorCode.BING_UNAUTHORIZED)
       }
@@ -280,6 +280,7 @@ export class BingWebBot {
       this.conversationContext = {
         conversationId: conversation.conversationId,
         userIpAddress: conversation.userIpAddress,
+        encryptedconversationsignature: conversation.encryptedconversationsignature,
         conversationSignature: conversation.conversationSignature,
         clientId: conversation.clientId,
         invocationId: conversation.invocationId ?? 0,

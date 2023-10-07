@@ -20,8 +20,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   debug(id, conversationContext, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
-
-  const ws = new WebSocket(`wss://${req.headers['x-ws-endpoint'] || WS_ENDPOINT}/sydney/ChatHub`, {
+  const uri = new URL(`wss://${req.headers['x-ws-endpoint'] || WS_ENDPOINT}/sydney/ChatHub`)
+  if ('encryptedconversationsignature' in conversationContext) {
+    uri.searchParams.set('sec_access_token', conversationContext['encryptedconversationsignature'])
+  }
+  debug(id, 'wss url', uri.toString())
+  const ws = new WebSocket(uri.toString(), {
     headers,
   })
 

@@ -281,6 +281,7 @@ export class BingWebBot {
         conversationId: conversation.conversationId,
         userIpAddress: conversation.userIpAddress,
         conversationSignature: conversation.conversationSignature,
+        encryptedconversationsignature: conversation.encryptedconversationsignature,
         clientId: conversation.clientId,
         invocationId: conversation.invocationId ?? 0,
         conversationStyle,

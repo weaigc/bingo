@@ -14,9 +14,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const endpoints = [req.headers['x-endpoint'], ...(process.env.ENDPOINT || '').split(','), 'www.bing.com'].filter(Boolean)
       const endpoint = endpoints[count % endpoints.length]
       const { conversationId } = req.query
-      const query = conversationId ? new URLSearchParams({
-        conversationId: String(conversationId),
-      }) : ''
+      const query = new URLSearchParams({
+        bundleVersion: '1.1055.8',
+      })
+      if (conversationId) {
+        query.set('conversationId', String(conversationId))
+      }
+
       debug(`try ${count+1}`, endpoint, headers['x-forwarded-for'])
       const response = await fetch(`https://${endpoint || 'www.bing.com'}/turing/conversation/create?${query}`, { method: 'GET', headers })
         .catch(e => {
@@ -29,7 +33,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (response.status === 200) {
         const json = await response.json().catch((e: any) => {})
         console.log('json', json)
-        if (!json?.conversationSignature) {
+        if (!json?.clientId) {
+          continue
+        }
+        json.encryptedconversationsignature = response.headers.get('X-Sydney-encryptedconversationsignature') || undefined
+
+        if (!json?.conversationSignature && !json.encryptedconversationsignature) {
           continue
         }
 

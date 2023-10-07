@@ -14,21 +14,19 @@ const { WS_ENDPOINT = 'sydney.bing.com' } = process.env
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
-  const headers = createHeaders(req.cookies)
+  const headers = createHeaders(req.cookies, req.cookies['BING_HEADER1'] ? undefined : 'image')
   const id = headers['x-forwarded-for']
-  headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
+  // headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
 
   debug(id, conversationContext, headers)
   res.setHeader('Content-Type', 'text/stream; charset=UTF-8')
-
-  const ws = new WebSocket(`wss://${req.headers['x-ws-endpoint'] || WS_ENDPOINT}/sydney/ChatHub`, {
-    headers: {
-      ...headers,
-      'accept-language': 'zh-CN,zh;q=0.9',
-      'cache-control': 'no-cache',
-      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
-      pragma: 'no-cache',
-    }
+  const uri = new URL(`wss://${req.headers['x-ws-endpoint'] || WS_ENDPOINT}/sydney/ChatHub`)
+  if ('encryptedconversationsignature' in conversationContext) {
+    uri.searchParams.set('sec_access_token', conversationContext['encryptedconversationsignature'])
+  }
+  debug(id, 'wss url', uri.toString())
+  const ws = new WebSocket(uri.toString(), {
+    headers,
   })
 
   const closeDog = new WatchDog()

@@ -95,8 +95,11 @@ function createWork() {
       }
       debug('wait captcha valid')
       await sleep(3000)
-      const { solution: { cookies } } = await remoteFetch('https://www.bing.com/turing/conversation/create?bundleVersion=1.1055.8', [])
+      await remoteFetch('https://www.bing.com/turing/conversation/create?bundleVersion=1.1055.8', [])
+      await sleep(3000)
+      const { solution: { cookies, response } } = await remoteFetch('https://www.bing.com/turing/conversation/create?bundleVersion=1.1055.8', [])
       cookie = requestCookies.concat(cookies).map((cookie: any) => `${cookie.name}=${cookie.value}`).join('; ')
+      debug('create', cookie, response)
     }
     debug('create conversation')
     const response = await fetch(`https://www.bing.com/turing/conversation/create?bundleVersion=1.1055.8`,

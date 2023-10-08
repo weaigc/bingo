@@ -20,7 +20,9 @@ WORKDIR $HOME/app
 # Copy the current directory contents into the container at $HOME/app setting the owner to the user
 COPY --chown=user . $HOME/app/
 
-#RUN npm install && npm run build
+RUN if [ ! -f ".next/routes-manifest.json" ]; then \
+  npm install && npm run build; \
+fi
 
 RUN rm -rf src
 

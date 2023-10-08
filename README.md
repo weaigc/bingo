@@ -15,7 +15,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 </div>
 
 ## 重要说明
-为了应对日益严格的封锁，现已研发 Bingo 2.0，目前稳定性已经得到验证，详见：https://github.com/weaigc/bingo/tree/v2
+为了应对日益严格的封锁，现已研发 Bingo 2.0，目前稳定性已经得到验证，详见：https://github.com/weaigc/bingo/tree/v2 。如你自己有没有被封锁的 vps，则可以继续使用 Bingo 1.0。
 
 ## 演示站点
 
@@ -37,7 +37,6 @@ Bingo，一个让你呼吸顺畅 New Bing。
 - 支持 OpenAI 方式调用 [使用文档](./OPENAI.md)
 
 ## RoadMap
-
  - [x] 支持 wss 转发
  - [x] 支持一键部署
  - [x] 优化移动端展示
@@ -71,21 +70,11 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 - 触发器 中自定义访问域名。
 
-### 如何获取 BING_COOKIE
-
-> 配置了 BING_COOKIE 意味着你将自己的账号共享给所有使用此服务的人，如果不需要免登录画图的功能，不建议设置此变量
-
-打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验（如果显示**无效域**，意味着需要自行准备梯子），然后
-
-![BING_COOKIE](./docs/images/curl.png)
-
-> 复制出来的内容应该如下所示。确认格式无误后，打开 https://bing.github1s.tk/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_COOKIE 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
-
-
 ### 部署其它平台
 <details>
 <summary>
-<del>由于其他平台目前遭到 New Bing 比较彻底的封杀，会遇到很多问题，不再做推荐，有需要的可以自行查看</del>
+<del>以下为已经被封杀的部署方式</del>
+
 V2 版本已解决此问题，详见: https://github.com/weaigc/bingo/tree/v2
 </summary>
 
@@ -109,14 +98,18 @@ V2 版本已解决此问题，详见: https://github.com/weaigc/bingo/tree/v2
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
 </details>
 
+
+
 ## 环境和依赖
 
 - Node.js >= 18
-- Bing AI 的[用户信息](#如何获取-BING_HEADER))
+- New Bing 的[用户信息](#如何获取-BING_HEADER))
+- 一台没有被微软封禁的 vps（需要自行测试）
+
 
 ## 安装和使用
 
-> 本地部署需要你本机或服务器 IP 是国外 IP ，否则会无法连接到 New Bing。
+> 本地部署需要你本机或服务器 IP 是国外 IP，且没有被微软封禁 ，否则无法正常使用 New Bing。
 
 * 使用 Node 启动
 
@@ -188,10 +181,21 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 ```
 </details>
 
+### 如何获取 BING_COOKIE
+
+> 配置了 BING_COOKIE 意味着你将自己的账号共享给所有使用此服务的人，如果不需要免登录画图的功能，不建议设置此变量
+
+打开 https://www.bing.com 并登录，然后访问 https://www.bing.com/turing/captcha/challenge ，通过人机校验（如果显示**无效域**，意味着需要自行准备梯子），然后
+
+![BING_COOKIE](./docs/images/curl.png)
+
+> 复制出来的内容应该如下所示。确认格式无误后，打开 https://bing.github1s.tk/#dialog=%22settings%22 ，粘贴进去，点击“转成 BING_COOKIE 并复制”，然后从剪切板粘贴即可得到。（你也可以先在网页上进行验证）
+
 
 ## 鸣谢
  - 感谢 [EdgeGPT](https://github.com/acheong08/EdgeGPT) 提供的代理 API 的方法。
  - 感谢 [Vercel AI](https://github.com/vercel-labs/ai-chatbot) 提供的基础脚手架和 [ChatHub](https://github.com/chathub-dev/chathub) [go-proxy-bingai](https://github.com/adams549659584/go-proxy-bingai) 提供的部分代码。 
+ - 感谢 Happy-clo, SokWith, player868 等及群里的小伙伴的大力协助（名单不全，如有遗漏，欢迎指出）
 
 
 ## 答疑及交流

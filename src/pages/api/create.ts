@@ -43,13 +43,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         debug('headers', headers)
+        const cookies = [`BING_IP=${headers['x-forwarded-for']}`]
+        res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/;`))
+
         res.writeHead(200, {
           'Content-Type': 'application/json',
         })
-        res.end(JSON.stringify({
-          ...json,
-          // userIpAddress: endpoint && !endpoint.endsWith('.bing.com') ? await lookupPromise(endpoint.split('/')[0]) : headers['x-forwarded-for']
-        }))
+
+        res.end(JSON.stringify(json))
         return
       }
       await sleep(2000)

@@ -163,34 +163,29 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
     'referer': 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch',
-    cookie: `_U=${_U || defaultUID}; MUID=${MUID || muid()}`,
+    cookie: `_U=${_U || defaultUID}; MUID=${MUID || randomString(32)}`,
   }
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, type?: 'image') {
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMock?: boolean) {
   let {
     BING_HEADER = process.env.BING_HEADER,
     BING_IP = process.env.BING_IP || '',
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies || {}
-  const imageOnly = /^(1|true|yes)$/.test(String(IMAGE_ONLY))
-  if (BING_HEADER) {
-    if (
-      (imageOnly && type === 'image')
-      || !imageOnly
-    ) {
-      const headers = extraHeadersFromCookie({
-        BING_HEADER,
-        ...cookies,
-      })
-      // headers['x-forwarded-for'] = BING_IP || randomIP()
-      headers['user-agent'] = parseUA(headers['user-agent'])
-      headers['referer'] = 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch'
-      headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32'
-      return headers
-    }
+  useMock = useMock ?? /^(1|true|yes)$/i.test(String(IMAGE_ONLY))
+  if (!BING_HEADER || useMock) {
+    return mockUser(cookies)
   }
-  return mockUser(cookies)
+  const headers = extraHeadersFromCookie({
+    BING_HEADER,
+    ...cookies,
+  })
+  headers['x-forwarded-for'] = BING_IP || randomIP()
+  headers['user-agent'] = parseUA(headers['user-agent'])
+  headers['referer'] = 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch'
+  headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32'
+  return headers
 }
 
 export class WatchDog {

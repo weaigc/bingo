@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       {
         method: 'GET',
         headers: {
-          ...createHeaders(req.cookies, 'image'),
+          ...createHeaders(req.cookies, false),
           Referer: 'https://www.bing.com/search?q=Bing+AI&showconv=1',
           'Sec-Fetch-Dest': 'iframe',
         },

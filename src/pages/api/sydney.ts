@@ -14,7 +14,7 @@ const { WS_ENDPOINT = 'sydney.bing.com' } = process.env
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
-  const headers = createHeaders(req.cookies, req.cookies['BING_HEADER1'] ? undefined : 'image')
+  const headers = createHeaders(req.cookies, Boolean(req.cookies['BING_HEADER1']))
   const id = headers['x-forwarded-for']
   // headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
 

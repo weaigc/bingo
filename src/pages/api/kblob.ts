@@ -19,7 +19,7 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { knowledgeRequest, imageBase64 } = req.body as KBlobRequest
-    const headers = createHeaders(req.cookies, 'image')
+    const headers = createHeaders(req.cookies, false)
 
     const formData = new FormData()
     formData.append('knowledgeRequest', JSON.stringify(knowledgeRequest))

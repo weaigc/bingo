@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
   }
   try {
-    const headers = createHeaders(req.cookies, 'image')
+    const headers = createHeaders(req.cookies, false)
 
     debug('headers', headers)
     const response = await createImage(String(prompt), String(id), {

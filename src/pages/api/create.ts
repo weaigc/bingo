@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { conversationId } = req.query
       const query = conversationId ? new URLSearchParams({
         conversationId: String(conversationId),
-      }) : ''
+      }) ’: ''
       debug(`try ${count+1}`, endpoint, headers['x-forwarded-for'])
       const response = await fetch(`https://${endpoint || 'www.bing.com'}/turing/conversation/create?${query}`, { method: 'GET', headers })
         .catch(e => {

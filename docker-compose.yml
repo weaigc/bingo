@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  bingo:
+    image: weaigc/bingo
+    container_name: bingo
+    ports:
+      - "7860:7860"
+    environment:
+#      - BING_HEADER=xxx # 这里配置自己的 BING_HEADER 信息

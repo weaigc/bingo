@@ -82,7 +82,7 @@ export function parseHeadersFromCurl(content: string) {
   return headers
 }
 
-export const ChunkKeys = ['BING_HEADER', 'BING_HEADER1', 'BING_HEADER2']
+export const ChunkKeys = ['BING_HEADER0', 'BING_HEADER1', 'BING_HEADER2']
 
 export function encodeHeadersToCookie(content: string) {
   const base64Content = btoa(content)
@@ -90,11 +90,8 @@ export function encodeHeadersToCookie(content: string) {
   return ChunkKeys.map((key, index) => `${key}=${contentChunks[index] ?? ''}`)
 }
 
-export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }>) {
-  let base64Content = ''
-  ChunkKeys.forEach((key) => {
-    base64Content += (cookies[key] || '')
-  })
+export function extraCurlFromCookie(cookies: Partial<{ [key: string]: string }> = {}) {
+  const base64Content = cookies.BING_HEADER || ChunkKeys.map((key) => cookies[key] || '').join('')
   try {
     return atob(base64Content)
   } catch (e) {
@@ -133,7 +130,7 @@ export function parseCookies(cookie: string, cookieNames: string[]) {
 }
 
 export function resetCookies() {
-  [...ChunkKeys, 'BING_COOKIE', 'BING_UA', '_U', 'BING_IP', 'MUID'].forEach(key => setCookie(key, ''))
+  [...ChunkKeys, 'BING_HEADER', '', 'BING_COOKIE', 'BING_UA', '_U', 'BING_IP', 'MUID'].forEach(key => setCookie(key, ''))
 }
 
 export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.0.0'
@@ -145,14 +142,16 @@ export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
 
 export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   const {
-    BING_HEADER = process.env.BING_HEADER || '',
+    BING_HEADER,
+    BING_HEADER0 = process.env.BING_HEADER,
     BING_UA = process.env.BING_UA,
-    BING_IP = process.env.BING_IP || '',
+    BING_IP = process.env.BING_IP,
   } = cookies
   const ua = parseUA(BING_UA)
 
   const { _U, MUID } = parseCookies(extraHeadersFromCookie({
     BING_HEADER,
+    BING_HEADER0,
     ...cookies,
   }).cookie, ['MUID'])
 
@@ -169,16 +168,18 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
 
 export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMock?: boolean) {
   let {
-    BING_HEADER = process.env.BING_HEADER,
-    BING_IP = process.env.BING_IP || '',
+    BING_HEADER,
+    BING_HEADER0 = process.env.BING_HEADER,
+    BING_IP = process.env.BING_IP,
     IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
   } = cookies || {}
   useMock = useMock ?? /^(1|true|yes)$/i.test(String(IMAGE_ONLY))
-  if (!BING_HEADER || useMock) {
+  if ((!BING_HEADER && !BING_HEADER0) || useMock) {
     return mockUser(cookies)
   }
   const headers = extraHeadersFromCookie({
     BING_HEADER,
+    BING_HEADER0,
     ...cookies,
   })
   headers['x-forwarded-for'] = BING_IP || randomIP()

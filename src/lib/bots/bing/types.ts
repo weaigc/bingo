@@ -146,6 +146,7 @@ export interface ConversationInfo extends ConversationInfoBase {
   conversationStyle: BingConversationStyle
   prompt: string
   imageUrl?: string
+  source?: 'cib' | 'WindowsCopilot'
 }
 
 export interface Throttling {

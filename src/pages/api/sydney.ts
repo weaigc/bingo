@@ -14,7 +14,7 @@ const { WS_ENDPOINT = 'sydney.bing.com' } = process.env
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const conversationContext = req.body
-  const headers = createHeaders(req.cookies, Boolean(req.cookies['BING_HEADER1']))
+  const headers = createHeaders(req.cookies)
   const id = headers['x-forwarded-for']
   // headers['x-forwarded-for'] = conversationContext?.userIpAddress || headers['x-forwarded-for']
 
@@ -62,7 +62,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await new Promise((resolve) => ws.onopen = resolve)
   ws.send(websocketUtils.packMessage({ protocol: 'json', version: 1 }))
   ws.send(websocketUtils.packMessage({ type: 6 }))
-  ws.send(websocketUtils.packMessage(BingWebBot.buildChatRequest(conversationContext!)))
+  ws.send(websocketUtils.packMessage(
+    BingWebBot.buildChatRequest({
+      ...conversationContext,
+      source: req.cookies?.BING_SOURCE,
+    })
+  ))
   req.socket.once('close', () => {
     debug(id, 'connection close')
     ws.close()

@@ -20,7 +20,7 @@
 ### 示例
 以下以 `curl` 为例
 ```
-curl -kL 'https://hf4all-bingo-api.hf.space/api/v1/chat/completions' \
+curl -kL 'https://copilot.github1s.tk/api/v1/chat/completions' \
   -H 'Content-Type: application/json' \
   -d '{
     "messages":[{"role":"user","content":"你好"}],
@@ -41,7 +41,7 @@ curl -kL 'https://hf4all-bingo-api.hf.space/api/v1/chat/completions' \
 ```
 import openai
 openai.api_key = "dummy"
-openai.api_base = "https://hf4all-bingo-api.hf.space" # 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
+openai.api_base = "https://copilot.github1s.tk" # 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
 
 # create a chat completion
 chat_completion = openai.ChatCompletion.create(model="Creative", messages=[{"role": "user", "content": "Hello"}])
@@ -54,7 +54,7 @@ print(chat_completion.choices[0].message.content)
 ```
 import openai
 openai.api_key = "dummy"
-openai.api_base = "https://hf4all-bingo-api.hf.space" # 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
+openai.api_base = "https://copilot.github1s.tk" # 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
 
 # create a chat completion
 completion = openai.ChatCompletion.create(model="Creative", stream=True, messages=[{"role": "user", "content": "Hello"}])
@@ -71,7 +71,7 @@ for chat_completion in completion:
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  baseURL: 'https://hf4all-bingo-api.hf.space' // 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
+  baseURL: 'https://copilot.github1s.tk' // 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
 });
 
 async function main() {
@@ -92,9 +92,12 @@ main();
 
 ## 在线演示
 
-https://huggingface.co/spaces/hf4all/next-web-bing
+https://huggingface.co/spaces/hf4all/chatbot-ui-bing
+https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing
 
-[![Deploy to HuggingFace](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fnext-web-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
+[![Deploy Chatbot UI](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fchatbot-ui-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
+
+[![Deploy ChatGPT Next Web](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fchatgpt-next-web-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
 
 
-[![gpt-next-web-bing](./docs/images/openai.png)](https://huggingface.co/spaces/hf4all/next-web-bing)
+[![chatgpt-next-web-bing](./docs/images/openai.png)](https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing)

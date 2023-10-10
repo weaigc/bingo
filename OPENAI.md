@@ -92,12 +92,9 @@ main();
 
 ## 在线演示
 
-https://huggingface.co/spaces/hf4all/chatbot-ui-bing
-https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing
-
-[![Deploy Chatbot UI](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fchatbot-ui-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
-
+1. https://huggingface.co/spaces/hf4all/chatbot-ui-bing [![Deploy Chatbot UI](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fchatbot-ui-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
+2. https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing 
 [![Deploy ChatGPT Next Web](https://img.shields.io/badge/点此部署-%F0%9F%A4%97-fff)](https://huggingface.co/login?next=%2Fspaces%2Fhf4all%2Fchatgpt-next-web-bing%3Fduplicate%3Dtrue%26visibility%3Dpublic) 配置可以不改
 
 
-[![chatgpt-next-web-bing](./docs/images/openai.png)](https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing)
+[![效果图](./docs/images/openai.png)](https://huggingface.co/spaces/hf4all/chatgpt-next-web-bing)

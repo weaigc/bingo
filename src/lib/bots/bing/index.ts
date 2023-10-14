@@ -12,13 +12,14 @@ import {
   ChatUpdateCompleteResponse,
   ImageInfo,
   KBlobResponse,
-  ConversationInfoBase
 } from './types'
 
 import { convertMessageToMarkdown, websocketUtils, streamAsyncIterable } from './utils'
 import { createChunkDecoder } from '@/lib/utils'
+import { randomUUID } from 'crypto'
+import md5 from 'md5'
 
-type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, conversation: Partial<ConversationInfoBase> }>
+type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle }>
 
 const getOptionSets = (conversationStyle: BingConversationStyle) => {
   return {
@@ -113,6 +114,19 @@ const getOptionSets = (conversationStyle: BingConversationStyle) => {
       'hlthcndans',
       'dv3suggtrim',
       'eredirecturl'
+    ],
+    [BingConversationStyle.Base]: [
+      'saharasugg',
+      'enablenewsfc',
+      'gencontentv3',
+      'deepleo',
+      'disable_emoji_spoken_text',
+      'enablemm',
+      'h3precisedtappid',
+      'cricinfo',
+      'cricinfov2',
+      'dv3sugg',
+      'nojbfedge',
     ]
   }[conversationStyle]
 }
@@ -134,95 +148,96 @@ export class BingWebBot {
   }
 
   static buildChatRequest(conversation: ConversationInfo) {
-    return {
-      arguments: [
+    const uuid = randomUUID()
+    const useBaseSets = (conversation.context?.length ?? 0) > 0
+    const message = {
+      locale: 'zh-CN',
+      market: 'zh-CN',
+      region: 'US',
+      locationHints: [
         {
-          source: 'cib',
-          optionsSets: getOptionSets(conversation.conversationStyle),
-          allowedMessageTypes: [
-            'ActionRequest',
-            'Chat',
-            'Context',
-            'InternalSearchQuery',
-            'InternalSearchResult',
-            'Disengaged',
-            'InternalLoaderMessage',
-            'Progress',
-            'RenderCardRequest',
-            'SemanticSerp',
-            'GenerateContentQuery',
-            'SearchQuery',
-          ],
-          sliceIds: [
-            'gbaa',
-            'gba',
-            'emovoice',
-            'tts3cf',
-            'kcinherocf',
-            'inochatv2',
-            'wrapnoins',
-            'mlchatpc9000ns',
-            'mlchatpcbase',
-            'sydconfigoptt',
-            '803iyjbexps0',
-            '0529streamws0',
-            '178gentechs0',
-            '0901utilbal',
-            'attr2atral3',
-            '821iypapyrust',
-            '019hlthgrd',
-            '829suggtrim',
-            '821fluxv13s0',
-            '727nrprdrt3'
-          ],
-          isStartOfSession: conversation.invocationId === 0,
-          message: {
-            author: 'user',
-            inputMethod: 'Keyboard',
-            text: conversation.prompt,
-            imageUrl: conversation.imageUrl,
-            messageType: 'Chat',
-            locale: 'zh-CN',
-            market: 'zh-CN',
-            region: 'US',
-            location: 'lat:47.639557;long:-122.128159;re=1000m;',
-            locationHints: [
-              {
-                Center: {
-                  Latitude: 22.51210421452451,
-                  Longitude: 113.92305341085854
-                },
-                RegionType: 2,
-                SourceType: 11
-              },
-              {
-                country: 'United States',
-                state: 'California',
-                city: 'San Jose',
-                zipcode: '95141',
-                timezoneoffset: -8,
-                dma: 807,
-                countryConfidence: 8,
-                cityConfidence: 5,
-                Center: {
-                  Latitude: 37.1771,
-                  Longitude: -121.755
-                },
-                RegionType: 2,
-                SourceType: 1
-              }
-            ],
-            timestamp: new Date(),
-            userIpAddress: conversation.userIpAddress,
+          country: 'United States',
+          state: 'California',
+          city: 'Los Angeles',
+          timezoneoffset: 8,
+          countryConfidence: 8,
+          Center: {
+            Latitude: 34.0536909,
+            Longitude: -118.242766
           },
-          conversationId: conversation.conversationId,
-          conversationSignature: conversation.conversationSignature,
-          participant: { id: conversation.clientId },
-          scenario: 'SERP',
-          tone: conversation.conversationStyle
-        },
+          RegionType: 2,
+          SourceType: 1
+        }
       ],
-      invocationId: conversation.invocationId.toString(),
+      author: 'user',
+      inputMethod: 'Keyboard',
+      messageType: 'Chat',
+      text: conversation.prompt,
+      imageUrl: conversation.imageUrl,
+      requestId: uuid,
+      messageId: uuid
+    }
+
+    const argument = {
+      optionsSets: getOptionSets(useBaseSets ? BingConversationStyle.Base : conversation.conversationStyle),
+      sliceIds: [
+        'gbaa',
+        'gba',
+        'emovoice',
+        'tts3cf',
+        'kcinherocf',
+        'inochatv2',
+        'wrapnoins',
+        'mlchatpc9000ns',
+        'mlchatpcbase',
+        'sydconfigoptt',
+        '803iyjbexps0',
+        '0529streamws0',
+        '178gentechs0',
+        '0901utilbal',
+        'attr2atral3',
+        '821iypapyrust',
+        '019hlthgrd',
+        '829suggtrim',
+        '821fluxv13s0',
+        '727nrprdrt3'
+      ],
+      message,
+      source: 'cib',
+      spokenTextMode: 'None',
+      allowedMessageTypes: [
+        'ActionRequest',
+        'Chat',
+        'Context',
+        'InternalSearchQuery',
+        'InternalSearchResult',
+        'Disengaged',
+        'InternalLoaderMessage',
+        'Progress',
+        'RenderCardRequest',
+        'SemanticSerp',
+        'GenerateContentQuery',
+        'SearchQuery',
+      ],
+      previousMessages: conversation.context?.length ? [{
+        author: 'user',
+        description: conversation.context,
+        contextType: 'WebPage',
+        messageType: 'Context',
+        messageId: 'discover-web--page-ping-mriduna-----'
+      }] : undefined,
+      traceId: md5(new Date().toString()),
+      requestId: uuid,
+      isStartOfSession: conversation.invocationId === 0 || useBaseSets,
+      conversationId: conversation.conversationId,
+      conversationSignature: conversation.conversationSignature,
+      participant: { id: conversation.clientId },
+      scenario: 'SERP',
+      tone: conversation.conversationStyle
+    }
+    return {
+      arguments: [argument],
+      invocationId: `${conversation.invocationId ?? 0}`,
       target: 'chat',
       type: InvocationEventType.StreamInvocation,
     }
@@ -274,9 +289,9 @@ export class BingWebBot {
     return resp
   }
 
-  async createContext(conversationStyle: BingConversationStyle, conversation?: ConversationInfoBase) {
+  async createContext(conversationStyle: BingConversationStyle) {
     if (!this.conversationContext) {
-      conversation = conversation?.conversationSignature ? conversation : await this.createConversation() as unknown as ConversationInfo
+      const conversation = await this.createConversation()
       this.conversationContext = {
         conversationId: conversation.conversationId,
         userIpAddress: conversation.userIpAddress,
@@ -293,14 +308,16 @@ export class BingWebBot {
 
   async sendMessage(params: Params) {
     try {
-      await this.createContext(params.options.bingConversationStyle, params.options.conversation as ConversationInfoBase)
-      Object.assign(this.conversationContext!, { prompt: params.prompt, imageUrl: params.imageUrl })
+      await this.createContext(params.options.bingConversationStyle)
+      Object.assign(this.conversationContext!, { prompt: params.prompt, imageUrl: params.imageUrl, context: params.context })
       return this.sydneyProxy(params)
     } catch (error) {
+      const formatError = error instanceof ChatError ? error : new ChatError('Catch Error', ErrorCode.UNKOWN_ERROR)
       params.onEvent({
         type: 'ERROR',
-        error: error instanceof ChatError ? error : new ChatError('Catch Error', ErrorCode.UNKOWN_ERROR),
+        error: formatError,
       })
+      throw formatError
     }
   }
 
@@ -315,18 +332,35 @@ export class BingWebBot {
       },
       signal: abortController.signal,
       body: JSON.stringify(this.conversationContext!)
+    }).catch(e => {
+      console.log('Fetch Error: ', e)
+      params.onEvent({
+        type: 'ERROR',
+        error: new ChatError(
+          'Network error',
+          ErrorCode.UNKOWN_ERROR,
+        ),
+      })
+      return e
     })
     if (response.status !== 200) {
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
-          'Unknown error',
+          'Network error',
           ErrorCode.UNKOWN_ERROR,
         ),
       })
     }
     params.signal?.addEventListener('abort', () => {
       abortController.abort()
+      params.onEvent({
+        type: 'ERROR',
+        error: new ChatError(
+          'Canceled',
+          ErrorCode.BING_TRY_LATER,
+        ),
+      })
     })
     const conversation = this.conversationContext!
     conversation.invocationId++
@@ -455,7 +489,7 @@ export class BingWebBot {
 
   private async parseEvents(params: Params, events: any) {
     events?.forEach(async (event: ChatUpdateCompleteResponse) => {
-      debug('bing event', JSON.stringify(event))
+      // debug('bing event', JSON.stringify(event))
       if (event.type === 3) {
         await Promise.all(this.asyncTasks)
           .catch(error => {

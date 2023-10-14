@@ -5,7 +5,8 @@ export type BotId = 'bing'
 export enum BingConversationStyle {
   Creative = 'Creative',
   Balanced = 'Balanced',
-  Precise = 'Precise'
+  Precise = 'Precise',
+  Base = 'Base',
 }
 
 export enum ErrorCode {
@@ -66,6 +67,7 @@ export type Event =
 
 export interface SendMessageParams<T> {
   prompt: string
+  context?: string
   imageUrl?: string
   options: T
   onEvent: (event: Event) => void
@@ -145,6 +147,7 @@ export interface ConversationInfoBase {
 export interface ConversationInfo extends ConversationInfoBase {
   conversationStyle: BingConversationStyle
   prompt: string
+  context?: string
   imageUrl?: string
   source?: 'cib' | 'WindowsCopilot'
 }

@@ -52,7 +52,6 @@ export function useBing(botId: BotId = 'bing') {
         options: {
           ...options,
           bingConversationStyle,
-          conversation: chatState.conversation,
         },
         signal: abortController.signal,
         onEvent(event) {
@@ -90,7 +89,7 @@ export function useBing(botId: BotId = 'bing') {
             })
           }
         },
-      })
+      }).catch()
     },
     [botId, attachmentList, chatState.bot,  chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
   )

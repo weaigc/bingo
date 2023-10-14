@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import NextCors from 'nextjs-cors';
 import assert from 'assert'
+import NextCors from 'nextjs-cors';
 import { BingWebBot } from '@/lib/bots/bing'
-import { BingConversationStyle, ConversationInfoBase } from '@/lib/bots/bing/types'
+import { BingConversationStyle } from '@/lib/bots/bing/types'
 
 export const config = {
   api: {
@@ -19,7 +19,6 @@ export interface APIMessage {
 }
 
 export interface APIRequest {
-  id?: string
   model: string
   action: Action
   messages: APIMessage[]
@@ -27,7 +26,6 @@ export interface APIRequest {
 }
 
 export interface APIResponse {
-  id?: string
   choices: {
     delta?: APIMessage
     message: APIMessage
@@ -35,20 +33,23 @@ export interface APIResponse {
 }
 
 function parseOpenAIMessage(request: APIRequest) {
+  const validMessages = request.messages.slice(0, Math.max(1, request.messages.findLastIndex(message => message.role === 'user') + 1))
+  const prompt = validMessages.pop()?.content
+  const context = validMessages.map(message => `[${message['role']}](#message)\n${message['content']}\n`).join('\n')
   return {
-    prompt: request.messages?.reverse().find((message) => message.role === 'user')?.content,
+    prompt,
+    context,
     stream: request.stream,
-    model: request.model,
+    model: /Creative|gpt-?4/i.test(request.model) ? 'Creative' : 'Balanced',
   };
 }
 
-function responseOpenAIMessage(content: string, id?: string): APIResponse {
+function responseOpenAIMessage(content: string): APIResponse {
   const message: APIMessage = {
     role: 'assistant',
     content,
   };
   return {
-    id,
     choices: [{
       delta: message,
       message,
@@ -71,54 +72,54 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: '*',
     optionsSuccessStatus: 200,
-  });
-  const { prompt, stream, model } = parseOpenAIMessage(req.body);
-  let { id } = req.body
-  const chatbot = new BingWebBot({
-    endpoint: getOriginFromHost(req.headers.host || '127.0.0.1:3000'),
   })
-  id ||= JSON.stringify(await chatbot.createConversation())
-
-  if (stream) {
-    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
-  }
-  let lastLength = 0
-  let lastText = ''
   const abortController = new AbortController()
-  assert(prompt, 'messages can\'t be empty!')
 
-  const toneType = model as BingConversationStyle
-  chatbot.sendMessage({
-    prompt,
-    options: {
-      bingConversationStyle: Object.values(BingConversationStyle)
-        .includes(toneType) ? toneType : BingConversationStyle.Creative,
-      conversation: JSON.parse(id) as ConversationInfoBase
-    },
-    signal: abortController.signal,
-    onEvent(event) {
-      if (event.type === 'UPDATE_ANSWER') {
-        lastText = event.data.text
-        if (stream && lastLength !== lastText.length) {
-          res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength), id))}\n\n`)
-          res.flushHeaders()
-
-          lastLength = lastText.length
-        }
-      } else if (event.type === 'ERROR') {
-        res.write(`data: ${JSON.stringify(responseOpenAIMessage(`\n\n${event.error}`, id))}\n\n`)
-        lastText += '\n\n' + event.error
-        res.flushHeaders()
-      } else if (event.type === 'DONE') {
-        if (stream) {
-          res.end(`data: [DONE]\n\n`);
-        } else {
-          res.json(responseOpenAIMessage(lastText, id))
-        }
-      }
-    },
-  })
   req.socket.once('close', () => {
     abortController.abort()
   })
+  const { prompt, stream, model, context } = parseOpenAIMessage(req.body);
+  let lastLength = 0
+  let lastText = ''
+  try {
+    const chatbot = new BingWebBot({
+      endpoint: getOriginFromHost(req.headers.host || '127.0.0.1:3000'),
+    })
+
+    if (stream) {
+      res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
+    }
+
+    assert(prompt, 'messages can\'t be empty!')
+
+    const toneType = model as BingConversationStyle
+
+    await chatbot.sendMessage({
+      prompt,
+      context,
+      options: {
+        bingConversationStyle: Object.values(BingConversationStyle)
+          .includes(toneType) ? toneType : BingConversationStyle.Creative,
+      },
+      signal: abortController.signal,
+      onEvent(event) {
+        if (event.type === 'UPDATE_ANSWER') {
+          lastText = event.data.text
+          if (stream && lastLength !== lastText.length) {
+            res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength)))}\n\n`)
+            lastLength = lastText.length
+          }
+        }
+      },
+    })
+  } catch (error) {
+    console.log('Catch Error:', error)
+    res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${error}`))}\n\n`)
+  } finally {
+    if (stream) {
+      res.end(`data: [DONE]\n\n`);
+    } else {
+      res.end(JSON.stringify(responseOpenAIMessage(lastText)))
+    }
+  }
 }

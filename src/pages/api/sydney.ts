@@ -35,11 +35,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     timeoutDog.watch(() => {
       debug(id, 'timeout')
       ws.send(websocketUtils.packMessage({ type: 6 }))
-    }, 3000)
+    }, 6000)
     closeDog.watch(() => {
       debug(id, 'timeout close')
       ws.close()
-    }, 20000)
+    }, 40000)
     res.write(event.data)
     if (/\{"type":([367])\b/.test(String(event.data))) {
       const type = parseInt(RegExp.$1, 10)

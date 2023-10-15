@@ -70,6 +70,16 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 - 触发器 中自定义访问域名。
 
+
+### 部署到 Render
+
+感谢 [@SokWith](https://github.com/SokWith) 测试，Render 目前已复活。
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
+</details>
+
+
+
 ### 部署其它平台
 <details>
 <summary>
@@ -92,12 +102,6 @@ V2 版本已解决此问题，详见: https://github.com/weaigc/bingo/tree/v2
 如果你是 Vercel 付费用户，可以点以下链接一键部署到 Vercel。免费版本有[接口超时限制](https://vercel.com/docs/concepts/limits/overview)，不推荐使用
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=bingo&demo-description=bingo&demo-url=https%3A%2F%2Fbing.github1s.tk%2F&project-name=bingo&repository-name=bingo&repository-url=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo&from=templates&skippable-integrations=1&env=BING_HEADER&envDescription=%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%9F%A5%E9%81%93%E6%80%8E%E4%B9%88%E9%85%8D%E7%BD%AE%E8%AF%B7%E7%82%B9%E5%8F%B3%E4%BE%A7Learn+More&envLink=https%3A%2F%2Fgithub.com%2Fweaigc%2Fbingo%2Fblob%2Fmain%2F.env.example)
-
-#### 部署到 Render
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
-</details>
-
 
 
 ## 环境和依赖

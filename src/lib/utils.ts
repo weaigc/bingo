@@ -166,26 +166,38 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
   }
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMock?: boolean) {
+export function cookie2Headers(cookies: Partial<{ [key: string]: string }>) {
   let {
     BING_HEADER,
     BING_HEADER0 = process.env.BING_HEADER,
-    BING_IP = process.env.BING_IP,
-    IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
+    BING_IP,
   } = cookies || {}
-  useMock = useMock ?? /^(1|true|yes)$/i.test(String(IMAGE_ONLY))
-  if ((!BING_HEADER && !BING_HEADER0) || useMock) {
-    return mockUser(cookies)
-  }
   const headers = extraHeadersFromCookie({
     BING_HEADER,
     BING_HEADER0,
     ...cookies,
   })
-  headers['x-forwarded-for'] = BING_IP || randomIP()
+
   headers['user-agent'] = parseUA(headers['user-agent'])
   headers['referer'] = 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch'
   headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32'
+  return headers
+}
+
+export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMock?: boolean) {
+  let {
+    BING_HEADER,
+    BING_HEADER0 = process.env.BING_HEADER,
+    BING_IP,
+    IMAGE_ONLY = process.env.IMAGE_ONLY ?? '1',
+  } = cookies || {}
+  if (useMock == null) {
+    useMock = BING_HEADER ? false : (/^(1|true|yes)$/i.test(String(IMAGE_ONLY)) ? true : !BING_HEADER0)
+  }
+  const headers = useMock ? mockUser(cookies) : cookie2Headers(cookies)
+  if (BING_IP) {
+    headers['x-forwarded-for'] = BING_IP
+  }
   return headers
 }
 

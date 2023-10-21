@@ -33,20 +33,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       debug('status', response.status, response.url, headers)
       if (response.status === 200) {
-        const json = await response.json().catch((e: any) => {})
-        console.log('json', json)
-        if (!json?.clientId) {
+        const json = await response.json().catch((e: any) => {
+          console.log('fetch error', e)
+        }) || {}
+        debug('json', json)
+        json.encryptedconversationsignature = json.encryptedconversationsignature || response.headers.get('X-Sydney-encryptedconversationsignature') || undefined
+
+        if (!json?.clientId || (!json?.conversationSignature && !json.encryptedconversationsignature)) {
+          await sleep(2000)
           continue
         }
-        json.encryptedconversationsignature = response.headers.get('X-Sydney-encryptedconversationsignature') || undefined
 
-        if (!json?.conversationSignature && !json.encryptedconversationsignature) {
-          continue
-        }
+        const cookie = response.headers.getSetCookie().join('; ')
+        debug('headers', headers, cookie)
 
-        debug('headers', headers)
-        const cookies = [`BING_IP=${headers['x-forwarded-for']}`]
-        res.setHeader('set-cookie', cookies.map(cookie => `${cookie.trim()}; Max-Age=${86400 * 30}; Path=/;`))
+        const bingCookie = btoa(`curl -H 'cookie: ${cookie}'`)
+        res.setHeader('set-cookie', [
+          ...[`BING_HEADER=${bingCookie.trim()}`, `BING_IP=${response.headers.get('x-forwarded-for') || headers['x-forwarded-for']}`].map(c => `${c}; Max-Age=${86400 * 30}; Path=/;`),
+          // ...[`BING_HEADER0=`, `BING_HEADER1=`, `BING_HEADER2=`].map(c => `${c}; Max-Age=0; Path=/;`)
+        ])
 
         res.writeHead(200, {
           'Content-Type': 'application/json',

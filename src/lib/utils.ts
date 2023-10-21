@@ -170,7 +170,6 @@ export function cookie2Headers(cookies: Partial<{ [key: string]: string }>) {
   let {
     BING_HEADER,
     BING_HEADER0 = process.env.BING_HEADER,
-    BING_IP,
   } = cookies || {}
   const headers = extraHeadersFromCookie({
     BING_HEADER,
@@ -184,7 +183,7 @@ export function cookie2Headers(cookies: Partial<{ [key: string]: string }>) {
   return headers
 }
 
-export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMock?: boolean) {
+export function createHeaders(cookies: Partial<{ [key: string]: string }> = {}, useMock?: boolean) {
   let {
     BING_HEADER,
     BING_HEADER0 = process.env.BING_HEADER,
@@ -193,6 +192,8 @@ export function createHeaders(cookies: Partial<{ [key: string]: string }>, useMo
   } = cookies || {}
   if (useMock == null) {
     useMock = BING_HEADER ? false : (/^(1|true|yes)$/i.test(String(IMAGE_ONLY)) ? true : !BING_HEADER0)
+  } else if (useMock === false) {
+    cookies.BING_HEADER = ''
   }
   const headers = useMock ? mockUser(cookies) : cookie2Headers(cookies)
   if (BING_IP) {

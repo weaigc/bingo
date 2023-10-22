@@ -219,7 +219,7 @@ export class BingWebBot {
         'GenerateContentQuery',
         'SearchQuery',
       ],
-      previousMessages: conversation.context?.length ? [{
+      previousMessages: conversation.invocationId === 0 && conversation.context?.length ? [{
         author: 'user',
         description: conversation.context,
         contextType: 'WebPage',
@@ -228,7 +228,7 @@ export class BingWebBot {
       }] : undefined,
       traceId: md5(new Date().toString()),
       requestId: uuid,
-      isStartOfSession: conversation.invocationId === 0 || useBaseSets,
+      isStartOfSession: conversation.invocationId === 0,
       conversationId: conversation.conversationId,
       conversationSignature: conversation.conversationSignature,
       participant: { id: conversation.clientId },

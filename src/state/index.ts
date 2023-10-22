@@ -33,6 +33,7 @@ export interface Prompt {
 export const isImageOnly = getCookie('IMAGE_ONLY') !== '0'
 export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Balanced, undefined, { unstable_getOnInit: true })
 export const voiceAtom = atomWithStorage<boolean>('enableTTS', false, undefined, { unstable_getOnInit: true })
+export const sydneyAtom = atomWithStorage<boolean>('enableSydney', false, undefined, { unstable_getOnInit: true })
 export const historyAtom = atomWithStorage<boolean>('enableHistory', false, undefined, { unstable_getOnInit: true })
 export const localPromptsAtom = atomWithStorage<Prompt[]>('prompts', [], undefined, { unstable_getOnInit: true })
 

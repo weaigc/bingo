@@ -20,6 +20,7 @@ import { ChatNotification } from './chat-notification'
 import { Settings } from './settings'
 import { ChatHistory } from './chat-history'
 import { PromptsManage } from './prompts'
+import { AdvanceSwither } from './advance-switcher'
 
 export type ChatProps = React.ComponentProps<'div'> & { initialMessages?: ChatMessageModel[] }
 
@@ -66,6 +67,7 @@ export default function Chat({ className }: ChatProps) {
             <ChatHeader />
             <WelcomeScreen setInput={setInput} />
             <ToneSelector type={bingStyle} onChange={setBingStyle} />
+            <AdvanceSwither disabled={messages.length >= 2} />
             {messages.length ? (
               <>
                 <ChatList messages={messages} />

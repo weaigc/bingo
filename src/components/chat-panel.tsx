@@ -72,6 +72,7 @@ export function ChatPanel({
     setInput('')
     await sendMessage(input)
   }, [generating, input, sendMessage, setInput])
+
   const onSubmit = useCallback(async (event: KeyboardEvent<HTMLTextAreaElement>) => {
     debug('event key', event.key)
     if (
@@ -85,7 +86,7 @@ export function ChatPanel({
     event.preventDefault()
 
     onSend()
-  }, [generating, attachmentList])
+  }, [onSend, generating, attachmentList])
 
   const setBlur = useCallback(() => {
     clearTimeout(tid)

@@ -15,7 +15,6 @@
   * Content-Type: application/json 或者 text/event-stream
   * 参数说明
     * choices 返回的消息内容，完整格式参见 https://platform.openai.com/docs/guides/gpt/chat-completions-response-format
-    * id 会话 ID，如需保持上下文，则需要传入此参数，否则会丢失上下文
 
 ### 示例
 以下以 `curl` 为例

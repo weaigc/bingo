@@ -363,11 +363,11 @@ export class BingWebBot {
       })
     })
     const conversation = this.conversationContext!
-    conversation.invocationId++
     const textDecoder = createChunkDecoder()
     for await (const chunk of streamAsyncIterable(response.body!)) {
       this.parseEvents(params, websocketUtils.unpackMessage(textDecoder(chunk)))
     }
+    conversation.invocationId++
   }
 
   async sendWs() {

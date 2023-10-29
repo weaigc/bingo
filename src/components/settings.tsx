@@ -68,7 +68,7 @@ export function Settings() {
               右键 》检查。打开开发者工具，在网络里面找到 Challenge 接口 》右键复制》复制为 cURL(bash)，粘贴到此处，然后保存。
               <div className="h-2" />
               图文示例：
-              <ExternalLink href="https://github.com/weaigc/bingo#如何获取%20BING_HEADER">如何获取 BING_HEADER</ExternalLink>
+              <ExternalLink href="https://github.com/weaigc/bingo#如何获取-bing_header">如何获取 BING_HEADER</ExternalLink>
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-4">

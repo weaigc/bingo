@@ -19,9 +19,11 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 ## 演示站点
 
-站点1：https://bing.github1s.tk
+站点1(V2)：https://bing.github1s.tk
 
-站点2：https://bingo.weaigc.repl.co
+站点2(V1): https://copilot.github1s.tk
+
+站点3(代理)：https://bingo.weaigc.repl.co
 
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)

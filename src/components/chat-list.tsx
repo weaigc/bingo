@@ -17,7 +17,7 @@ export function ChatList({ messages }: ChatList) {
     <div className="chat-container relative flex flex-col">
       {messages.map((message, index) => (
         <React.Fragment key={index}>
-          <ChatMessage message={message} />
+          <ChatMessage message={message} index={index} />
           {index < messages.length - 1 && (
             <Separator className="my-2" />
           )}

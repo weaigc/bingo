@@ -51,6 +51,15 @@ export function UserMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>
+              location.href='#dialog="advanced-settings"'
+            }
+            className="cursor-pointer"
+          >
+            高级设置
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() =>
               location.href='#dialog="voice"'
             }
             className="cursor-pointer"

@@ -9,7 +9,7 @@ import imei from 'node-imei'
 // @ts-ignore
 import randomip from 'random-ip'
 import cidr from './cidr.json'
-import { debug } from './isomorphic'
+import { APIMessage } from './bots/bing/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -32,6 +32,23 @@ export const nanoid = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
   7
 ) // 7-character random string
+
+export const messageToContext = (messages: APIMessage[], limit = 32000) => {
+  const messagesClone = [...messages]
+  let cache = []
+  let curLen = 0
+  while(true) {
+    const message = messagesClone.pop()
+    if (!message) break
+    const current = `[${message.role}](#message)\n${message.content?.trim()}\n`
+    if (curLen + current.length >= limit) {
+      break
+    }
+    cache.unshift(current)
+    curLen += (current.length + 1)
+  }
+  return cache.join('\n')
+}
 
 export function createChunkDecoder() {
   const decoder = new TextDecoder()

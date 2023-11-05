@@ -2,20 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import assert from 'assert'
 import NextCors from 'nextjs-cors';
 import { BingWebBot } from '@/lib/bots/bing'
-import { BingConversationStyle } from '@/lib/bots/bing/types'
+import { BingConversationStyle, APIMessage, Action } from '@/lib/bots/bing/types'
+import { messageToContext } from '@/lib/utils';
 
 export const config = {
   api: {
     responseLimit: false,
   },
-}
-
-export type Role = 'user' | 'assistant'
-export type Action = 'next' | 'variant';
-
-export interface APIMessage {
-  role: Role
-  content: string
 }
 
 export interface APIRequest {
@@ -33,9 +26,9 @@ export interface APIResponse {
 }
 
 function parseOpenAIMessage(request: APIRequest) {
-  const validMessages = request.messages.slice(0, Math.max(1, request.messages.findLastIndex(message => message.role === 'user') + 1))
-  const prompt = validMessages.pop()?.content
-  const context = validMessages.map(message => `[${message['role']}](#message)\n${message['content']}\n`).join('\n')
+  const messages = request.messages.slice(0)
+  const prompt = messages.pop()?.content
+  const context = messageToContext(messages)
   return {
     prompt,
     context,

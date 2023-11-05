@@ -255,3 +255,11 @@ export interface FileItem {
   url: string;
   status?: 'loading' | 'error' | 'loaded'
 }
+
+export type Role = 'user' | 'assistant'
+export type Action = 'next' | 'variant';
+
+export interface APIMessage {
+  role: Role
+  content: string
+}

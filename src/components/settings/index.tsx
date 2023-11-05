@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
-import { Switch } from '@headlessui/react'
 import { toast } from 'react-hot-toast'
-import { hashAtom, historyAtom, isImageOnly, voiceAtom } from '@/state'
+import { Switch } from '@headlessui/react'
+import { hashAtom, historyAtom, isImageOnly } from '@/state'
 import {
   Dialog,
   DialogContent,
@@ -11,11 +11,13 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
 import { ChunkKeys, parseCookies, extraCurlFromCookie, parseHeadersFromCurl, encodeHeadersToCookie, setCookie, resetCookies } from '@/lib/utils'
-import { ExternalLink } from './external-link'
+import { ExternalLink } from '../external-link'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+import { VoiceSetting } from './voice'
+import { AdvancedSetting } from './advanced'
 
 export function Settings() {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
@@ -23,7 +25,6 @@ export function Settings() {
   const [curlValue, setCurlValue] = useState(extraCurlFromCookie(parseCookies(document.cookie, ChunkKeys)))
   const [imageOnly, setImageOnly] = useState(isImageOnly)
   const [enabledHistory, setHistory] = useAtom(historyAtom)
-  const [enableTTS, setEnableTTS] = useAtom(voiceAtom)
 
   useEffect(() => {
     if (isCopied) {
@@ -148,33 +149,14 @@ export function Settings() {
         </DialogContent>
       </Dialog>
     )
-  } else if (loc === 'voice') {
+  } else if (loc) {
     return (
       <Dialog open onOpenChange={() => setLoc('')} modal>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>语音设置</DialogTitle>
-            <DialogDescription>
-              目前仅支持 PC 端 Edge 及 Chrome 浏览器
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="flex gap-2">
-            启用语音回答
-            <Switch
-              checked={enableTTS}
-              className={`${enableTTS ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
-              onChange={(checked: boolean) => setEnableTTS(checked)}
-            >
-              <span
-                className={`${enableTTS ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </Switch>
-          </div>
-
+          { loc === 'voice' ? <VoiceSetting /> : <AdvancedSetting /> }
           <DialogFooter className="items-center">
             <Button
-              variant="secondary"
+              variant="primary"
               onClick={() => {
                 toast.success('保存成功')
                 setLoc('')

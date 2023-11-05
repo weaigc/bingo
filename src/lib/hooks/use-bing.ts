@@ -2,9 +2,9 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom, isImageOnly, sydneyAtom, sydneyPrompts } from '@/state'
-import { ChatMessageModel, BotId, FileItem } from '@/lib/bots/bing/types'
-import { nanoid } from '../utils'
+import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom, isImageOnly, systemPromptsAtom, unlimitAtom } from '@/state'
+import { ChatMessageModel, BotId, FileItem, APIMessage, ErrorCode } from '@/lib/bots/bing/types'
+import { messageToContext, nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
 
 export function useBing(botId: BotId = 'bing') {
@@ -12,8 +12,9 @@ export function useBing(botId: BotId = 'bing') {
   const [chatState, setChatState] = useAtom(chatAtom)
   const setHistoryValue = useSetAtom(chatHistoryAtom)
   const [enableTTS] = useAtom(voiceAtom)
-  const [enableSydney] = useAtom(sydneyAtom)
+  const [systemPrompts] = useAtom(systemPromptsAtom)
   const speaker = useMemo(() => new TTS(), [])
+  const unlimit = useAtomValue(unlimitAtom)
   const [hash, setHash] = useAtom(hashAtom)
   const bingConversationStyle = useAtomValue(bingConversationStyleAtom)
   const [input, setInput] = useState('')
@@ -30,6 +31,16 @@ export function useBing(botId: BotId = 'bing') {
     },
     [setChatState],
   )
+
+  const historyContext = useMemo(() => {
+    return {
+      get() {
+        const messages = chatState.messages
+          .map(message => ({ role: message.author === 'bot' ? 'assistant' : 'user', content: message.text }) as APIMessage)
+        return [systemPrompts ? `[system](#additional_instructions)\n${systemPrompts}` : '', messageToContext(messages)].filter(Boolean).join('\n')
+      }
+    }
+  }, [chatState.messages])
 
   const sendMessage = useCallback(
     async (input: string, options = {}) => {
@@ -50,7 +61,7 @@ export function useBing(botId: BotId = 'bing') {
       await chatState.bot.sendMessage({
         prompt: input,
         imageUrl: !isImageOnly && imageUrl && /api\/blob.jpg\?bcid=([^&]+)/.test(imageUrl) ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
-        context: enableSydney ? sydneyPrompts : '',
+        context: chatState.bot.isInitial ? historyContext.get() : '',
         options: {
           ...options,
           bingConversationStyle,
@@ -74,26 +85,36 @@ export function useBing(botId: BotId = 'bing') {
               message.suggestedResponses = event.data.suggestedResponses || message.suggestedResponses
             })
           } else if (event.type === 'ERROR') {
-            updateMessage(botMessageId, (message) => {
-              message.error = event.error
-            })
-            setChatState((draft) => {
-              draft.abortController = undefined
-              draft.generatingMessageId = ''
-            })
+            if (!unlimit && event.error.code === ErrorCode.CONVERSATION_LIMIT) {
+              chatState.bot.resetConversation()
+            } else {
+              updateMessage(botMessageId, (message) => {
+                message.error = event.error
+              })
+              setChatState((draft) => {
+                draft.abortController = undefined
+                draft.generatingMessageId = ''
+              })
+            }
           } else if (event.type === 'DONE') {
             setChatState((draft) => {
               setHistoryValue({
                 messages: draft.messages,
               })
               draft.abortController = undefined
+              const message = draft.messages.at(-1)
               draft.generatingMessageId = ''
+              if ((message?.throttling?.numUserMessagesInConversation??0) >=
+                (message?.throttling?.maxNumUserMessagesInConversation??0)
+              ) {
+                chatState.bot.resetConversation()
+              }
             })
           }
         },
       }).catch()
     },
-    [botId, enableSydney, attachmentList, chatState.bot, chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
+    [botId, unlimit, attachmentList, chatState.bot, chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
   )
 
   const uploadImage = useCallback(async (imgUrl: string) => {
@@ -105,17 +126,6 @@ export function useBing(botId: BotId = 'bing') {
       setAttachmentList([{ url: imgUrl, status: 'error' }])
     }
   }, [chatState.bot])
-
-  const resetConversation = useCallback(() => {
-    chatState.bot.resetConversation()
-    speaker.abort()
-    setChatState((draft) => {
-      draft.abortController = undefined
-      draft.generatingMessageId = ''
-      draft.conversation = {}
-      draft.messages = [{ author: 'bot', text: GreetMessages[Math.floor(GreetMessages.length * Math.random())], id: nanoid() }]
-    })
-  }, [chatState.bot, setChatState])
 
   const stopGenerating = useCallback(() => {
     chatState.abortController?.abort()
@@ -130,6 +140,18 @@ export function useBing(botId: BotId = 'bing') {
       draft.generatingMessageId = ''
     })
   }, [chatState.abortController, chatState.generatingMessageId, setChatState, updateMessage])
+
+  const resetConversation = useCallback(() => {
+    stopGenerating()
+    chatState.bot.resetConversation()
+    speaker.abort()
+    setChatState((draft) => {
+      draft.abortController = undefined
+      draft.generatingMessageId = ''
+      draft.conversation = {}
+      draft.messages = [{ author: 'bot', text: GreetMessages[Math.floor(GreetMessages.length * Math.random())], id: nanoid() }]
+    })
+  }, [chatState.bot, setChatState, stopGenerating])
 
   useEffect(() => {
     if (hash === 'reset') {

@@ -114,7 +114,7 @@ export function useBing(botId: BotId = 'bing') {
         },
       }).catch()
     },
-    [botId, unlimit, attachmentList, chatState.bot, chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
+    [botId, unlimit, historyContext, attachmentList, chatState.bot, chatState.conversation, bingConversationStyle, speaker, setChatState, updateMessage],
   )
 
   const uploadImage = useCallback(async (imgUrl: string) => {

@@ -1,4 +1,4 @@
-const TARGET_HOST = 'bing.github1s.tk'
+const TARGET_HOST = 'copilot.github1s.tk'
 
 const handlers = {
   async fetch(request, env = {}) {

@@ -133,8 +133,9 @@ npm run start
 ```bash
 docker pull weaigc/bingo
 docker run --rm -it -p 7860:7860 weaigc/bingo
-# 或者
+# 如果不能正常使用，可以尝试设置环境变量 BING_HEADER
 docker run --rm -it -e BING_HEADER=xxxx -p 7860:7860 weaigc/bingo
+# 如果还是不行，可以尝试 proxy 模式
 ```
 
 ## 如何获取 BING_HEADER

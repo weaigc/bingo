@@ -11,7 +11,7 @@
   "tasks": {
     "dev": {
       "name": "Start Server",
-      "command": "npm run build && npm start",
+      "command": "npm install && npm run build && npm start",
       "runAtStart": true,
       "preview": {
         "port": 3000

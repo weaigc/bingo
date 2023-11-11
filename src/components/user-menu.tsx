@@ -46,7 +46,7 @@ export function UserMenu() {
             }
             className="cursor-pointer"
           >
-            设置用户
+            用户信息
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

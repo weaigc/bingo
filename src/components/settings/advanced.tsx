@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAtom } from 'jotai'
 import { Switch, RadioGroup } from '@headlessui/react'
 
+import { Textarea } from '../ui/textarea'
 import {
   DialogDescription,
   DialogHeader,
@@ -12,12 +13,21 @@ import { PrompsTemplates, systemPromptsAtom, unlimitAtom } from '@/state'
 export function AdvancedSetting() {
   const [enableUnlimit, setUnlimit] = useAtom(unlimitAtom)
   const [systemPrompt, setSystemPrompt] = useAtom(systemPromptsAtom)
-  const [selected, setSelected] = useState(PrompsTemplates.find((item) => item.content === (systemPrompt || '')))
+  const [selected, setSelected] = useState(PrompsTemplates.find((item) => item.content === systemPrompt))
 
-  const handleChangePrompt = useCallback((value: typeof PrompsTemplates[0]) => {
+  useEffect(() => {
+    if (!selected) {
+      setSelected(PrompsTemplates[PrompsTemplates.length - 1])
+    }
+  }, [selected, systemPrompt, setSelected])
+  const handleSwitchPrompt = useCallback((value: typeof PrompsTemplates[0]) => {
     setSelected(value)
-    setSystemPrompt(value.content)
-  }, [setSelected, setSystemPrompt])
+    setSystemPrompt(value.content || systemPrompt)
+  }, [setSelected, systemPrompt, setSystemPrompt])
+
+  const handleChangePrompt = useCallback((value: string) => {
+    setSystemPrompt(value)
+  }, [])
 
   return (
     <>
@@ -44,41 +54,40 @@ export function AdvancedSetting() {
         预设角色
         <div className="w-full py-1">
           <div className="mx-auto w-full">
-            <RadioGroup value={selected} onChange={handleChangePrompt}>
+            <RadioGroup value={selected} onChange={handleSwitchPrompt}>
               <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
               <div className="space-y-2">
                 {PrompsTemplates.map((prompt) => (
                   <RadioGroup.Option
                     key={prompt.label}
                     value={prompt}
-                    className={({ active, checked }) =>
-                      `${active
-                        ? 'ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300'
-                        : ''
-                      }
-                  ${checked ? 'bg-sky-900/75 text-white' : 'bg-white'}
-                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                    className={
+                      ({ active, checked }) =>
+                        `${active
+                          ? 'ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300'
+                          : ''}
+                      ${checked ? 'bg-sky-900/75 text-white' : 'bg-white'}
+                      relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
                     }
                   >
                     {({ checked }) => (
                       <>
-                        <div className="flex w-full items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="text-sm">
+                        <div className="flex gap-2 w-full items-center justify-between">
+                          <div className="flex flex-1 items-center">
+                            <div className="text-sm w-full">
                               <RadioGroup.Label
                                 as="p"
-                                className={`font-medium  ${checked ? 'text-white' : 'text-gray-900'
-                                  }`}
+                                className={`font-medium ${checked ? 'text-white' : 'text-gray-900'}`}
                               >
                                 {prompt.label}
                               </RadioGroup.Label>
                               <RadioGroup.Description
                                 as="span"
-                                className={`inline ${checked ? 'text-sky-100' : 'text-gray-500'}`}
+                                className={`w-full ${checked ? 'text-sky-100' : 'text-gray-500'}`}
                               >
-                                <span>
-                                  {prompt.desc}
-                                </span>
+                                {checked && prompt.label === '自定义' ?
+                                <Textarea onChange={(event) => handleChangePrompt(event.target.value)} value={systemPrompt || prompt.content} /> : <span>{prompt.desc}</span>
+                                }
                               </RadioGroup.Description>
                             </div>
                           </div>

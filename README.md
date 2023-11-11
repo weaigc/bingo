@@ -14,9 +14,6 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 </div>
 
-## 重要说明
-为了应对日益严格的封锁，现已研发 Bingo 2.0，目前稳定性已经得到验证，详见：https://github.com/weaigc/bingo/tree/v2 。如你自己有没有被封锁的 vps，则可以继续使用 Bingo 1.0。
-
 ## 演示站点
 
 站点1(V2)：https://bing.github1s.tk
@@ -30,13 +27,15 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 ## 功能和特点
 
-- 完全基于 Next.js 重写，高度还原 New Bing Web 版 UI，使用体验和 Bing AI 基本一致。
-- 支持 Docker 构建，方便快捷地部署和访问。
-- Cookie 可全局配置，全局共享。
+- 支持无限次数对话
+- 支持任意地方访问
+- 支持 Docker 构建，方便快捷地部署和访问
+- Cookie 可全局配置，全局共享
 - 支持持续语音对话
 - 支持免账号使用
 - 完全免费
 - 支持 OpenAI 方式调用 [使用文档](./OPENAI.md)
+- 支持独立部署
 
 ## RoadMap
  - [x] 支持 wss 转发
@@ -56,11 +55,23 @@ Bingo，一个让你呼吸顺畅 New Bing。
  - [ ] 国际化翻译
 
 ## 在线部署
-### 1. 部署到 Replit（推荐）
+#### 部署到 CodeSandbox（推荐）
+[![一键部署到 CodeSandbox](https://img.shields.io/badge/%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-CodeSandBox-blue)](https://codesandbox.io/p/github/weaigc/bingo?import=true)
+
+#### 部署到 Render
+
+感谢 [@SokWith](https://github.com/SokWith) 测试，Render 目前已复活。
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
+
+
+### 代理模式
+当前面的方式都不能用的时候，可以使用代理模式，然后将域名解析到自己的服务器上，做为折中的办法继续使用。
+#### 1. 部署到 Replit（推荐）
 
 [点击部署Replit](https://replit.com/@weaigc/bingo?v=1)
 
-### 2. 部署到 CloudFlare (需要有自己的域名才可以)
+#### 2. 部署到 CloudFlare (需要有自己的域名才可以)
 
 - [注册 Cloudflare 账号](https://dash.cloudflare.com/sign-up)
 
@@ -71,16 +82,6 @@ Bingo，一个让你呼吸顺畅 New Bing。
 - 创建 Worker 服务，复制 [worker.js](./cloudflare/worker.js) 全部代码粘贴至创建的服务中，保存并部署。
 
 - 触发器 中自定义访问域名。
-
-
-### 部署到 Render
-
-感谢 [@SokWith](https://github.com/SokWith) 测试，Render 目前已复活。
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
-
-
-
 
 ### 部署其它平台
 <details>

@@ -3,39 +3,43 @@
   "setupTasks": [
     {
       "name": "Install Dependencies",
-      "command": "npm install "
-    },
-    {
-      "name": "Build",
-      "command": "npm run build"
+      "command": "npm install"
     }
   ],
 
   // These tasks can be run from CodeSandbox. Running one will open a log in the app.
   "tasks": {
     "dev": {
-      "name": "dev",
-      "command": "npm run dev",
-      "runAtStart": true
-    },
-    "build": {
-      "name": "build",
-      "command": "npm run build"
-    },
-    "start": {
-      "name": "start",
-      "command": "npm run start"
-    },
-    "lint": {
-      "name": "lint",
-      "command": "npm run lint"
-    },
-    "npm start": {
-      "name": "npm start",
-      "command": "npm start",
+      "name": "Start Server",
+      "command": "npm run build && npm start",
       "runAtStart": true,
       "preview": {
         "port": 3000
+      },
+      "restartOn": {
+        "files": ["./package-lock.json"]
+      }
+    },
+    "build": {
+      "name": "Build",
+      "command": "npm run build",
+      "runAtStart": false
+    },
+    "start": {
+      "name": "Start Server",
+      "command": "npm run start",
+      "runAtStart": false
+    },
+    "lint": {
+      "name": "Lint",
+      "command": "npm run lint",
+      "runAtStart": false
+    },
+    "install": {
+      "name": "Install Dependencies",
+      "command": "npm install",
+      "restartOn": {
+        "files": ["./package.json"]
       }
     }
   }

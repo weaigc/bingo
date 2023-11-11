@@ -30,16 +30,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   })
 
   const closeDog = new WatchDog()
-  const timeoutDog = new WatchDog()
   ws.onmessage = (event) => {
-    timeoutDog.watch(() => {
-      debug(id, 'timeout')
-      ws.send(websocketUtils.packMessage({ type: 6 }))
-    }, 6000)
     closeDog.watch(() => {
       debug(id, 'timeout close')
       ws.close()
-    }, 40000)
+    }, 20000)
     res.write(event.data)
     if (/\{"type":([367])\b/.test(String(event.data))) {
       const type = parseInt(RegExp.$1, 10)
@@ -53,7 +48,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   ws.onclose = () => {
-    timeoutDog.reset()
     closeDog.reset()
     debug(id, 'ws close')
     res.end()

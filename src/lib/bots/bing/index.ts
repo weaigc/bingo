@@ -19,7 +19,7 @@ import { createChunkDecoder } from '@/lib/utils'
 import { randomUUID } from 'crypto'
 import md5 from 'md5'
 
-type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle }>
+type Params = SendMessageParams<{ bingConversationStyle: BingConversationStyle, retryCount?: number }>
 
 const getOptionSets = (conversationStyle: BingConversationStyle) => {
   return {
@@ -337,17 +337,36 @@ export class BingWebBot {
       signal: abortController.signal,
       body: JSON.stringify(this.conversationContext!)
     }).catch(e => {
+      if (String(e) === 'timeout') {
+        if (params.options.retryCount??0 > 5) {
+          conversation.invocationId--
+          params.onEvent({
+            type: 'ERROR',
+            error: new ChatError(
+              'Timeout',
+              ErrorCode.BING_TRY_LATER,
+            ),
+          })
+        } else {
+          params.options.retryCount = (params.options.retryCount ?? 0) + 1
+          this.sydneyProxy(params)
+        }
+      }
       console.log('Fetch Error: ', e)
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
-          'Network error',
+          String(e),
           ErrorCode.UNKOWN_ERROR,
         ),
       })
       return e
     })
+    const conversation = this.conversationContext!
+    conversation.invocationId++
+
     if (response.status !== 200) {
+      conversation.invocationId--
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
@@ -356,22 +375,25 @@ export class BingWebBot {
         ),
       })
     }
+
     params.signal?.addEventListener('abort', () => {
       abortController.abort()
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
           'Canceled',
-          ErrorCode.BING_TRY_LATER,
+          ErrorCode.BING_ABORT,
         ),
       })
     })
-    const conversation = this.conversationContext!
+
     const textDecoder = createChunkDecoder()
     for await (const chunk of streamAsyncIterable(response.body!)) {
+      const t = setTimeout(() => abortController.abort('timeout'), 6000)
       this.parseEvents(params, websocketUtils.unpackMessage(textDecoder(chunk)))
+      clearTimeout(t)
     }
-    conversation.invocationId++
+    console.log('done')
   }
 
   async sendWs() {

@@ -27,7 +27,7 @@ function getAction(error: ChatError, reset: () => void) {
   if (error.code === ErrorCode.BING_TRY_LATER) {
     return (
       <a href={`#dialog="reset"`}>
-        创建会话失败，请手动重试
+        请求失败，请手动重试
       </a>
     )
   }

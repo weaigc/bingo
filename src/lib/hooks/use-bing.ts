@@ -31,13 +31,13 @@ export function useBing(botId: BotId = 'bing') {
     },
     [setChatState],
   )
-
+  const defaultContext = systemPrompts ? `[system](#additional_instructions)\n${systemPrompts}` : ''
   const historyContext = useMemo(() => {
     return {
       get() {
         const messages = chatState.messages
           .map(message => ({ role: message.author === 'bot' ? 'assistant' : 'user', content: message.text }) as APIMessage)
-        return [systemPrompts ? `[system](#additional_instructions)\n${systemPrompts}` : '', messageToContext(messages)].filter(Boolean).join('\n')
+        return [defaultContext, messageToContext(messages)].filter(Boolean).join('\n')
       }
     }
   }, [chatState.messages])
@@ -58,6 +58,7 @@ export function useBing(botId: BotId = 'bing') {
         draft.abortController = abortController
       })
       speaker.reset()
+
       await chatState.bot.sendMessage({
         prompt: input,
         imageUrl: !isImageOnly && imageUrl && /api\/blob.jpg\?bcid=([^&]+)/.test(imageUrl) ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
@@ -87,7 +88,7 @@ export function useBing(botId: BotId = 'bing') {
           } else if (event.type === 'ERROR') {
             if (!unlimit && event.error.code === ErrorCode.CONVERSATION_LIMIT) {
               chatState.bot.resetConversation()
-            } else {
+            } else if (event.error.code !== ErrorCode.BING_ABORT) {
               updateMessage(botMessageId, (message) => {
                 message.error = event.error
               })
@@ -102,7 +103,7 @@ export function useBing(botId: BotId = 'bing') {
                 messages: draft.messages,
               })
               draft.abortController = undefined
-              const message = draft.messages.at(-1)
+              const message = draft.messages[draft.messages.length - 1]
               draft.generatingMessageId = ''
               if ((message?.throttling?.numUserMessagesInConversation??0) >=
                 (message?.throttling?.maxNumUserMessagesInConversation??0)
@@ -128,7 +129,7 @@ export function useBing(botId: BotId = 'bing') {
   }, [chatState.bot])
 
   const stopGenerating = useCallback(() => {
-    chatState.abortController?.abort()
+    chatState.abortController?.abort('Cancelled')
     if (chatState.generatingMessageId) {
       updateMessage(chatState.generatingMessageId, (message) => {
         if (!message.text && !message.error) {

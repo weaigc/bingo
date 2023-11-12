@@ -14,7 +14,7 @@ import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { TurnCounter } from './turn-counter'
 import { ChatFeedback } from './chat-feedback'
 import { ChatProgress } from './chat-progress'
-import './image.css'
+import './imagecreator.css'
 export interface ChatMessageProps {
   index: number
   message: ChatMessageModel

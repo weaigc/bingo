@@ -236,6 +236,7 @@ export class BingWebBot {
       conversationId: conversation.conversationId,
       conversationSignature: conversation.conversationSignature,
       participant: { id: conversation.clientId },
+      plugins: [],
       scenario: 'SERP',
       tone: conversation.conversationStyle
     }

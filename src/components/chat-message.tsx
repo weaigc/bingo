@@ -53,6 +53,9 @@ export function ChatMessage({ message, index, ...props }: ChatMessageProps) {
                   if (w && h) {
                     uri.searchParams.delete('w')
                     uri.searchParams.delete('h')
+                    // delete watermark
+                    uri.searchParams.delete('c')
+                    uri.searchParams.delete('o')
                     return <a style={{ float: 'left', maxWidth: '50%' }} href={uri.toString()} target="_blank" rel="noopener noreferrer"><img src={obj.src} alt={obj.alt} width={w!} height={h!} /></a>
                   }
                 } catch (e) {

@@ -8,7 +8,7 @@
  * Content-Type: application/json
  * 参数说明
     * messages 输入的消息列表，完整格式参见 https://platform.openai.com/docs/guides/gpt/chat-completions-api
-    * model 模型名称（此字段被用于指定 new bing 风格，参数为 Creative、Balanced、Precise 中的一种）
+    * model 模型名称（此字段被用于指定 new bing 风格，参数为 Creative、Balanced、Precise、gpt-4 中的一种）
     * stream 是否使用流式输出，默认为 
     
 ### 出参
@@ -70,6 +70,7 @@ for chat_completion in completion:
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
+  apiKey: 'dummy',
   baseURL: 'https://copilot.github1s.tk' // 这里可以改为你自己部署的服务，bingo 服务版本需要 >= 0.9.0
 });
 

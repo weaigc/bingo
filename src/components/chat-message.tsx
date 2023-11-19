@@ -14,7 +14,7 @@ import { ChatMessageModel } from '@/lib/bots/bing/types'
 import { TurnCounter } from './turn-counter'
 import { ChatFeedback } from './chat-feedback'
 import { ChatProgress } from './chat-progress'
-
+import './imagecreator.css'
 export interface ChatMessageProps {
   index: number
   message: ChatMessageModel
@@ -56,7 +56,7 @@ export function ChatMessage({ message, index, ...props }: ChatMessageProps) {
                     // delete watermark
                     uri.searchParams.delete('c')
                     uri.searchParams.delete('o')
-                    return <a style={{ float: 'left', maxWidth: '50%' }} href={uri.toString()} target="_blank" rel="noopener noreferrer"><img src={obj.src} alt={obj.alt} width={w!} height={h!} /></a>
+                    return <a style={{ float: 'left', maxWidth: '50%' }} href={uri.toString()} target="_blank" rel="noopener noreferrer"><img className='imagecreator' src={obj.src} alt={obj.alt} width={w!} height={h!} /></a>
                   }
                 } catch (e) {
                 }

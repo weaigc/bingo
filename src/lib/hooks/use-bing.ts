@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom, isImageOnly, systemPromptsAtom, unlimitAtom } from '@/state'
+import { chatFamily, bingConversationStyleAtom, GreetMessages, hashAtom, voiceAtom, chatHistoryAtom, isImageOnly, systemPromptsAtom, unlimitAtom, gptAtom } from '@/state'
 import { ChatMessageModel, BotId, FileItem, APIMessage, ErrorCode } from '@/lib/bots/bing/types'
 import { messageToContext, nanoid } from '../utils'
 import { TTS } from '../bots/bing/tts'
@@ -12,6 +12,7 @@ export function useBing(botId: BotId = 'bing') {
   const [chatState, setChatState] = useAtom(chatAtom)
   const setHistoryValue = useSetAtom(chatHistoryAtom)
   const [enableTTS] = useAtom(voiceAtom)
+  const [enableGPT4] = useAtom(gptAtom)
   const [systemPrompts] = useAtom(systemPromptsAtom)
   const speaker = useMemo(() => new TTS(), [])
   const unlimit = useAtomValue(unlimitAtom)
@@ -66,6 +67,7 @@ export function useBing(botId: BotId = 'bing') {
         options: {
           ...options,
           bingConversationStyle,
+          allowSearch: !enableGPT4,
         },
         signal: abortController.signal,
         onEvent(event) {

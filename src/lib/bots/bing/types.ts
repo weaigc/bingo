@@ -149,6 +149,7 @@ export interface ConversationInfo extends ConversationInfoBase {
   conversationStyle: BingConversationStyle
   prompt: string
   context?: string
+  allowSearch?: boolean
   imageUrl?: string
   source?: 'cib' | 'WindowsCopilot'
 }

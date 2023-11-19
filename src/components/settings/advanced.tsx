@@ -86,7 +86,7 @@ export function AdvancedSetting() {
                                 className={`w-full ${checked ? 'text-sky-100' : 'text-gray-500'}`}
                               >
                                 {checked && prompt.label === '自定义' ?
-                                <Textarea onChange={(event) => handleChangePrompt(event.target.value)} value={systemPrompt || prompt.content} /> : <span>{prompt.desc}</span>
+                                <Textarea placeholder="留空即为原始版本的 New Bing" onChange={(event) => handleChangePrompt(event.target.value)} value={systemPrompt || prompt.content} /> : <span>{prompt.desc}</span>
                                 }
                               </RadioGroup.Description>
                             </div>

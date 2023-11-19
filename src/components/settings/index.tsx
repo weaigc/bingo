@@ -92,7 +92,7 @@ export function Settings() {
                 className={`${imageOnly ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
               />
             </Switch>
-            尝试修复用户信息异常
+            身份信息仅用于画图（推荐开启）
           </div>
 
           <div className="flex gap-2">

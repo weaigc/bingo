@@ -59,7 +59,8 @@ export function createChunkDecoder() {
 }
 
 export function muid() {
-  return md5(new imei().random()).toUpperCase()
+  const mySRCHHPGUSR = ';SRCHHPGUSR=SRCHLANG=zh-Hans&BRW=NOTP&BRH=S&CW=422&CH=506&SCW=405&SCH=506&PV=0.1.0&PRVCW=1094&PRVCH=506&DPR=1.3&UTC=480&DM=0&IG=1B353B2BF840444FB2C0C32E33876CA9&HV=1700559405&WTS=63836156180&BZA=0&CIBV=1.1359.4'
+  return md5(new imei().random()).toUpperCase() + mySRCHHPGUSR
 }
 
 export function random(start: number, end: number) {

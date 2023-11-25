@@ -340,7 +340,7 @@ export class BingWebBot {
     }
   }
 
-  private async sydneyProxy(params: Params) {
+  private async sydneyProxy(params: Params, reconnect: boolean = false) {
     this.lastText = ''
     const abortController = new AbortController()
     const response = await fetch(this.endpoint + '/api/sydney', {
@@ -362,6 +362,7 @@ export class BingWebBot {
       })
       return e
     })
+    if (reconnect) return
     const conversation = this.conversationContext!
     const originalInvocationId = conversation.invocationId
     conversation.invocationId++
@@ -401,7 +402,7 @@ export class BingWebBot {
       } else {
         conversation.invocationId = originalInvocationId
         params.options.retryCount = (params.options.retryCount ?? 0) + 1
-        this.sydneyProxy(params)
+        this.sydneyProxy(params, true)
       }
     }
     let t = conversation.invocationId ? undefined : setTimeout(timeout, 6000)

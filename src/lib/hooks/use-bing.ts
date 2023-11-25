@@ -62,7 +62,7 @@ export function useBing(botId: BotId = 'bing') {
 
       await chatState.bot.sendMessage({
         prompt: input,
-        imageUrl: !isImageOnly && imageUrl && /api\/blob.jpg\?bcid=([^&]+)/.test(imageUrl) ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
+        imageUrl: imageUrl && /api\/blob.jpg\?bcid=([^&]+)/.test(imageUrl) ? `https://www.bing.com/images/blob?bcid=${RegExp.$1}` : imageUrl,
         context: chatState.bot.isInitial ? historyContext.get() : '',
         options: {
           ...options,

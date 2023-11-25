@@ -17,6 +17,8 @@ import CameraIcon from '@/assets/images/camera.svg'
 import { BingReturnType } from '@/lib/hooks/use-bing'
 import { cn } from '@/lib/utils'
 import { ImageUtils } from "@/lib/image"
+import { useAtomValue } from "jotai"
+import { systemPromptsAtom, gptAtom } from "@/state"
 
 interface ChatImageProps extends Pick<BingReturnType, 'uploadImage'> {}
 
@@ -25,6 +27,8 @@ const preventDefault: MouseEventHandler<HTMLDivElement> = (event) => {
 }
 
 export function ChatImage({ children, uploadImage }: React.PropsWithChildren<ChatImageProps>) {
+  const systemPrompts = useAtomValue(systemPromptsAtom)
+  const enableGpt = useAtomValue(gptAtom)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -117,7 +121,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
     }
   }, [panel])
 
-  return (
+  return !enableGpt && !systemPrompts && (
     <div className="visual-search-container">
       <div onClick={() => panel === 'none' ? setPanel('normal') : setPanel('none')}>{children}</div>
       <div className={cn('visual-search', panel)} onClick={preventDefault}>

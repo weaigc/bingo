@@ -390,9 +390,6 @@ export class BingWebBot {
 
     const textDecoder = createChunkDecoder()
     const timeout = () => {
-      try {
-        abortController.abort('timeout')
-      } catch (e) {}
       if (params.options.retryCount??0 > 5) {
         params.onEvent({
           type: 'ERROR',

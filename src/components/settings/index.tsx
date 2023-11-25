@@ -149,7 +149,7 @@ export function Settings() {
         </DialogContent>
       </Dialog>
     )
-  } else if (loc) {
+  } else if (['voice', 'advanced'].includes(loc)) {
     return (
       <Dialog open onOpenChange={() => setLoc('')} modal>
         <DialogContent>

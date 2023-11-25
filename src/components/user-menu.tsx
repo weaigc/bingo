@@ -51,7 +51,7 @@ export function UserMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>
-              location.href='#dialog="advanced-settings"'
+              location.href='#dialog="advanced"'
             }
             className="cursor-pointer"
           >

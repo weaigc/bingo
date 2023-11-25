@@ -407,7 +407,7 @@ export class BingWebBot {
         this.sydneyProxy(params)
       }
     }
-    let t = setTimeout(timeout, 6000)
+    let t = conversation.invocationId ? undefined : setTimeout(timeout, 6000)
     for await (const chunk of streamAsyncIterable(response.body!)) {
       clearTimeout(t)
       t = setTimeout(timeout, 6000)

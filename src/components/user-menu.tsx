@@ -19,8 +19,13 @@ import { SVG } from './ui/svg'
 export function UserMenu() {
   const [host, setHost] = useState('')
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
+  const [installPrompt, setInstallPrompt] = useState<Event & { prompt: () => void }>()
   useEffect(() => {
     setHost(location.host)
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault()
+      setInstallPrompt(event as Event & { prompt: () => void })
+    })
   }, [])
 
   useEffect(() => {
@@ -104,6 +109,10 @@ export function UserMenu() {
           <DropdownMenuItem className="flex-col items-start">
             <div className="font-medium">版本信息 {pkg.version}</div>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {installPrompt && <DropdownMenuItem className="flex-col items-start">
+            <div className="font-medium" onClick={() => installPrompt.prompt?.()}>安装 Bing 到桌面</div>
+          </DropdownMenuItem>}
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex-col items-start">
             <div className="font-medium">站点域名</div>

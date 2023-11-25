@@ -363,10 +363,11 @@ export class BingWebBot {
       return e
     })
     const conversation = this.conversationContext!
+    const originalInvocationId = conversation.invocationId
     conversation.invocationId++
 
     if (response.status !== 200) {
-      conversation.invocationId--
+      conversation.invocationId = originalInvocationId
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
@@ -388,10 +389,11 @@ export class BingWebBot {
     })
 
     const textDecoder = createChunkDecoder()
-    let t
     const timeout = () => {
+      try {
+        abortController.abort('timeout')
+      } catch (e) {}
       if (params.options.retryCount??0 > 5) {
-        conversation.invocationId--
         params.onEvent({
           type: 'ERROR',
           error: new ChatError(
@@ -400,10 +402,12 @@ export class BingWebBot {
           ),
         })
       } else {
+        conversation.invocationId = originalInvocationId
         params.options.retryCount = (params.options.retryCount ?? 0) + 1
         this.sydneyProxy(params)
       }
     }
+    let t = setTimeout(timeout, 6000)
     for await (const chunk of streamAsyncIterable(response.body!)) {
       clearTimeout(t)
       t = setTimeout(timeout, 6000)

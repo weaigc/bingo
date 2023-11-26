@@ -353,6 +353,7 @@ export class BingWebBot {
       body: JSON.stringify(this.conversationContext!)
     }).catch(e => {
       console.log('Fetch Error: ', e)
+      if (reconnect) return
       params.onEvent({
         type: 'ERROR',
         error: new ChatError(
@@ -362,10 +363,10 @@ export class BingWebBot {
       })
       return e
     })
-    if (reconnect) return
     const conversation = this.conversationContext!
     const originalInvocationId = conversation.invocationId
     conversation.invocationId++
+    if (reconnect) return
 
     if (response.status !== 200) {
       conversation.invocationId = originalInvocationId

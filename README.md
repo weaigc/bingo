@@ -212,6 +212,7 @@ Y3VybCAnaHR0cHM6Ly93d3cuYmluZy5jb20vdHVyaW5nL2NvbnZlcnNhdGlvbi9jcmVhdGUnIFwgICAt
 <div align="left">
   <image src="./docs/images/wechat.jpg" width=200 />
   <image src="./docs/images/wechat2.jpg" width=200 />
+  <image src="./docs/images/wechat3.jpg" width=200 />
 </div>
 
 ## Star History

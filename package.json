@@ -7,7 +7,7 @@
     "dev": "cross-env DEBUG=bingo* NODE_ENV=development node ./server.js",
     "build": "next build",
     "proxy": "node ./cloudflare/cli.js",
-    "start": "cross-env NODE_ENV=production node ./server.js",
+    "start": "node ./scripts/pre-check.js && cross-env NODE_ENV=production node ./server.js",
     "lint": "next lint"
   },
   "dependencies": {

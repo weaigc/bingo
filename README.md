@@ -20,7 +20,7 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 站点2(V1): https://copilot.github1s.tk
 
-站点3(代理)：https://bingo.weaigc.repl.co
+站点3(代理)：https://bingo.weaigc.repl.co(此模式不再推荐使用)
 
 
 [![img](./docs/images/demo.png)](https://bing.github1s.tk)
@@ -57,14 +57,13 @@ Bingo，一个让你呼吸顺畅 New Bing。
 
 ## 在线部署
 #### 部署到 CodeSandbox（推荐）
-点击 [![一键部署到 CodeSandbox](https://img.shields.io/badge/%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-CodeSandBox-blue)](https://codesandbox.io/p/github/weaigc/bingo?import=true)，然后一路点 “Next” 即可（没有注册账号的注册完账号后重试即可）。
+点击 [![一键部署到 CodeSandbox](https://img.shields.io/badge/%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2-CodeSandBox-blue)](https://codesandbox.io/p/devbox/github/weaigc/bingo/tree/main?import=true)，点击右上角 “Fork”，然后一路点 “Next” 即可（没有注册账号的注册完账号后重试即可）。
 
 #### 部署到 Render
 感谢 [@SokWith](https://github.com/SokWith) 测试，Render 目前已复活。
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/weaigc/bingo)
+为了防止封号，一键部署不再提供，请前往 https://render.com 手动部署。
 
-
-### 代理模式
+### 代理模式（不推荐）
 当前面的方式都不能用的时候，可以使用代理模式，然后将域名解析到自己的服务器上，做为折中的办法继续使用。
 #### 1. 部署到 Replit（推荐）
 

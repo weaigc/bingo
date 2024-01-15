@@ -95,6 +95,7 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
     ]
   }[conversationStyle]
   if (allowSeach === false) {
+    results.push('nosearchall')
     results.push('dlgpt4t')
   }
   return results

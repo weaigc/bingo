@@ -95,8 +95,8 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
     ]
   }[conversationStyle]
   if (allowSeach === false) {
-    results.push('nosearchall')
-    results.push('dlgpt4t')
+    //results.push('nosearchall')
+    results.push('gpt4tmncnp')
   }
   return results
 }
@@ -231,7 +231,7 @@ export class BingWebBot {
   async createConversation(conversationId?: string): Promise<ConversationResponse> {
     const headers = {
       'Accept-Encoding': 'gzip, deflate, br, zsdch',
-      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.12.3 OS/Android',
       cookie: this.cookie,
     }
 
@@ -389,6 +389,7 @@ export class BingWebBot {
         headers: {
           'accept-language': 'zh-CN,zh;q=0.9',
           'cache-control': 'no-cache',
+          "user-agent": "Mozilla/5.0 (Linux; Android 7.1.1; OPPO R11t) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36 EdgA/108.0.1462.4",
           pragma: 'no-cache',
           cookie: this.cookie,
         }
@@ -408,7 +409,7 @@ export class BingWebBot {
   private async createImage(prompt: string, id: string) {
     const headers = {
       'Accept-Encoding': 'gzip, deflate, br, zsdch',
-      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.0 OS/Win32',
+      'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.12.3 OS/Android',
       cookie: this.cookie,
     }
 

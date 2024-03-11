@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         debug('json', json)
         json.encryptedconversationsignature = json.encryptedconversationsignature || response.headers.get('X-Sydney-encryptedconversationsignature') || undefined
 
-        if (!json?.clientId || (!json?.conversationSignature && !json.encryptedconversationsignature)) {
+        if (!json?.clientId || (!json?.conversationSignature && !json.encryptedconversationsignature) || (headers.cookie.includes('xxx') && !json.conversationId.includes('BingProdUnAuthenticatedUsers'))) {
           await sleep(2000)
           continue
         }

@@ -34,12 +34,9 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'iyxapbing',
       'iycapbing',
       'h3imaginative',
-      'gptvprvc',
-      'fluxpcalc',
       'eredirecturl',
       'clgalileo',
       'gencontentv3',
-      'fluxv14l'
     ],
     [BingConversationStyle.Balanced]: [
       'nlu_direct_response_filter',
@@ -52,8 +49,6 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'iyxapbing',
       'iycapbing',
       'galileo',
-      'gptvprvc',
-      'fluxpcalc',
       'eredirecturl',
       'saharagenconv5'
     ],
@@ -68,12 +63,9 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'iyxapbing',
       'iycapbing',
       'h3precise',
-      'gptvprvc',
-      'fluxpcalc',
       'eredirecturl',
       'clgalileo',
       'gencontentv3',
-      'fluxv14l'
     ],
     [BingConversationStyle.Base]: [
       'deepleo',
@@ -85,12 +77,9 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'iyxapbing',
       'iycapbing',
       'h3imaginative',
-      'gptvprvc',
-      'fluxpcalc',
       'eredirecturl',
       'clgalileo',
       'gencontentv3',
-      'fluxv14l',
       'nojbfedge',
     ]
   }[conversationStyle]
@@ -130,17 +119,21 @@ export class BingWebBot {
       region: 'US',
       locationHints: [
         {
-          country: 'United States',
-          state: 'California',
-          city: 'Los Angeles',
-          timezoneoffset: 8,
-          countryConfidence: 8,
-          Center: {
-            Latitude: 34.0536909,
-            Longitude: -118.242766
+          "SourceType": 1,
+          "RegionType": 2,
+          "Center": {
+            "Latitude": 34.0536909,
+            "Longitude": -118.242766,
           },
-          RegionType: 2,
-          SourceType: 1
+          "Radius": 24902,
+          "Name": "United States",
+          "Accuracy": 24902,
+          "FDConfidence": 0,
+          "CountryName": "United States",
+          "CountryConfidence": 9,
+          "PopulatedPlaceConfidence": 0,
+          "UtcOffset": 8,
+          "Dma": 0
         }
       ],
       author: 'user',
@@ -154,48 +147,28 @@ export class BingWebBot {
 
     const argument = {
       optionsSets: getOptionSets(useBaseSets ? BingConversationStyle.Base : conversation.conversationStyle, conversation.allowSearch),
-      sliceIds: [
-        'gbaa',
-        'gba',
-        'emovoice',
-        'tts3cf',
-        'kcinherocf',
-        'inochatv2',
-        'wrapnoins',
-        'mlchatpc9000ns',
-        'mlchatpcbase',
-        'sydconfigoptt',
-        '803iyjbexps0',
-        '0529streamws0',
-        '178gentechs0',
-        '0901utilbal',
-        'attr2atral3',
-        '821iypapyrust',
-        '019hlthgrd',
-        '829suggtrim',
-        '821fluxv13s0',
-        '727nrprdrt3'
-      ],
+      sliceIds: [],
       message,
       source: 'cib',
       spokenTextMode: 'None',
       allowedMessageTypes: [
-        'ActionRequest',
-        'Chat',
-        'ConfirmationCard',
-        'Context',
-        'InternalSearchQuery',
-        'InternalSearchResult',
-        'Disengaged',
-        'InternalLoaderMessage',
-        'InvokeAction',
-        'Progress',
-        'RenderCardRequest',
-        'RenderContentRequest',
-        // 'AdsQuery',
-        'SemanticSerp',
-        'GenerateContentQuery',
-        'SearchQuery'
+        "ActionRequest",
+        "Chat",
+        "ConfirmationCard",
+        "Context",
+        "InternalSearchQuery",
+        "InternalSearchResult",
+        "Disengaged",
+        "InternalLoaderMessage",
+        "Progress",
+        "RenderCardRequest",
+        "RenderContentRequest",
+        "AdsQuery",
+        "SemanticSerp",
+        "GenerateContentQuery",
+        "SearchQuery",
+        "GeneratedCode",
+        "InternalTasksMessage"
       ],
       conversationHistoryOptionsSets: [
         'autosave',
@@ -203,8 +176,9 @@ export class BingWebBot {
         'uprofupd',
         'uprofgen'
       ],
+      gptId: "copilot",
       previousMessages: conversation.context?.length ? [{
-        author: 'user',
+        author: 'system',
         description: conversation.context,
         contextType: 'WebPage',
         messageType: 'Context',
@@ -214,7 +188,6 @@ export class BingWebBot {
       requestId: uuid,
       isStartOfSession: conversation.invocationId === 0,
       conversationId: conversation.conversationId,
-      conversationSignature: conversation.conversationSignature,
       participant: { id: conversation.clientId },
       plugins: [],
       scenario: 'SERP',

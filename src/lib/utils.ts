@@ -150,7 +150,7 @@ export function resetCookies() {
   [...ChunkKeys, 'BING_HEADER', '', 'BING_COOKIE', 'BING_UA', '_U', 'BING_IP', 'MUID'].forEach(key => setCookie(key, ''))
 }
 
-export const DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.0.0'
+export const DEFAULT_UA = 'Mozilla/5.0 (Linux; Android 7.1.1; OPPO R11t) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36 EdgA/108.0.1462.4'
 export const DEFAULT_UA_MOBILE = `Mozilla/5.0 (iPhone; CPU iPhone OS 15_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.7 Mobile/15E148 Safari/605.1.15 BingSapphire/1.0.410427012`
 
 export function parseUA(ua?: string, default_ua = DEFAULT_UA) {
@@ -177,9 +177,9 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'User-Agent': ua!,
-    'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
+    'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.12.3 OS/Android',
     'referer': 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch',
-    cookie: `_U=${_U || defaultUID}; MUID=${randomString(32)}`,
+    cookie: `_U=${_U || defaultUID}`,
   }
 }
 
@@ -196,7 +196,7 @@ export function cookie2Headers(cookies: Partial<{ [key: string]: string }>) {
 
   headers['user-agent'] = parseUA(headers['user-agent'])
   headers['referer'] = 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch'
-  headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32'
+  headers['x-ms-useragent'] = headers['x-ms-useragent'] || 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.12.3 OS/Android'
   return headers
 }
 

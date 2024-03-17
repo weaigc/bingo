@@ -121,7 +121,7 @@ export function ChatImage({ children, uploadImage }: React.PropsWithChildren<Cha
     }
   }, [panel])
 
-  return !enableGpt && !systemPrompts && (
+  return (
     <div className="visual-search-container">
       <div onClick={() => panel === 'none' ? setPanel('normal') : setPanel('none')}>{children}</div>
       <div className={cn('visual-search', panel)} onClick={preventDefault}>

@@ -100,20 +100,20 @@ export class BingWebBot {
     const message = {
       locale: 'zh-CN',
       market: 'zh-CN',
-      region: 'US',
+      region: 'CN',
       locationHints: [
         {
           "SourceType": 1,
           "RegionType": 2,
           "Center": {
-            "Latitude": 34.0536909,
-            "Longitude": -118.242766,
+            "Latitude": 39.9042,
+            "Longitude": 116.4074,
           },
           "Radius": 24902,
-          "Name": "United States",
+          "Name": "China",
           "Accuracy": 24902,
           "FDConfidence": 0,
-          "CountryName": "United States",
+          "CountryName": "China",
           "CountryConfidence": 9,
           "PopulatedPlaceConfidence": 0,
           "UtcOffset": 8,

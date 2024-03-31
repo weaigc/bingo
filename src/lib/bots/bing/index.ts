@@ -68,8 +68,8 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
     ]
   }[conversationStyle]
   if (allowSeach === false) {
-    //results.push('nosearchall')
-    results.push('gpt4tmncnp')
+    results.push('nosearchall')
+    //results.push('gpt4tmncnp')
   }
   return results
 }

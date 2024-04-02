@@ -166,7 +166,7 @@ export class BingWebBot {
         description: conversation.context,
         contextType: 'WebPage',
         messageType: 'Context',
-        messageId: 'discover-web--page-ping-mriduna-----'
+        //messageId: 'discover-web--page-ping-mriduna-----'
       }] : undefined,
       traceId: md5(new Date().toString()),
       requestId: uuid,

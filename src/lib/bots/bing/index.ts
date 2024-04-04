@@ -166,6 +166,9 @@ export class BingWebBot {
         description: conversation.context,
         contextType: 'WebPage',
         messageType: 'Context',
+        sourceName: '',
+        sourceUrl: '',
+        locale: '',
         //messageId: 'discover-web--page-ping-mriduna-----'
       }] : undefined,
       traceId: md5(new Date().toString()),

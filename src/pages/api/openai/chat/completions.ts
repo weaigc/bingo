@@ -118,7 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         signal: abortController.signal,
         onEvent(event) {
-          if (event.type === 'UPDATE_ANSWER') {
+          if (event.type === 'UPDATE_ANSWER' && event.data.text) {
             lastText = event.data.text
             if (stream && lastLength !== lastText.length) {
               res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength)))}\n\n`)

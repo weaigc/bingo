@@ -334,10 +334,10 @@ export class BingWebBot {
         this.sydneyProxy(params, true)
       }
     }
-    let t = conversation.invocationId ? undefined : setTimeout(timeout, 6000)
+    let t = conversation.invocationId ? undefined : setTimeout(timeout, 10000)
     for await (const chunk of streamAsyncIterable(response.body!)) {
       clearTimeout(t)
-      t = setTimeout(timeout, 6000)
+      t = setTimeout(timeout, 10000)
       this.parseEvents(params, websocketUtils.unpackMessage(textDecoder(chunk)))
     }
     clearTimeout(t)

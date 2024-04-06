@@ -33,7 +33,6 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'h3imaginative',
       'clgalileo',
       'gencontentv3',
-      'nojbfedge'
     ],
     [BingConversationStyle.Balanced]: [
       'deepleo',
@@ -44,7 +43,6 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'iycapbing',
       'galileo',
       'saharagenconv5'
-      'nojbfedge',
     ],
     [BingConversationStyle.Precise]: [
       'deepleo',
@@ -56,7 +54,6 @@ const getOptionSets = (conversationStyle: BingConversationStyle, allowSeach = tr
       'h3precise',
       'clgalileo',
       'gencontentv3',
-      'nojbfedge',
     ],
     [BingConversationStyle.Base]: [
       'deepleo',
@@ -133,7 +130,7 @@ export class BingWebBot {
     }
 
     const argument = {
-      optionsSets: getOptionSets(conversation.conversationStyle, conversation.allowSearch),
+      optionsSets: getOptionSets(useBaseSets ? BingConversationStyle.Base : conversation.conversationStyle, conversation.allowSearch),
       sliceIds: [],
       message,
       source: 'cib',
@@ -166,7 +163,7 @@ export class BingWebBot {
       gptId: "copilot",
       previousMessages: conversation.context?.length ? [{
         author: 'system',
-        description: conversation.context.replace('[system](#message)','[system](#additional_instructions)'),
+        description: conversation.context,
         contextType: 'WebPage',
         messageType: 'Context',
         sourceName: '',

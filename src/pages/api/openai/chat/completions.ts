@@ -33,7 +33,7 @@ function parseOpenAIMessage(request: APIRequest) {
     prompt,
     context,
     stream: request.stream,
-    allowSearch: !/Creative|Balanced|Precise/i.test(request.model),
+    allowSearch: /Creative|Balanced|Precise/i.test(request.model),
     model: /Creative|gpt-?4/i.test(request.model) ? 'Creative' : request.model,
   };
 }
@@ -72,49 +72,70 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   req.socket.once('close', () => {
     abortController.abort()
   })
-  const { prompt, stream, model, allowSearch, context } = parseOpenAIMessage(req.body);
-  let lastLength = 0
-  let lastText = ''
-  try {
-    const chatbot = new BingWebBot({
-      endpoint: getOriginFromHost(req.headers.host || '127.0.0.1:3000'),
-    })
 
-    if (stream) {
-      res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
-    }
-
-    assert(prompt, 'messages can\'t be empty!')
-
-    const toneType = model as BingConversationStyle
-
-    await chatbot.sendMessage({
-      prompt,
-      context,
-      options: {
-        allowSearch,
-        bingConversationStyle: Object.values(BingConversationStyle)
-          .includes(toneType) ? toneType : BingConversationStyle.Creative,
-      },
-      signal: abortController.signal,
-      onEvent(event) {
-        if (event.type === 'UPDATE_ANSWER') {
-          lastText = event.data.text
-          if (stream && lastLength !== lastText.length) {
-            res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength)))}\n\n`)
-            lastLength = lastText.length
-          }
-        }
-      },
-    })
-  } catch (error) {
-    console.log('Catch Error:', error)
-    res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${error}`))}\n\n`)
-  } finally {
-    if (stream) {
-      res.end(`data: [DONE]\n\n`);
+  let authFlag = false
+  if (process.env.apikey) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      if (token === process.env.apikey) {
+        authFlag = true;
+      } else {
+        authFlag = false;
+        res.status(401).send('授权失败');
+      }
     } else {
-      res.end(JSON.stringify(responseOpenAIMessage(lastText)))
+      authFlag = false;
+      res.status(401).send('缺少授权信息');
+    }
+  } else {
+    authFlag = true;
+  }
+  if (authFlag) {
+    const {prompt, stream, model, allowSearch, context} = parseOpenAIMessage(req.body);
+    let lastLength = 0
+    let lastText = ''
+    try {
+      const chatbot = new BingWebBot({
+        endpoint: getOriginFromHost(req.headers.host || '127.0.0.1:3000'),
+      })
+
+      if (stream) {
+        res.setHeader('Content-Type', 'text/event-stream; charset=utf-8')
+      }
+
+      assert(prompt, 'messages can\'t be empty!')
+
+      const toneType = model as BingConversationStyle
+
+      await chatbot.sendMessage({
+        prompt,
+        context,
+        options: {
+          allowSearch,
+          bingConversationStyle: Object.values(BingConversationStyle)
+            .includes(toneType) ? toneType : BingConversationStyle.Creative,
+        },
+        signal: abortController.signal,
+        onEvent(event) {
+          if (event.type === 'UPDATE_ANSWER' && event.data.text) {
+            lastText = event.data.text
+            if (stream && lastLength !== lastText.length) {
+              res.write(`data: ${JSON.stringify(responseOpenAIMessage(lastText.slice(lastLength)))}\n\n`)
+              lastLength = lastText.length
+            }
+          }
+        },
+      })
+    } catch (error) {
+      console.log('Catch Error:', error)
+      res.write(`data: ${JSON.stringify(responseOpenAIMessage(`${error}`))}\n\n`)
+    } finally {
+      if (stream) {
+        res.end(`data: [DONE]\n\n`);
+      } else {
+        res.end(JSON.stringify(responseOpenAIMessage(lastText)))
+      }
     }
   }
 }

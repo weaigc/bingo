@@ -49,10 +49,10 @@ export interface Prompt {
 }
 
 export const isImageOnly = getCookie('IMAGE_ONLY') !== '0'
-export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Balanced, undefined, { unstable_getOnInit: true })
+export const bingConversationStyleAtom = atomWithStorage<BingConversationStyle>('bingConversationStyle', BingConversationStyle.Creative, undefined, { unstable_getOnInit: true })
 export const voiceAtom = atomWithStorage<boolean>('enableTTS', false, undefined, { unstable_getOnInit: true })
 export const historyAtom = atomWithStorage<boolean>('enableHistory', false, undefined, { unstable_getOnInit: true })
-export const gptAtom = atomWithStorage<boolean>('enableGPT4', false, undefined, { unstable_getOnInit: true })
+export const gptAtom = atomWithStorage<boolean>('enableGPT4', true, undefined, { unstable_getOnInit: true })
 export const unlimitAtom = atomWithStorage<boolean>('enableUnlimitedConversation', true, undefined, { unstable_getOnInit: true })
 export const systemPromptsAtom = atomWithStorage<string>('systemPrompts', '', undefined, { unstable_getOnInit: true })
 export const localPromptsAtom = atomWithStorage<Prompt[]>('prompts', [], undefined, { unstable_getOnInit: true })

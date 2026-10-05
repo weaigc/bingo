@@ -1,5 +1,7 @@
 <div align="center">
 
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/weaigc/bingo)
+
 # Bingo 
 
 Bingo，一个让你呼吸顺畅 New Bing。
